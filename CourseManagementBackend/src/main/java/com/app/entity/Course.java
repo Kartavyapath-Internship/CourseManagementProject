@@ -1,5 +1,6 @@
 package com.app.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,10 +22,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Table(name = "course")
 @AllArgsConstructor
+@Builder
 @Getter
 @Setter
-@Builder
-
 public class Course extends BaseEntity {
 	
 	@Column(name = "name",nullable = false,length = 30)
@@ -46,6 +46,8 @@ public class Course extends BaseEntity {
 	@OneToMany
     @JoinColumn(name = "premise_id")
 	private List<Premises> premises;
+	
+	
 	
 	@ManyToOne
 	@JoinColumn(name="course_type_id")
