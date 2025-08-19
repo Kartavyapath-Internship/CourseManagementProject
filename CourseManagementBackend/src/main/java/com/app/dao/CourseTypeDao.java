@@ -10,5 +10,5 @@ import com.app.entity.CourseType;
 @Repository
 public interface CourseTypeDao extends JpaRepository<CourseType, Integer> {
 
-	Optional<CourseType> findByTitle(String title);
+	
 }
