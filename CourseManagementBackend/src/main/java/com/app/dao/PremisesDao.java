@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.app.entity.BatchCycle;
 import com.app.entity.Premises;
 
-public interface PremisesDao extends JpaRepository<Premises, Long> {
+public interface PremisesDao extends JpaRepository<Premises, Integer> {
 
-	List<Premises> findAllById(Long premisesId);
+	List<Premises> findAllById(int premisesId);
 	
 //	Optional<Premises> findByInstituteName(String name);
 //
