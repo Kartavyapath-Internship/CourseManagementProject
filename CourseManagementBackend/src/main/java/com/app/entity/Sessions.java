@@ -42,7 +42,7 @@ public class Sessions extends BaseEntity {
 	
 	
 	@OneToMany
-	@JoinColumn(name="staff_id")
+	@JoinColumn(name="session_id")
 	private List <Staff> staff;
 	
 	@ManyToOne
