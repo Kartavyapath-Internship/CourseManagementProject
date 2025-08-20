@@ -75,7 +75,7 @@ public class CourseServiceImpl implements CourseService{
     }
 	
 	
-	public Course updateCourse(Long id, CourseRespDto dto) {
+	public Course updateCourse(int id, CourseRespDto dto) {
         Course course = courseDao.findById(id).orElseThrow();
         course.setName(dto.getName());
         course.setStartDate(dto.getStartDate().atStartOfDay());
@@ -93,7 +93,7 @@ public class CourseServiceImpl implements CourseService{
     }
 	
 	
-	public void deleteCourse(Long id) {
+	public void deleteCourse(int id) {
 		 courseDao.deleteById(id);;
 	    }
 

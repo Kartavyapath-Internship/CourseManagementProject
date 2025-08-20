@@ -9,7 +9,7 @@ public interface CourseService {
 	
 	public List<Course> getAllCourses();
 	public Course addCourse(CourseRespDto dto);
-	public Course updateCourse(Long id, CourseRespDto dto);
-	public void deleteCourse(Long id);
+	public Course updateCourse(int id, CourseRespDto dto);
+	public void deleteCourse(int id);
 
 }
