@@ -3,13 +3,10 @@ package com.app.service;
 import java.util.List;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.app.dao.SubjectDao;
-import com.app.dto.CourseRespDto;
 import com.app.dto.SubjectRespDto;
-import com.app.entity.Course;
 import com.app.entity.Subject;
 
 import jakarta.transaction.Transactional;
@@ -28,7 +25,7 @@ public class SubjectServiceImpl implements SubjectService {
 		return subjectDao.findAll();
 	}
 	
-	public Subject getSubjectById(Long id)
+	public Subject getSubjectById(int id)
 	{
 		return subjectDao.findById(id).orElseThrow(() -> new RuntimeException("Subject not found with id " +id));
 	}
@@ -40,14 +37,14 @@ public class SubjectServiceImpl implements SubjectService {
     }
 	
 	
-	public Subject updateSubject(Long id,SubjectRespDto dto) {
+	public Subject updateSubject(int id,SubjectRespDto dto) {
 		Subject subject = subjectDao.findById(id).orElseThrow(() -> new RuntimeException("Subject not found"));
 		subject.setName(dto.getName());
 		return subjectDao.save(subject);
 		
 	}
 	
-	public void deleteSubject(Long id) {
+	public void deleteSubject(int id) {
 		 subjectDao.deleteById(id);
 	    }
 

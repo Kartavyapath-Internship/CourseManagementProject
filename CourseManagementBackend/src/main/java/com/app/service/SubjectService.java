@@ -9,8 +9,8 @@ public interface SubjectService {
 	
 	public List<Subject> getAllSubjects();
 	public Subject addSubject(SubjectRespDto dto);
-	public Subject updateSubject(Long id,SubjectRespDto dto);
-	public void deleteSubject(Long id);
-	public Subject getSubjectById(Long id);
+	public Subject updateSubject(int id,SubjectRespDto dto);
+	public void deleteSubject(int id);
+	public Subject getSubjectById(int id);
 
 }
