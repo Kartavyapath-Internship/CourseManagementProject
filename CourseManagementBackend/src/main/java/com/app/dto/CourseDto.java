@@ -24,4 +24,5 @@ public class CourseDto {
 	 private String batchCycleTitle;      
 	 private String CourseTypeName;
 	 private String premisesName;
+
 }

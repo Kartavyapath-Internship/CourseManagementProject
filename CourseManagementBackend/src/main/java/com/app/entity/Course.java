@@ -43,11 +43,6 @@ public class Course extends BaseEntity {
     @JoinColumn(name = "batch_cycle_id")
 	private BatchCycle batchCycle;
 	
-	
-//	@OneToMany
-//    @JoinColumn(name = "premise_id")
-//	private List<Premises> premises;
-	
 	@ManyToOne
 	@JoinColumn(name = "premise_id")
 	private Premises premises;

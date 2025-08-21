@@ -74,8 +74,6 @@ public class CourseServiceImpl implements CourseService{
 	    );
 	}
 
-
-	
 	
 	public Course addCourse(CourseRespDto dto) {
         Course course = new Course();
@@ -98,7 +96,7 @@ public class CourseServiceImpl implements CourseService{
         Premises premises = premisesDao.findById(dto.getPremisesId())
                 .orElseThrow(() -> new RuntimeException("Premises not found"));
         course.setPremises(premises);
-                
+          
         return courseDao.save(course);
     }
 	
