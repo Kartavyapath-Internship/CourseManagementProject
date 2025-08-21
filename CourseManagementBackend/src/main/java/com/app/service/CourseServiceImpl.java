@@ -120,7 +120,6 @@ public class CourseServiceImpl implements CourseService{
         return courseDao.save(course);
     }
 	
-	
 	public void deleteCourse(int id) {
 		 courseDao.deleteById(id);;
 	    }

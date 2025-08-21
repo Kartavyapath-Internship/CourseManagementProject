@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -58,6 +60,7 @@ public class Course extends BaseEntity {
         joinColumns = @JoinColumn(name = "course_id"), // foreign key for the course
         inverseJoinColumns = @JoinColumn(name = "staff_id") // foreign key for the staff member
     )
+	@JsonIgnore
 	private List<Staff> staff;
 	
 	
