@@ -3,6 +3,8 @@ package com.app.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -42,11 +44,10 @@ public class Course extends BaseEntity {
     @JoinColumn(name = "batch_cycle_id")
 	private BatchCycle batchCycle;
 	
-	@OneToMany
-    @JoinColumn(name = "premise_id")
-	private List<Premises> premises;
-	
-	
+	@ManyToOne
+	@JoinColumn(name = "premise_id")
+	private Premises premises;
+
 	
 	@ManyToOne
 	@JoinColumn(name="course_type_id")
@@ -58,6 +59,7 @@ public class Course extends BaseEntity {
         joinColumns = @JoinColumn(name = "course_id"), // foreign key for the course
         inverseJoinColumns = @JoinColumn(name = "staff_id") // foreign key for the staff member
     )
+	@JsonIgnore
 	private List<Staff> staff;
 	
 	

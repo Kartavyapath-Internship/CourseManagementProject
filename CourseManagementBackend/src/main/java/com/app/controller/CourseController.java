@@ -1,5 +1,6 @@
 package com.app.controller;
 
+import com.app.dto.CourseDto;
 import com.app.dto.CourseRespDto;
 import com.app.entity.*;
 import com.app.service.CourseService;
@@ -28,15 +29,16 @@ public class CourseController {
      return courseService.addCourse(dto);
  }
 
+ 
  @GetMapping
- public List<Course> getAllCourses() {
+ public List<CourseDto> getAllCourses() {
      return courseService.getAllCourses();
  }
 
-// @GetMapping("/{id}")
-// public Course getCourseById(@PathVariable Long id) {
-//     return courseService.getCourseById(id);
-// }
+ @GetMapping("/{id}")
+ public CourseDto getCourseById(@PathVariable int id) {
+     return courseService.getCourseById(id);
+ }
 
  @PutMapping("/{id}")
  public Course updateCourse(@PathVariable int id, @RequestBody CourseRespDto dto) {

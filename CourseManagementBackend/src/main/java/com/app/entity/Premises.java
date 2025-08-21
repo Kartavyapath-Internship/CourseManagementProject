@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,9 +16,10 @@ import lombok.Setter;
 @Table(name = "premises")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
+@Data
 @Getter
 @Setter
-@Builder
 public class Premises extends BaseEntity {
 	
 	@Column(name = "institute_name",nullable = false,length = 50)
@@ -28,5 +30,9 @@ public class Premises extends BaseEntity {
 	
 	@Column(name = "description",nullable = false,length = 200)
 	private String description;
+	
+	
+	
+	
 
 }
