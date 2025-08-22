@@ -15,6 +15,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "infrastructure")
@@ -23,22 +24,20 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-
+@ToString
 public class Infrastructure extends BaseEntity {
-	
-	@Column(name = "title",nullable = false,length = 30)
+
+	@Column(name = "title", nullable = false, length = 30)
 	private String title;
-	
-	@Column(name = "description",nullable = false,length = 200)
+
+	@Column(name = "description", nullable = false, length = 200)
 	private String description;
-	
+
 	@Enumerated(EnumType.STRING)
 	private InfrastructureType infrastructureType;
-	
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "premise_id")
+
+	@ManyToOne()
+	@JoinColumn(name = "premise_id", nullable = false)
 	private Premises premises;
-	
-	
 
 }
