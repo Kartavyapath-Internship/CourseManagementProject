@@ -14,4 +14,6 @@ public interface SectionService {
 
 	Section updateSection(int subId, SectionReqDto srd);
 
+	String deleteSection(int secId);
+
 }

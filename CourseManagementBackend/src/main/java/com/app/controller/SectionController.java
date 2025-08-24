@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,10 +38,18 @@ public class SectionController {
 		return ResponseEntity.ok(sec);
 	}
 	
-	@PutMapping("/update/{subId}")
-	public ResponseEntity<?> updateSection(@PathVariable int subId , @RequestBody SectionReqDto srd)
+	@PutMapping("/update/{secId}")
+	public ResponseEntity<?> updateSection(@PathVariable int secId , @RequestBody SectionReqDto srd)
 	{
-		Section sec = sectionServ.updateSection(subId,srd) ;
+		Section sec = sectionServ.updateSection(secId,srd) ;
 		return ResponseEntity.ok(sec);
+	}
+	
+	@DeleteMapping("/{secId}")
+	public ResponseEntity<?> deleteSection(@PathVariable int secId)
+	{
+		String msg = sectionServ.deleteSection(secId);
+		
+		return ResponseEntity.ok(msg);
 	}
 }

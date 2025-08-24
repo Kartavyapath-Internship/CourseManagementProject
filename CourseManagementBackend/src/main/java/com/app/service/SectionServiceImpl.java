@@ -54,4 +54,13 @@ public class SectionServiceImpl implements SectionService {
 
 	}
 
+	@Override
+	public String deleteSection(int secId) {
+		Section section = sectionDao.findById(secId).orElseThrow(()-> new RuntimeException("section not found"));
+		
+		sectionDao.delete(section);
+		
+		return "Deleted Successfully";
+	}
+
 }
