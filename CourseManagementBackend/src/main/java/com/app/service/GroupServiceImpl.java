@@ -39,17 +39,15 @@ public class GroupServiceImpl implements GroupService {
 				"Course is not present in database with given Id:" + courseGroupDto.getCourseId()));
 
 		Group courseGroup = modelMapper.map(courseGroupDto, Group.class);
+		
+		courseGroup.setId(null);
 
 		courseGroup.setCourse(course);
 
-//		log.info("Service Layer Course GroupName {} GroupdId {} CourseName {} ", courseGroup.getGroupName(),
-//				courseGroup.getId(), courseGroup.getCourse().getName());
+		log.info("Service Layer Course GroupName {} GroupdId {} CourseName {} ", courseGroup.getGroupName(),
+				courseGroup.getId(), courseGroup.getCourse().getName());
 
-		 Group save = courseGroupRepository.save(courseGroup);
-		
-		 log.info("Service Layer  Course GroupName {} groupId {} courseName {}", save.getGroupName(),save.getId(),save.getCourse().getName());
-		 
-		 return save;
+		return courseGroupRepository.save(courseGroup);
 
 	}
 
@@ -72,7 +70,8 @@ public class GroupServiceImpl implements GroupService {
 			courseGroup.setCourse(course);
 		}
 
-		log.info("Service Layer update Course GroupName {} groupId {} courseName {}", courseGroup.getGroupName(),courseGroup.getId(),courseGroup.getCourse().getName());
+		log.info("Service Layer update Course GroupName {} groupId {} courseName {}", courseGroup.getGroupName(),
+				courseGroup.getId(), courseGroup.getCourse().getName());
 
 		return courseGroupRepository.save(courseGroup);
 
