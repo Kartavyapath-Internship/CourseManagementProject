@@ -2,28 +2,20 @@ package com.app.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "course_module")
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-@Builder
-
-public class CourseModule extends BaseEntity {
-	
+@Entity
+public class CourseModule extends BaseEntity{
 	@Column(name = "title",nullable = false,length = 30)
 	private String title;
 	
@@ -38,10 +30,11 @@ public class CourseModule extends BaseEntity {
 	
 	@OneToOne
 	@JoinColumn(name="module_router")
+	@JsonIgnore
 	private Staff staff;
 	
 	@OneToMany
 	@JoinColumn(name = "subject_id")
+	@JsonIgnore
 	private List<Subject> subject;
-
 }
