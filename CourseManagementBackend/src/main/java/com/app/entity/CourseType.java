@@ -1,6 +1,5 @@
 package com.app.entity;
 
-
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -14,6 +13,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "course_type")
@@ -22,16 +22,16 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-
+@ToString
 public class CourseType extends BaseEntity {
-	
-	@Column(name = "title",nullable = false,length = 100)
+
+	@Column(name = "title", nullable = false, length = 100)
 	private String title;
-	
-	@Column(name = "description",nullable = false,length = 200)
+
+	@Column(name = "description", nullable = false, length = 200)
 	private String description;
-	
-	@OneToMany(mappedBy = "courseType",fetch = FetchType.EAGER)
+
+	@OneToMany(mappedBy = "courseType", fetch = FetchType.EAGER)
 	private List<Course> courses;
 
 }

@@ -1,5 +1,9 @@
 package com.app.dto;
 
+import java.util.List;
+
+import com.app.entity.Course;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,13 +12,13 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class CourseTypeDto {
+@ToString
+public class GroupDto {
 
-	private String title;
+	private String groupName;
 
-	private String description;
-	
+	private Integer courseId;
+
 }
