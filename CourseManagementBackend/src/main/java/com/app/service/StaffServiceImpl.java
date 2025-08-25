@@ -2,12 +2,14 @@ package com.app.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.app.dao.StaffDao;
 import com.app.dto.LoginResponse;
 import com.app.entity.Staff;
 
 @Service
+@Transactional
 public class StaffServiceImpl implements StaffService {
 	 @Autowired
 	    private StaffDao staffDao;

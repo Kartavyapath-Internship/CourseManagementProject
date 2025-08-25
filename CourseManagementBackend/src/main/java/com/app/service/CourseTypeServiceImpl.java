@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.app.dao.CourseDao;
 import com.app.dao.CourseTypeDao;
 import com.app.dto.CourseTypeDto;
@@ -16,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
+@Transactional
 public class CourseTypeServiceImpl implements CourseTypeService {
 
 	

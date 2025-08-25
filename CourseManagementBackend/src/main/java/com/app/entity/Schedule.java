@@ -1,13 +1,21 @@
 package com.app.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
+
+import com.app.entity.enums.InfrastructureType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -27,19 +35,24 @@ import lombok.Setter;
 public class Schedule extends BaseEntity {
 	
 	@Column(name = "date",nullable = false)
-	private LocalDateTime date;
+	private LocalDate date;
 	
 	@Column(name = "start_time",nullable = false)
-	private LocalDateTime startTime;
+	private LocalTime startTime;
 	
 	@Column(name = "date_time",nullable = false)
-	private LocalDateTime endTime;
+	private LocalTime endTime;
 	
-	@Column(name = "course_type",nullable = false)
-	private String Course;
+//	@Column(name = "course_type",nullable = false)
+//	private String Course;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private InfrastructureType type;
 	
 	@OneToOne
 	@JoinColumn(name="module")
+	@JsonIgnore
 	private CourseModule courseModule;
 	
 	@ManyToMany
@@ -48,6 +61,7 @@ public class Schedule extends BaseEntity {
 	    joinColumns = @JoinColumn(name = "schedule_id"),
 	    inverseJoinColumns = @JoinColumn(name = "infra_id")
 	)
+	@JsonIgnore
 	private List<Infrastructure> infrastructures;
 	
 	@ManyToMany
@@ -56,6 +70,14 @@ public class Schedule extends BaseEntity {
         joinColumns = @JoinColumn(name = "schedule_id"),
         inverseJoinColumns = @JoinColumn(name = "group_id")
     )
-    private List<Group> groups;	
+	@JsonIgnore
+    private List<Group> groups;
+	
+	@ManyToOne
+	@JoinColumn(name = "staff_id")
+	@JsonIgnore
+	private Staff staff;
+	
+	private String comment;
 
 }
