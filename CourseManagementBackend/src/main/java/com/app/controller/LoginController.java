@@ -18,7 +18,7 @@ public class LoginController {
 	    private StaffService staffService;
 
 	    @PostMapping
-	    public ResponseEntity<LoginResponse> login(@RequestParam String email, @RequestParam String password) {
-	        return ResponseEntity.ok(staffService.login(email, password));
+	    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) {
+	        return ResponseEntity.ok("");
 	    }
 }

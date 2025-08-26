@@ -1,8 +1,21 @@
 package com.app.service;
 
-import com.app.dto.LoginResponse;
+import java.util.List;
+
+import com.app.dto.StaffDto;
 import com.app.entity.Staff;
 
 public interface StaffService {
-	 LoginResponse login(String email, String password);
+
+	Staff addStaff(StaffDto staffDto);
+
+	Staff updateeStaff(StaffDto staffDto, int staffId);
+
+	String deleteStaff(int staffId);
+
+	List<Staff> getAll();
+
+	Staff getStaffStaff(int staffId);
+	
+	
 }

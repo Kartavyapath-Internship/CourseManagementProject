@@ -4,6 +4,7 @@ import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
@@ -31,7 +32,7 @@ public class Role extends BaseEntity {
 	private String description;
 	
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "role_permissions", // name of the join table
         joinColumns = @JoinColumn(name = "role_id"), // foreign key for the course

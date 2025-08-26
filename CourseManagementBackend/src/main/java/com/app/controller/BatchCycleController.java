@@ -25,21 +25,21 @@ public class BatchCycleController {
 	BatchCycleService batchCycleServ ;
 
 	@PostMapping("/add")
-	public ResponseEntity<?> addPremise(@RequestBody AddBatchCycleDto addBatchCycleDto)
+	public ResponseEntity<?> addBatchCycle(@RequestBody AddBatchCycleDto addBatchCycleDto)
 	{
 		BatchCycle batch = batchCycleServ.addBatchCycle(addBatchCycleDto);
 		return ResponseEntity.ok(batch);
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> deletePremise(@PathVariable int id)
+	public ResponseEntity<?> deleteBatchCycle(@PathVariable int id)
 	{
 		String msg = batchCycleServ.deleteBatchCycle(id);
 		return ResponseEntity.ok(msg);
 	}
 	
 	@PutMapping("/edit/{id}")
-	public ResponseEntity<?> editPremise(@PathVariable int id ,@RequestBody AddBatchCycleDto addBatchCycleDto)
+	public ResponseEntity<?> editBatchCycle(@PathVariable int id ,@RequestBody AddBatchCycleDto addBatchCycleDto)
 	{
 		BatchCycle batch = batchCycleServ.editBatchCycle(id , addBatchCycleDto);
 		return ResponseEntity.ok(batch);
