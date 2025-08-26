@@ -29,6 +29,7 @@ public class CourseTypeController {
 
 	@Autowired
 	private CourseTypeService courseTypeService;
+	
 
 	// create
 
