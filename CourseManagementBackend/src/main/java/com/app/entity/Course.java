@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
@@ -23,45 +24,41 @@ import lombok.Setter;
 @NoArgsConstructor
 @Table(name = "course")
 @AllArgsConstructor
-@Builder
 @Getter
 @Setter
-public class Course extends BaseEntity {
-	
-	@Column(name = "name",nullable = false,length = 30)
-	private String name;
-	
-	@Column(name = "description",nullable = false,length = 200)
-	private String description;
-	
-	@Column(name = "start_date",nullable = false)
-	private LocalDateTime startDate;
-	
-	@Column(name = "end_date",nullable = false)
-	private LocalDateTime endDate;
-	
-	@ManyToOne
-    @JoinColumn(name = "batch_cycle_id")
-	private BatchCycle batchCycle;
-	
-	@ManyToOne
-	@JoinColumn(name = "premise_id")
-	private Premises premises;
+@Builder
 
-	
+public class Course extends BaseEntity {
+
+	@Column(name = "name", nullable = false, length = 30)
+	private String name;
+
+	@Column(name = "description", nullable = false, length = 200)
+	private String description;
+
+	@Column(name = "start_date", nullable = false)
+	private LocalDateTime startDate;
+
+	@Column(name = "end_date", nullable = false)
+	private LocalDateTime endDate;
+
 	@ManyToOne
-	@JoinColumn(name="course_type_id")
+	@JoinColumn(name = "batch_cycle_id")
+	private BatchCycle batchCycle;
+
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinColumn(name = "premise_id")
+	private List<Premises> premises;
+
+	@ManyToOne
+	@JoinColumn(name = "course_type_id")
 	private CourseType courseType;
-	
+
 	@ManyToMany
-    @JoinTable(
-        name = "course_staff", // name of the join table
-        joinColumns = @JoinColumn(name = "course_id"), // foreign key for the course
-        inverseJoinColumns = @JoinColumn(name = "staff_id") // foreign key for the staff member
-    )
-	@JsonIgnore
+	@JoinTable(name = "course_staff", // name of the join table
+			joinColumns = @JoinColumn(name = "course_id"), // foreign key for the course
+			inverseJoinColumns = @JoinColumn(name = "staff_id") // foreign key for the staff member
+	)
 	private List<Staff> staff;
-	
-	
 
 }
