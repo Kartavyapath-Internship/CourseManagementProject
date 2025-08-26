@@ -39,6 +39,4 @@ public class Infrastructure extends BaseEntity {
 	@JoinColumn(name = "premise_id")
 	private Premises premises;
 	
-	
-
 }

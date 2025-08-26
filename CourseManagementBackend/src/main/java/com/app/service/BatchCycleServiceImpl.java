@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.app.dao.BatchCycleDao;
 import com.app.dto.AddBatchCycleDto;
 import com.app.entity.BatchCycle;
 
 @Service
+@Transactional
 public class BatchCycleServiceImpl implements BatchCycleService {
 
 	@Autowired

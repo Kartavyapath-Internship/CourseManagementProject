@@ -2,6 +2,8 @@ package com.app.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -38,6 +40,7 @@ public class Role extends BaseEntity {
         joinColumns = @JoinColumn(name = "role_id"), // foreign key for the course
         inverseJoinColumns = @JoinColumn(name = "menu_id") // foreign key for the staff member
     )
+	@JsonIgnore
 	private List<MenuItems> menuitems;
 	
 }

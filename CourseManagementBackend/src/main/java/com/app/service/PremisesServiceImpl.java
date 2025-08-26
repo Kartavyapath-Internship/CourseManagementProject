@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.app.dao.PremisesDao;
 import com.app.dto.PremisesDto;
@@ -11,6 +12,7 @@ import com.app.entity.Premises;
 
 
 @Service
+@Transactional
 public class PremisesServiceImpl implements PremisesService {
 
 	@Autowired

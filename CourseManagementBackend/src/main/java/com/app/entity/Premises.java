@@ -22,7 +22,7 @@ import lombok.Setter;
 @Setter
 public class Premises extends BaseEntity {
 	
-	@Column(name = "institute_name",nullable = false,length = 50)
+	@Column(name = "institute_name",nullable = false,length = 100)
 	private String instituteName;
 	
 	@Column(name = "address",nullable = false,length = 150,unique = true)
