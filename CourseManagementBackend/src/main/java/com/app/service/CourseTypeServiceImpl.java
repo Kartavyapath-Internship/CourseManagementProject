@@ -21,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 public class CourseTypeServiceImpl implements CourseTypeService {
 
 	
-
 	@Autowired
 	private CourseTypeDao courseTypeRepository;
 

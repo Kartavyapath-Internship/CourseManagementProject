@@ -23,4 +23,6 @@ public class CourseTypeDto {
 	
 	private List<CourseSummaryDto> courses;
 	
+	
+	
 }

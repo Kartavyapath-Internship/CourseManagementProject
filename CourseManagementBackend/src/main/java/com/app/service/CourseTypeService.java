@@ -9,7 +9,7 @@ import com.app.entity.CourseType;
 
 public interface CourseTypeService {
 
-	// create
+	    // create
 
 		public CourseTypeDto createCourseType(CourseTypeDto courseTypeDto);
 
@@ -28,6 +28,7 @@ public interface CourseTypeService {
 		// findAll
 
 		public List<CourseTypeDto> getAllCourseTypes();
+		
 	
 	
 	
