@@ -11,23 +11,23 @@ public interface CourseTypeService {
 
 	// create
 
-	public CourseType createCourseType(CourseTypeDto courseTypeDto);
+		public CourseTypeDto createCourseType(CourseTypeDto courseTypeDto);
 
-	// update
+		// update
 
-	public CourseType updateCourseType(Integer courseTypeId, CourseTypeDto courseTypeDto);
+		public CourseTypeDto updateCourseType(Integer courseTypeId, CourseTypeDto courseTypeDto);
 
-	// delete
+		// delete
 
-	public void deleteCourseType(Integer courseTypeId);
+		public void deleteCourseType(Integer courseTypeId);
 
-	// find CourseTypeById
+		// find CourseTypeById
 
-	public CourseType getCourseTypeById(Integer courseTypeId);
+		public CourseTypeDto getCourseTypeById(Integer courseTypeId);
 
-	// findAll
+		// findAll
 
-	public List<CourseType> getAllCourseTypes();
+		public List<CourseTypeDto> getAllCourseTypes();
 	
 	
 	

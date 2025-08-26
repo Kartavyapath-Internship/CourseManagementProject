@@ -13,14 +13,9 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class CourseTypeDto {
+public class CourseSummaryDto {
 
 	private Integer id;
 
-	private String title;
-
-	private String description;
-	
-	private List<CourseSummaryDto> courses;
-	
+	private String name;
 }

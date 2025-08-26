@@ -28,29 +28,29 @@ import lombok.extern.slf4j.Slf4j;
 public class CourseTypeController {
 
 	@Autowired
-	CourseTypeService courseTypeService;
+	private CourseTypeService courseTypeService;
 
 	// create
 
 	@PostMapping
-	public ResponseEntity<CourseType> createCourseType(@RequestBody CourseTypeDto courseTypeDto) {
+	public ResponseEntity<CourseTypeDto> createCourseType(@RequestBody CourseTypeDto courseTypeDto) {
 
 		log.info("CourseTypeController Layer Description  : {}, Tittle :{}", courseTypeDto.getDescription(),
 				courseTypeDto.getTitle());
 
-		return new ResponseEntity<CourseType>(courseTypeService.createCourseType(courseTypeDto), HttpStatus.CREATED);
+		return new ResponseEntity<CourseTypeDto>(courseTypeService.createCourseType(courseTypeDto), HttpStatus.CREATED);
 
 	}
 
 	// update
 
 	@PutMapping("/{courseTypeId}")
-	public ResponseEntity<CourseType> updateCourseType(@RequestBody CourseTypeDto courseTypeDto,
-			@PathVariable(name = "courseTypeId") Integer id) {
+	public ResponseEntity<CourseTypeDto> updateCourseType(@RequestBody CourseTypeDto courseTypeDto,
+			@PathVariable(name = "courseTypeId") Integer courseTypeId) {
 
-		log.info("CourseTypeController Layer {}", id);
+		log.info("CourseTypeController Layer {}", courseTypeId);
 
-		return new ResponseEntity<CourseType>(courseTypeService.updateCourseType(id, courseTypeDto),
+		return new ResponseEntity<CourseTypeDto>(courseTypeService.updateCourseType(courseTypeId, courseTypeDto),
 				HttpStatus.OK);
 
 	}
@@ -58,39 +58,40 @@ public class CourseTypeController {
 	// getAll
 
 	@GetMapping()
-	public ResponseEntity<List<CourseType>> getAllCourseType() {
+	public ResponseEntity<List<CourseTypeDto>> getAllCourseType() {
 
 		log.info("CourseTypeController Layer get All CourseType");
 
-		return new ResponseEntity<List<CourseType>>(courseTypeService.getAllCourseTypes(), HttpStatus.OK);
+		return new ResponseEntity<List<CourseTypeDto>>(courseTypeService.getAllCourseTypes(), HttpStatus.OK);
 
 	}
 
 	// getById
 
 	@GetMapping("/{courseTypeId}")
-	public ResponseEntity<CourseType> getCourseTypeById(@PathVariable(name = "courseTypeId") Integer id) {
+	public ResponseEntity<CourseTypeDto> getCourseTypeById(@PathVariable(name = "courseTypeId") Integer courseTypeId) {
 
-		log.info("In controller layer coursetype id is {}", id);
+		log.info("In controller layer coursetype id is {}", courseTypeId);
 
-		return new ResponseEntity<CourseType>(courseTypeService.getCourseTypeById(id), HttpStatus.OK);
+		return new ResponseEntity<CourseTypeDto>(courseTypeService.getCourseTypeById(courseTypeId), HttpStatus.OK);
 
 	}
 
 	// delete
 
 	@DeleteMapping("/{courseTypeId}")
-	public ResponseEntity<ApiResponse> deleteCourseTypeById(@PathVariable(name = "courseTypeId") Integer id) {
+	public ResponseEntity<ApiResponse> deleteCourseTypeById(@PathVariable(name = "courseTypeId") Integer courseTypeId) {
 
-		courseTypeService.deleteCourseType(id);
+		courseTypeService.deleteCourseType(courseTypeId);
 
-		log.info("CourseTypeController Layer {}", id);
+		log.info("CourseTypeController Layer {}", courseTypeId);
 
 		ApiResponse deleteMeassage = ApiResponse.builder()
-				.message("Coursetype deleted Successfully with id :" + id).status(HttpStatus.OK).build();
+				.message("Coursetype deleted Successfully with id :" + courseTypeId).status(HttpStatus.OK).build();
 
 		return new ResponseEntity<ApiResponse>(deleteMeassage, HttpStatus.OK);
 
 	}
+
 
 }
