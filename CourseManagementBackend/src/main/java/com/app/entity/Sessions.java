@@ -1,6 +1,8 @@
 package com.app.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -24,36 +26,34 @@ import lombok.Setter;
 @Builder
 
 public class Sessions extends BaseEntity {
-	
-	@Column(name = "title",nullable = false,length = 30)
+
+	@Column(name = "title", nullable = false, length = 30)
 	private String title;
-	
-	@Column(name = "code_share_token",length = 50)
+
+	@Column(name = "code_share_token", length = 50)
 	private String codeShareToken;
-	
-	@Column(name = "date_time",nullable = false)
-	private LocalDateTime dateAndTime;
-	
-	@Column(name = "zoom_id",nullable = false,length = 50)
+
+	@Column(name = "session_date", nullable = false)
+	private LocalDate sessionDate;
+
+	@Column(name = "start_time", nullable = false)
+	private LocalTime startTime;
+
+	@Column(name = "end_time", nullable = false)
+	private LocalTime endTime;
+
+	@Column(name = "zoom_id", nullable = false, length = 50)
 	private String zoomMeetingId;
-	
-	@Column(name = "zoom_password",nullable = false,length = 30)
+
+	@Column(name = "zoom_password", nullable = false, length = 30)
 	private String zoomMeetingPassword;
-	
-	
-	@OneToMany
-	@JoinColumn(name="session_id")
-	private List <Staff> staff;
-	
+
+//	@OneToMany
+//	@JoinColumn(name = "staff_id")
+//	private List<Staff> staff;
+
 	@ManyToOne
-	@JoinColumn(name="course_id")
+	@JoinColumn(name = "course_id")
 	private Course course;
-	
-	
-	
-	
-	
-	
-	
 
 }
