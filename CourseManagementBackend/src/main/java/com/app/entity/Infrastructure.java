@@ -23,7 +23,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-
 public class Infrastructure extends BaseEntity {
 	
 	@Column(name = "title",nullable = false,length = 30)

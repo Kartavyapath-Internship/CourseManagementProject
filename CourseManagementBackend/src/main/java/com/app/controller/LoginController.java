@@ -10,16 +10,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dto.LoginResponse;
 import com.app.entity.Staff;
+import com.app.service.LoginService;
 import com.app.service.StaffService;
 
 @RestController
 @RequestMapping("/login")
 public class LoginController {
 	 @Autowired
-	    private StaffService staffService;
+	    private LoginService loginService;	 
 
 	    @PostMapping
-	    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) {
-	        return ResponseEntity.ok("");
+	    public ResponseEntity<LoginResponse> login(@RequestParam String email, @RequestParam String password) {
+	        return ResponseEntity.ok(loginService.login(email, password));
 	    }
 }
