@@ -75,33 +75,34 @@ public class CourseServiceImpl implements CourseService{
 	}
 
 	
-	public Course addCourse(CourseRespDto dto) {
+	public CourseDto addCourse(CourseRespDto dto) {
         Course course = new Course();
         course.setName(dto.getName());
         course.setDescription(dto.getDescription());
         course.setStartDate(dto.getStartDate().atStartOfDay());
         course.setEndDate(dto.getEndDate().atStartOfDay());
         
-        course.setBatchCycle(
-                batchCycleDao.findById(dto.getBatchCycleId())
+        course.setBatchCycle(batchCycleDao.findById(dto.getBatchCycleId())
                         .orElseThrow(() -> new RuntimeException("BatchCycle not found with id: " + dto.getBatchCycleId()))
         );
         
         
-        CourseType courseType = courseTypeDao.findById(dto.getCourseTypeId())
-                .orElseThrow(() -> new RuntimeException("CourseType not found with id: " + dto.getCourseTypeId()));
-        course.setCourseType(courseType); 
+        course.setCourseType(courseTypeDao.findById(dto.getCourseTypeId())
+                .orElseThrow(() -> new RuntimeException("CourseType not found")));
         
         
         Premises premises = premisesDao.findById(dto.getPremisesId())
                 .orElseThrow(() -> new RuntimeException("Premises not found"));
         course.setPremises(premises);
           
-        return courseDao.save(course);
+        
+        Course saved = courseDao.save(course);
+        return convertToDto(saved);
+
     }
 	
 	
-	public Course updateCourse(int id, CourseRespDto dto) {
+	public CourseDto updateCourse(int id, CourseRespDto dto) {
         Course course = courseDao.findById(id).orElseThrow();
         course.setName(dto.getName());
         course.setStartDate(dto.getStartDate().atStartOfDay());
@@ -116,8 +117,11 @@ public class CourseServiceImpl implements CourseService{
         Premises premises = premisesDao.findById(dto.getPremisesId())
                 .orElseThrow(() -> new RuntimeException("Premises not found"));
         course.setPremises(premises);
+                
+        Course updated = courseDao.save(course);
         
-        return courseDao.save(course);
+        return convertToDto(updated);
+
     }
 	
 	public void deleteCourse(int id) {
