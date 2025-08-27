@@ -1,5 +1,7 @@
 package com.app.service;
 
+import java.util.List;
+
 import com.app.dto.SessionDto;
 
 public interface SessionService {
@@ -18,12 +20,12 @@ public interface SessionService {
 	
 	// get All
 	
-	public SessionDto getAllSession();
+	public List<SessionDto> getAllSession();
 	
 	
 	// delete By Id
 	
-	public SessionDto deleteSessionById(Integer id);
+	public void deleteSessionById(Integer id);
 	
 	
 	

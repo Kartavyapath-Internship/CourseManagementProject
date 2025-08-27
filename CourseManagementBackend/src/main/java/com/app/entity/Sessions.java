@@ -48,9 +48,8 @@ public class Sessions extends BaseEntity {
 	@Column(name = "zoom_password", nullable = false, length = 30)
 	private String zoomMeetingPassword;
 
-//	@OneToMany
-//	@JoinColumn(name = "staff_id")
-//	private List<Staff> staff;
+	@Column(name = "description", length = 255)
+	private String description;
 
 	@ManyToOne
 	@JoinColumn(name = "course_id")

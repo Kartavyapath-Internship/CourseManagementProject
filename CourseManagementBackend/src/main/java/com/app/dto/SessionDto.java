@@ -6,6 +6,7 @@ import java.time.LocalTime;
 
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,10 +17,11 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@Builder
 public class SessionDto {
-	
+
 	private Integer id;
-	
+
 	private String title;
 
 	private String codeShareToken;
@@ -33,7 +35,11 @@ public class SessionDto {
 	private String zoomMeetingId;
 
 	private String zoomMeetingPassword;
-	
+
+	private String description;
+
 	private Integer CourseId;
+	
+	private String courseName;
 
 }
