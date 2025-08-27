@@ -48,7 +48,7 @@ public class Course extends BaseEntity {
 
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name = "premise_id")
-	private List<Premises> premises;
+	private Premises premises;
 
 	@ManyToOne
 	@JoinColumn(name = "course_type_id")
