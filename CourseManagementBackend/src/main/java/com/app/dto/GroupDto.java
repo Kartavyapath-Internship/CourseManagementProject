@@ -20,4 +20,13 @@ public class GroupDto {
 
 	private Integer courseId;
 
+<<<<<<< HEAD:CourseManagementBackend/src/main/java/com/app/dto/GroupDto.java
+=======
+	private String description;
+	
+	private List<CourseSummaryDto> courses;
+	
+	
+	
+>>>>>>> origin/feature/backend-coursetype-api:CourseManagementBackend/src/main/java/com/app/dto/CourseTypeDto.java
 }

@@ -18,4 +18,6 @@ public class CourseSummaryDto {
 	private Integer id;
 
 	private String name;
+	
+	
 }

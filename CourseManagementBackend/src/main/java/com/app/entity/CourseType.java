@@ -33,5 +33,7 @@ public class CourseType extends BaseEntity {
 
 	@OneToMany(mappedBy = "courseType", fetch = FetchType.EAGER)
 	private List<Course> courses;
+	
+	
 
 }
