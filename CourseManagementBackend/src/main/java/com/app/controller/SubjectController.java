@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.dto.SubjectDto;
 import com.app.dto.SubjectRespDto;
 import com.app.entity.Subject;
 import com.app.service.SubjectService;
@@ -35,7 +36,7 @@ public class SubjectController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Subject> addSubject(@RequestBody SubjectRespDto dto)
+	public ResponseEntity<SubjectDto> addSubject(@RequestBody SubjectRespDto dto)
 	{
 		return ResponseEntity.ok(subjectService.addSubject(dto));
 	}
@@ -49,20 +50,20 @@ public class SubjectController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Subject> getSubjectById(@PathVariable Long id)
+	public ResponseEntity<Subject> getSubjectById(@PathVariable int id)
 	{
 		return ResponseEntity.ok(subjectService.getSubjectById(id));
 	}
 	
 	
 	@PutMapping("/{id}")
-	public Subject updateSubject(@PathVariable Long id, @RequestBody SubjectRespDto dto) {		
+	public SubjectDto updateSubject(@PathVariable int id, @RequestBody SubjectRespDto dto) {		
 		return subjectService.updateSubject(id, dto);
 	}
 	
 	
 	@DeleteMapping("/{id}")
-	public void deleteSubject(@PathVariable Long id)
+	public void deleteSubject(@PathVariable int id)
 		{
 			subjectService.deleteSubject(id);
 		}
