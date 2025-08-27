@@ -1,8 +1,11 @@
 package com.app.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,10 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dto.ScheduleDto;
+import com.app.dto.ScheduleRespDto;
 import com.app.entity.Schedule;
 import com.app.service.ScheduleService;
 
@@ -33,6 +38,14 @@ public class ScheduleController {
     @GetMapping
     public ResponseEntity<List<Schedule>> getAllSchedules() {
         return ResponseEntity.ok(scheduleService.getAllSchedules());
+    }
+    
+    public List<ScheduleRespDto> getScheduleReport(@RequestParam(required = false)
+    											   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+    											   @RequestParam(required = false)
+    											   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end)
+    {
+    	return scheduleService.getScheduleReport(start, end);
     }
     
    
