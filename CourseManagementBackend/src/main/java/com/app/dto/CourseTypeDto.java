@@ -2,7 +2,6 @@ package com.app.dto;
 
 import java.util.List;
 
-import com.app.entity.Course;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,17 +10,19 @@ import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-public class GroupDto {
+public class CourseTypeDto {
 
-	private String groupName;
+	private Integer id;
 
-	private Integer courseId;
+	private String title;
 
 	private String description;
 	
 	private List<CourseSummaryDto> courses;
+	
+	
 	
 }
