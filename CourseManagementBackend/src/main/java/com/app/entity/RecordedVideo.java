@@ -20,14 +20,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-
 public class RecordedVideo extends BaseEntity {
 
 	@Column(name = "video_title",nullable = false,length = 30)
 	private String videoTitle;
 	
 	@Column(name = "date",nullable = false)
-	private LocalDateTime Date;
+	private LocalDateTime date;
 	
 	@Column(name = "video_url",nullable = false,length = 100)
 	private String videoUrl;
