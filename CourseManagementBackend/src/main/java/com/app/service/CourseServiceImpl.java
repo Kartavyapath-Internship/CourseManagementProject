@@ -96,6 +96,7 @@ public class CourseServiceImpl implements CourseService{
         Premises premises = premisesDao.findById(dto.getPremisesId())
                 .orElseThrow(() -> new RuntimeException("Premises not found"));
         course.setPremises(premises);
+        
           
         return courseDao.save(course);
     }
