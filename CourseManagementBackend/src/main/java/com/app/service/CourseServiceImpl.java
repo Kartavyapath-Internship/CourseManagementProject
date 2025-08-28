@@ -14,6 +14,8 @@ import com.app.entity.Course;
 import com.app.entity.CourseType;
 import com.app.entity.Premises;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,111 +24,108 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
 @Transactional
-public class CourseServiceImpl implements CourseService{
-	
+public class CourseServiceImpl implements CourseService {
+
 	@Autowired
 	private final CourseDao courseDao;
-	
-	@Autowired
-    private final BatchCycleDao batchCycleDao;
-	
-	@Autowired
-    private final CourseTypeDao courseTypeDao;
-	
-	@Autowired
-    private final PremisesDao premisesDao;
-	
-	public CourseServiceImpl(CourseDao courseDao, BatchCycleDao batchCycleDao
-    		,CourseTypeDao courseTypeDao,PremisesDao premisesDao) {
-        this.courseDao = courseDao;
-        this.batchCycleDao = batchCycleDao;
-        this.courseTypeDao = courseTypeDao;
-        this.premisesDao = premisesDao;
-        
-    }
 
-	public List<CourseDto> getAllCourses() {
-        List<Course> courses = courseDao.findAll();
-        List<CourseDto> responseList = new ArrayList<>();
+	@Autowired
+	private final BatchCycleDao batchCycleDao;
 
-        for (Course course : courses) {
-        	CourseDto dto = convertToDto(course);
-            responseList.add(dto);
-        }
-        return responseList;
-    }
-	
-	public CourseDto getCourseById(int id) {
-        Course course = courseDao.findById(id)
-                .orElseThrow(() -> new RuntimeException("Course not found with id " + id));
-        return convertToDto(course);
-    }
-	
-	private CourseDto convertToDto(Course course) {
-	    return new CourseDto(
-	            course.getName(),
-	            course.getDescription(),
-	            course.getStartDate().toLocalDate(),
-	            course.getEndDate().toLocalDate(),
-	            course.getBatchCycle() != null ? course.getBatchCycle().getName() : null,
-	            course.getCourseType() != null ? course.getCourseType().getTitle() : null,
-	            course.getPremises() != null ? course.getPremises().getInstituteName() : null
-	    );
+	@Autowired
+	private final CourseTypeDao courseTypeDao;
+
+	@Autowired
+	private final PremisesDao premisesDao;
+
+	public CourseServiceImpl(CourseDao courseDao, BatchCycleDao batchCycleDao, CourseTypeDao courseTypeDao,
+			PremisesDao premisesDao) {
+		this.courseDao = courseDao;
+		this.batchCycleDao = batchCycleDao;
+		this.courseTypeDao = courseTypeDao;
+		this.premisesDao = premisesDao;
+
 	}
 
-	
+	public List<CourseDto> getAllCourses() {
+		List<Course> courses = courseDao.findAll();
+		List<CourseDto> responseList = new ArrayList<>();
+
+		for (Course course : courses) {
+			CourseDto dto = convertToDto(course);
+			responseList.add(dto);
+		}
+		return responseList;
+	}
+
+	public CourseDto getCourseById(int id) {
+		Course course = courseDao.findById(id)
+				.orElseThrow(() -> new RuntimeException("Course not found with id " + id));
+		return convertToDto(course);
+	}
+
+	private CourseDto convertToDto(Course course) {
+		return new CourseDto(course.getName(), course.getDescription(), course.getStartDate().toLocalDate(),
+				course.getEndDate().toLocalDate(),
+				course.getBatchCycle() != null ? course.getBatchCycle().getName() : null,
+				course.getCourseType() != null ? course.getCourseType().getTitle() : null,
+				course.getPremises() != null ? course.getPremises().stream().map(Premises::getInstituteName).toList()
+						: null);
+	}
+
 	public CourseDto addCourse(CourseRespDto dto) {
-        Course course = new Course();
-        course.setName(dto.getName());
-        course.setDescription(dto.getDescription());
-        course.setStartDate(dto.getStartDate().atStartOfDay());
-        course.setEndDate(dto.getEndDate().atStartOfDay());
-        
-        course.setBatchCycle(batchCycleDao.findById(dto.getBatchCycleId())
-                        .orElseThrow(() -> new RuntimeException("BatchCycle not found with id: " + dto.getBatchCycleId()))
-        );
-        
-        
-        course.setCourseType(courseTypeDao.findById(dto.getCourseTypeId())
-                .orElseThrow(() -> new RuntimeException("CourseType not found")));
-        
-        
-        Premises premises = premisesDao.findById(dto.getPremisesId())
-                .orElseThrow(() -> new RuntimeException("Premises not found"));
-        course.setPremises(premises);
-        
-          
-        
-        Course saved = courseDao.save(course);
-        return convertToDto(saved);
+		Course course = new Course();
+		course.setName(dto.getName());
+		course.setDescription(dto.getDescription());
+		course.setStartDate(dto.getStartDate().atStartOfDay());
+		course.setEndDate(dto.getEndDate().atStartOfDay());
 
-    }
-	
-	
+		course.setBatchCycle(batchCycleDao.findById(dto.getBatchCycleId())
+				.orElseThrow(() -> new RuntimeException("BatchCycle not found with id: " + dto.getBatchCycleId())));
+
+		course.setCourseType(courseTypeDao.findById(dto.getCourseTypeId())
+				.orElseThrow(() -> new RuntimeException("CourseType not found")));
+
+		List<Premises> premisesList = dto.getPremisesId().stream()
+				.map(id -> premisesDao.findById(id)
+						.orElseThrow(() -> new RuntimeException("Premises not found with id " + id)))
+				.collect(Collectors.toList());
+
+		course.setPremises(premisesList);
+
+		Course saved = courseDao.save(course);
+		return convertToDto(saved);
+
+	}
+
 	public CourseDto updateCourse(int id, CourseRespDto dto) {
-        Course course = courseDao.findById(id).orElseThrow();
-        course.setName(dto.getName());
-        course.setStartDate(dto.getStartDate().atStartOfDay());
-        course.setEndDate(dto.getEndDate().atStartOfDay());
-        course.setBatchCycle(batchCycleDao.findById(dto.getBatchCycleId())
-                .orElseThrow(() -> new RuntimeException("BatchCycle not found")));
+		Course course = courseDao.findById(id).orElseThrow(() -> new RuntimeException("Course not found"));
+		course.setName(dto.getName());
+		course.setStartDate(dto.getStartDate().atStartOfDay());
+		course.setEndDate(dto.getEndDate().atStartOfDay());
+		course.setBatchCycle(batchCycleDao.findById(dto.getBatchCycleId())
+				.orElseThrow(() -> new RuntimeException("BatchCycle not found")));
 
-        course.setCourseType(courseTypeDao.findById(dto.getCourseTypeId())
-                .orElseThrow(() -> new RuntimeException("CourseType not found")));
+		course.setCourseType(courseTypeDao.findById(dto.getCourseTypeId())
+				.orElseThrow(() -> new RuntimeException("CourseType not found")));
 
-        
-        Premises premises = premisesDao.findById(dto.getPremisesId())
-                .orElseThrow(() -> new RuntimeException("Premises not found"));
-        course.setPremises(premises);
-                
-        Course updated = courseDao.save(course);
-        
-        return convertToDto(updated);
+		course.setCourseType(courseTypeDao.findById(dto.getCourseTypeId())
+				.orElseThrow(() -> new RuntimeException("CourseType not found")));
 
-    }
-	
+		List<Premises> premisesList = dto.getPremisesId().stream().map(name -> premisesDao.findById(name)
+				.orElseThrow(() -> new RuntimeException("Premises not found with id " + id))).toList();
+
+		course.setPremises(premisesList);
+
+		Course updated = courseDao.save(course);
+
+		return convertToDto(updated);
+
+	}
+
 	public void deleteCourse(int id) {
-		 courseDao.deleteById(id);;
-	    }
+		courseDao.deleteById(id);
+		;
+	}
 
 }

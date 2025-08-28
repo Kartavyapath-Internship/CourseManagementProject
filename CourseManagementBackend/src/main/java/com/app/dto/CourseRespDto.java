@@ -1,8 +1,8 @@
 package com.app.dto;
 
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,10 +15,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CourseRespDto {
 	private String name;
-	 private String description;
-	 private LocalDate startDate;
-	 private LocalDate endDate;
-	 private int batchCycleId;      
-	 private int courseTypeId;
-	 private int premisesId;
+	private String description;
+	private LocalDate startDate;
+	private LocalDate endDate;
+	private int batchCycleId;
+	private int courseTypeId;
+	private List<Integer> premisesId;
 }
