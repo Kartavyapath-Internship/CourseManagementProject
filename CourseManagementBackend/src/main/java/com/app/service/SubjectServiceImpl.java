@@ -11,6 +11,7 @@ import com.app.dto.CourseRespDto;
 import com.app.dto.SubjectDto;
 import com.app.dto.SubjectRespDto;
 import com.app.entity.Subject;
+import com.app.entity.*;
 
 import jakarta.transaction.Transactional;
 
