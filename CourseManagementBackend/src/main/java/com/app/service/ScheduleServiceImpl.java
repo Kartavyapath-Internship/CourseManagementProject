@@ -1,6 +1,9 @@
 package com.app.service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +15,7 @@ import com.app.dao.InfrastuctureDao;
 import com.app.dao.ScheduleDao;
 import com.app.dao.StaffDao;
 import com.app.dto.ScheduleDto;
+import com.app.dto.ScheduleRespDto;
 import com.app.entity.CourseModule;
 import com.app.entity.Group;
 import com.app.entity.Infrastructure;
@@ -67,12 +71,67 @@ public class ScheduleServiceImpl implements ScheduleService {
         return scheduleDao.findAll();
     }
     
+    
+    
+    public List<ScheduleRespDto> getScheduleReport(LocalDate start, LocalDate end) {
+        List<Schedule> schedules = scheduleDao.getScheduleReport(start, end);
 
+        return schedules.stream()
+                .map(s -> {
+                    ScheduleRespDto dto = new ScheduleRespDto();
+
+
+                    dto.setType(s.getType() != null ? s.getType().name() : null);
+
+
+                    if (s.getInfrastructures() != null && !s.getInfrastructures().isEmpty()) {
+                        String infraNames = s.getInfrastructures()
+                                             .stream()
+                                             .map(Infrastructure::getTitle)
+                                             .collect(Collectors.joining(", "));
+                        dto.setInfrastructureName(infraNames);
+                    }
+
+
+                    if (s.getCourseModule() != null) {
+                        dto.setModuleName(s.getCourseModule().getTitle());
+                    }
+
+                    dto.setDate(s.getDate());
+                    dto.setStartTime(s.getStartTime());
+                    dto.setEndTime(s.getEndTime());
+
+                    // groups (join names if multiple)
+                    if (s.getGroups() != null && !s.getGroups().isEmpty()) {
+                        String groupNames = s.getGroups()
+                                             .stream()
+                                             .map(Group::getGroupName)
+                                             .collect(Collectors.joining(", "));
+                        dto.setGroupName(groupNames);
+                    }
+
+
+                    if (s.getStaff() != null) {
+                        dto.setStaffName(s.getStaff().getName());
+                    }
+
+                    dto.setComment(s.getComment());
+
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+    }
+    
+
+
+    
     
     public Schedule getSchedule(int id) {
         return scheduleDao.findById(id)
                 .orElseThrow(() -> new RuntimeException("Schedule not found"));
     }
+    
     
     
     public Schedule updateSchedule(int id, ScheduleDto dto) {
