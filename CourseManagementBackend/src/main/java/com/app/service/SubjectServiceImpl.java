@@ -10,6 +10,7 @@ import com.app.dao.SubjectDao;
 import com.app.dto.CourseRespDto;
 import com.app.dto.SubjectDto;
 import com.app.dto.SubjectRespDto;
+import com.app.entity.Course;
 import com.app.entity.Subject;
 
 import jakarta.transaction.Transactional;

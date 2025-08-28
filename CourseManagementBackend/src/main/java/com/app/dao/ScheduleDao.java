@@ -14,7 +14,6 @@ import com.app.entity.Schedule;
 @Repository
 public interface ScheduleDao extends JpaRepository<Schedule, Integer> {
 
-s	
 	@Query("SELECT s FROM Schedule s WHERE s.date BETWEEN :start AND :end")
     List<Schedule> getScheduleReport(@Param("start") LocalDate start,
                                      @Param("end") LocalDate end);
