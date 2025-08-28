@@ -25,7 +25,7 @@ public class CourseController {
  }
  
  @PostMapping
- public Course addCourse(@RequestBody CourseRespDto dto) {
+ public CourseDto addCourse(@RequestBody CourseRespDto dto) {
      return courseService.addCourse(dto);
  }
 
@@ -41,7 +41,7 @@ public class CourseController {
  }
 
  @PutMapping("/{id}")
- public Course updateCourse(@PathVariable int id, @RequestBody CourseRespDto dto) {
+ public CourseDto updateCourse(@PathVariable int id, @RequestBody CourseRespDto dto) {
      return courseService.updateCourse(id, dto);
  }
 

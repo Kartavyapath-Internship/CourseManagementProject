@@ -8,8 +8,8 @@ import com.app.entity.Course;
 
 public interface CourseService {
 	
-	public Course addCourse(CourseRespDto dto);
-	public Course updateCourse(int id, CourseRespDto dto);
+	public CourseDto addCourse(CourseRespDto dto);
+	public CourseDto updateCourse(int id, CourseRespDto dto);
 	public void deleteCourse(int id);
 
 	public List<CourseDto> getAllCourses();
