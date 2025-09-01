@@ -1,7 +1,6 @@
 package com.app.entity;
 
 import java.util.List;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -31,5 +30,4 @@ public class CourseType extends BaseEntity {
 
 	@OneToMany(mappedBy = "courseType")
 	private List<Course> courses;
-	
 }
