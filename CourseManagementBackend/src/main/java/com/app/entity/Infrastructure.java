@@ -1,13 +1,16 @@
 package com.app.entity;
 
+import java.util.List;
+
 import com.app.entity.enums.InfrastructureType;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -36,7 +39,11 @@ public class Infrastructure extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private InfrastructureType infrastructureType;
 
-	@ManyToOne()
+	@ManyToOne
 	@JoinColumn(name = "premise_id", nullable = false)
 	private Premises premises;
+	
+	@ManyToMany(mappedBy = "infrastructures", fetch = FetchType.EAGER)
+	private List<Schedule> schedules;
+
 }

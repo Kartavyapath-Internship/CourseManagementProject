@@ -47,7 +47,4 @@ public class Student extends BaseEntity {
 	@JoinColumn(name = "group_id")
 	private Group group;
 	
-	
-	
-
 }

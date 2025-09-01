@@ -1,9 +1,11 @@
 package com.app.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,4 +38,10 @@ public class BatchCycle extends BaseEntity {
 	@Column(name = "is_active")
 	private Boolean isActive;
 	
+	@OneToMany(mappedBy = "batchCycle")
+	private List<Course> courses ;
+	
+	@OneToMany(mappedBy = "batch")
+	private List<Student> students;
+
 }

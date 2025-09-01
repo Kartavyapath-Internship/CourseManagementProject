@@ -3,11 +3,8 @@ package com.app.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
@@ -46,19 +43,26 @@ public class Course extends BaseEntity {
 	@JoinColumn(name = "batch_cycle_id")
 	private BatchCycle batchCycle;
 
-	@OneToMany(fetch = FetchType.EAGER)
-	@JoinColumn(name = "premise_id")
-	private List<Premises> premises;
+	@ManyToMany
+	@JoinTable(
+	    name = "course_premises",
+	    joinColumns = @JoinColumn(name = "course_id"),
+	    inverseJoinColumns = @JoinColumn(name = "premises_id")
+	)
+	private List<Premises> premisesList ;
 
 	@ManyToOne
 	@JoinColumn(name = "course_type_id")
 	private CourseType courseType;
 
 	@ManyToMany
-	@JoinTable(name = "course_staff", // name of the join table
-			joinColumns = @JoinColumn(name = "course_id"), // foreign key for the course
-			inverseJoinColumns = @JoinColumn(name = "staff_id") // foreign key for the staff member
+	@JoinTable(name = "course_staff",
+			joinColumns = @JoinColumn(name = "course_id"),
+			inverseJoinColumns = @JoinColumn(name = "staff_id")
 	)
 	private List<Staff> staff;
+
+	@OneToMany(mappedBy = "course")
+	private List<Student> students;
 
 }
