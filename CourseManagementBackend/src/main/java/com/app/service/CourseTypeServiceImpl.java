@@ -1,18 +1,15 @@
 package com.app.service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.app.dao.CourseDao;
 import com.app.dao.CourseTypeDao;
-import com.app.dto.CourseTypeDto;
+import com.app.dto.CourseTypeReqDto;
+import com.app.dto.CourseTypeRespDto;
 import com.app.entity.CourseType;
 import com.app.exceptions.ResourseNotFoundException;
-
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CourseTypeServiceImpl implements CourseTypeService {
 
-	
 	@Autowired
 	private CourseTypeDao courseTypeRepository;
 
@@ -28,7 +24,7 @@ public class CourseTypeServiceImpl implements CourseTypeService {
 	private ModelMapper modelMapper;
 
 	@Override
-	public CourseTypeDto createCourseType(CourseTypeDto courseTypeDto) {
+	public CourseTypeRespDto createCourseType(CourseTypeReqDto courseTypeDto) {
 
 		CourseType courseType = modelMapper.map(courseTypeDto, CourseType.class);
 
@@ -36,12 +32,12 @@ public class CourseTypeServiceImpl implements CourseTypeService {
 
 		log.info("Service layer title : {}, description : {}", courseType.getTitle(), courseType.getDescription());
 
-		return modelMapper.map(savedCourseType, CourseTypeDto.class);
+		return modelMapper.map(savedCourseType, CourseTypeRespDto.class);
 
 	}
 
 	@Override
-	public CourseTypeDto updateCourseType(Integer courseTypeId, CourseTypeDto updatedcourseTypeDto) {
+	public CourseTypeRespDto updateCourseType(Integer courseTypeId, CourseTypeReqDto updatedcourseTypeDto) {
 
 		CourseType courseType = courseTypeRepository.findById(courseTypeId).orElseThrow(
 
@@ -53,7 +49,7 @@ public class CourseTypeServiceImpl implements CourseTypeService {
 
 		CourseType savedCourseType = courseTypeRepository.save(courseType);
 
-		return modelMapper.map(savedCourseType, CourseTypeDto.class);
+		return modelMapper.map(savedCourseType, CourseTypeRespDto.class);
 
 	}
 
@@ -71,29 +67,27 @@ public class CourseTypeServiceImpl implements CourseTypeService {
 	}
 
 	@Override
-	public CourseTypeDto getCourseTypeById(Integer courseTypeId) {
-		// TODO Auto-generated method stub
+	public CourseTypeRespDto getCourseTypeById(Integer courseTypeId) {
 
 		log.info("In Service  layer coursetype id is {}", courseTypeId);
 
 		CourseType courseType = courseTypeRepository.findById(courseTypeId).orElseThrow(
-				
 				() -> new ResourseNotFoundException("CourseType is not found with given Id: " + courseTypeId));
 
 		log.info("In Service  layer coursetype id is {}", courseType.getId());
 
-		return modelMapper.map(courseType, CourseTypeDto.class);
+		return modelMapper.map(courseType, CourseTypeRespDto.class);
 
 	}
 
 	@Override
-	public List<CourseTypeDto> getAllCourseTypes() {
+	public List<CourseTypeRespDto> getAllCourseTypes() {
 
 		log.info("In Service  layer getAllCourseType");
 
 		List<CourseType> courseTypesList = courseTypeRepository.findAll();
 
-		return courseTypesList.stream().map(courseType -> modelMapper.map(courseType, CourseTypeDto.class))
+		return courseTypesList.stream().map(courseType -> modelMapper.map(courseType, CourseTypeRespDto.class))
 				.collect(Collectors.toList());
 	}
 

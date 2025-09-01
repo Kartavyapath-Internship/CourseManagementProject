@@ -2,8 +2,6 @@ package com.app.entity;
 
 
 import java.util.List;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -33,7 +31,5 @@ public class CourseType extends BaseEntity {
 	
 	@OneToMany(mappedBy = "courseType",fetch = FetchType.EAGER)
 	private List<Course> courses;
-	
-	
 
 }

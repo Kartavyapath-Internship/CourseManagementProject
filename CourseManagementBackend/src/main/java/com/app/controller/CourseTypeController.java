@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.app.dto.CourseTypeDto;
-import com.app.entity.CourseType;
+import com.app.dto.CourseTypeReqDto;
+import com.app.dto.CourseTypeRespDto;
 import com.app.responsemessage.ApiResponse;
 import com.app.service.CourseTypeService;
 
@@ -34,24 +33,24 @@ public class CourseTypeController {
 	// create
 
 	@PostMapping
-	public ResponseEntity<CourseTypeDto> createCourseType(@RequestBody CourseTypeDto courseTypeDto) {
+	public ResponseEntity<CourseTypeRespDto> createCourseType(@RequestBody CourseTypeReqDto courseTypeDto) {
 
 		log.info("CourseTypeController Layer Description  : {}, Tittle :{}", courseTypeDto.getDescription(),
 				courseTypeDto.getTitle());
 
-		return new ResponseEntity<CourseTypeDto>(courseTypeService.createCourseType(courseTypeDto), HttpStatus.CREATED);
+		return new ResponseEntity<CourseTypeRespDto>(courseTypeService.createCourseType(courseTypeDto), HttpStatus.CREATED);
 
 	}
 
 	// update
 
 	@PutMapping("/{courseTypeId}")
-	public ResponseEntity<CourseTypeDto> updateCourseType(@RequestBody CourseTypeDto courseTypeDto,
-			@PathVariable(name = "courseTypeId") Integer courseTypeId) {
+	public ResponseEntity<CourseTypeRespDto> updateCourseType(@RequestBody CourseTypeReqDto courseTypeDto,
+															@PathVariable(name = "courseTypeId") Integer courseTypeId) {
 
 		log.info("CourseTypeController Layer {}", courseTypeId);
 
-		return new ResponseEntity<CourseTypeDto>(courseTypeService.updateCourseType(courseTypeId, courseTypeDto),
+		return new ResponseEntity<CourseTypeRespDto>(courseTypeService.updateCourseType(courseTypeId, courseTypeDto),
 				HttpStatus.OK);
 
 	}
@@ -59,22 +58,22 @@ public class CourseTypeController {
 	// getAll
 
 	@GetMapping()
-	public ResponseEntity<List<CourseTypeDto>> getAllCourseType() {
+	public ResponseEntity<List<CourseTypeRespDto>> getAllCourseType() {
 
 		log.info("CourseTypeController Layer get All CourseType");
 
-		return new ResponseEntity<List<CourseTypeDto>>(courseTypeService.getAllCourseTypes(), HttpStatus.OK);
+		return new ResponseEntity<List<CourseTypeRespDto>>(courseTypeService.getAllCourseTypes(), HttpStatus.OK);
 
 	}
 
 	// getById
 
 	@GetMapping("/{courseTypeId}")
-	public ResponseEntity<CourseTypeDto> getCourseTypeById(@PathVariable(name = "courseTypeId") Integer courseTypeId) {
+	public ResponseEntity<CourseTypeRespDto> getCourseTypeById(@PathVariable(name = "courseTypeId") Integer courseTypeId) {
 
 		log.info("In controller layer coursetype id is {}", courseTypeId);
 
-		return new ResponseEntity<CourseTypeDto>(courseTypeService.getCourseTypeById(courseTypeId), HttpStatus.OK);
+		return new ResponseEntity<CourseTypeRespDto>(courseTypeService.getCourseTypeById(courseTypeId), HttpStatus.OK);
 
 	}
 

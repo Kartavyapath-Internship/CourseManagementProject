@@ -1,36 +1,30 @@
 package com.app.service;
 
 import java.util.List;
-import java.util.Optional;
 
-import com.app.dto.CourseTypeDto;
-import com.app.entity.CourseType;
-
+import com.app.dto.CourseTypeReqDto;
+import com.app.dto.CourseTypeRespDto;
 
 public interface CourseTypeService {
 
-	    // create
+	// create
 
-		public CourseTypeDto createCourseType(CourseTypeDto courseTypeDto);
+	public CourseTypeRespDto createCourseType(CourseTypeReqDto courseTypeDto);
 
-		// update
+	// update
 
-		public CourseTypeDto updateCourseType(Integer courseTypeId, CourseTypeDto courseTypeDto);
+	public CourseTypeRespDto updateCourseType(Integer courseTypeId, CourseTypeReqDto courseTypeDto);
 
-		// delete
+	// delete
 
-		public void deleteCourseType(Integer courseTypeId);
+	public void deleteCourseType(Integer courseTypeId);
 
-		// find CourseTypeById
+	// find CourseTypeById
 
-		public CourseTypeDto getCourseTypeById(Integer courseTypeId);
+	public CourseTypeRespDto getCourseTypeById(Integer courseTypeId);
 
-		// findAll
+	// findAll
 
-		public List<CourseTypeDto> getAllCourseTypes();
-		
-	
-	
-	
+	public List<CourseTypeRespDto> getAllCourseTypes();
 
 }
