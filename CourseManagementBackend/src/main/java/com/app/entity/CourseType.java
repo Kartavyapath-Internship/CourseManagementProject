@@ -30,4 +30,5 @@ public class CourseType extends BaseEntity {
 
 	@OneToMany(mappedBy = "courseType")
 	private List<Course> courses;
+	
 }
