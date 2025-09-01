@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.app.dto.InfrastructureDto;
-import com.app.entity.CourseType;
+import com.app.dto.InfrastructureReqDto;
+import com.app.dto.InfrastructureRespDto;
 import com.app.responsemessage.ApiResponse;
 import com.app.service.InfrastructureService;
 
@@ -31,38 +30,38 @@ public class InfrastructureController {
 	private InfrastructureService infrastructureService;
 
 	@PostMapping
-	public ResponseEntity<InfrastructureDto> addInfrastructure(@RequestBody InfrastructureDto infrastructureDto) {
+	public ResponseEntity<InfrastructureRespDto> addInfrastructure(@RequestBody InfrastructureReqDto infrastructureDto) {
 
-		return new ResponseEntity<InfrastructureDto>(infrastructureService.createInfrastructure(infrastructureDto),
+		return new ResponseEntity<InfrastructureRespDto>(infrastructureService.createInfrastructure(infrastructureDto),
 
 				HttpStatus.CREATED);
 
 	}
 
 	@GetMapping
-	public ResponseEntity<List<InfrastructureDto>> getAllInfrastructure() {
+	public ResponseEntity<List<InfrastructureRespDto>> getAllInfrastructure() {
 
-		return new ResponseEntity<List<InfrastructureDto>>(infrastructureService.getAllInfrastructure(), HttpStatus.OK);
+		return new ResponseEntity<List<InfrastructureRespDto>>(infrastructureService.getAllInfrastructure(), HttpStatus.OK);
 
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<InfrastructureDto> updateInfrastructure(@RequestBody InfrastructureDto infrastructureDto,
+	public ResponseEntity<InfrastructureRespDto> updateInfrastructure(@RequestBody InfrastructureReqDto infrastructureDto,
 			@PathVariable Integer id) {
 		log.info(" update  Controller layer having {} {} ", infrastructureDto, id);
 
-		return new ResponseEntity<InfrastructureDto>(infrastructureService.updateInfrastructure(infrastructureDto, id),
+		return new ResponseEntity<InfrastructureRespDto>(infrastructureService.updateInfrastructure(infrastructureDto, id),
 
 				HttpStatus.OK);
 
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<InfrastructureDto> getInfrastructureById(@PathVariable Integer id) {
+	public ResponseEntity<InfrastructureRespDto> getInfrastructureById(@PathVariable Integer id) {
 
 		log.info(" get  Controller layer having {} ", id);
 
-		return new ResponseEntity<InfrastructureDto>(infrastructureService.getInfrastructureById(id), HttpStatus.OK);
+		return new ResponseEntity<InfrastructureRespDto>(infrastructureService.getInfrastructureById(id), HttpStatus.OK);
 
 	}
 

@@ -2,17 +2,18 @@ package com.app.service;
 
 import java.util.List;
 
-import com.app.dto.InfrastructureDto;
+import com.app.dto.InfrastructureReqDto;
+import com.app.dto.InfrastructureRespDto;
 
 public interface InfrastructureService {
 
-	public InfrastructureDto createInfrastructure(InfrastructureDto infrastructureDto);
+	public InfrastructureRespDto createInfrastructure(InfrastructureReqDto infrastructureDto);
 
-	public InfrastructureDto updateInfrastructure(InfrastructureDto infrastructureDto, Integer id);
+	public InfrastructureRespDto updateInfrastructure(InfrastructureReqDto infrastructureDto, Integer id);
 
-	public InfrastructureDto getInfrastructureById(Integer id);
+	public InfrastructureRespDto getInfrastructureById(Integer id);
 
-	public List<InfrastructureDto> getAllInfrastructure();
+	public List<InfrastructureRespDto> getAllInfrastructure();
 
 	public void deleteInfrastructureById(Integer id);
 

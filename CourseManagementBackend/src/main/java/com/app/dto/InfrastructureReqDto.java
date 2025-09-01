@@ -5,15 +5,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PremisesDto {
+public class InfrastructureReqDto {
 
-	private String instituteName;
-	
-	private String address;
-	
-	private String description; 
+	private String title;
+
+	private String description;
+
+	private String infrastructureType;
+
+	private Integer premisesId;
+
 }

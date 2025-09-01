@@ -1,14 +1,16 @@
 package com.app.entity;
 
-
+import java.util.List;
 
 import com.app.entity.enums.StaffType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -43,10 +45,13 @@ public class Staff extends BaseEntity {
 	
 	@ManyToOne
 	@JoinColumn(name = "role_id")
+	@JsonBackReference
 	private Role role;
 
-	public String getPassword() {
-		return this.password;
-	}
+	@ManyToMany(mappedBy = "staff")
+	private List<Course> courses;
+
+	@ManyToMany(mappedBy = "staff")
+	private List<Schedule> schedules;
 
 }

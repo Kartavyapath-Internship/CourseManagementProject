@@ -3,8 +3,6 @@ package com.app.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -23,45 +21,48 @@ import lombok.Setter;
 @NoArgsConstructor
 @Table(name = "course")
 @AllArgsConstructor
-@Builder
 @Getter
 @Setter
-public class Course extends BaseEntity {
-	
-	@Column(name = "name",nullable = false,length = 30)
-	private String name;
-	
-	@Column(name = "description",nullable = false,length = 200)
-	private String description;
-	
-	@Column(name = "start_date",nullable = false)
-	private LocalDateTime startDate;
-	
-	@Column(name = "end_date",nullable = false)
-	private LocalDateTime endDate;
-	
-	@ManyToOne
-    @JoinColumn(name = "batch_cycle_id")
-	private BatchCycle batchCycle;
-	
-	@ManyToOne
-	@JoinColumn(name = "premise_id")
-	private Premises premises;
+@Builder
 
-	
+public class Course extends BaseEntity {
+
+	@Column(name = "name", nullable = false, length = 30)
+	private String name;
+
+	@Column(name = "description", nullable = false, length = 200)
+	private String description;
+
+	@Column(name = "start_date", nullable = false)
+	private LocalDateTime startDate;
+
+	@Column(name = "end_date", nullable = false)
+	private LocalDateTime endDate;
+
 	@ManyToOne
-	@JoinColumn(name="course_type_id")
-	private CourseType courseType;
-	
+	@JoinColumn(name = "batch_cycle_id")
+	private BatchCycle batchCycle;
+
 	@ManyToMany
-    @JoinTable(
-        name = "course_staff", // name of the join table
-        joinColumns = @JoinColumn(name = "course_id"), // foreign key for the course
-        inverseJoinColumns = @JoinColumn(name = "staff_id") // foreign key for the staff member
-    )
-	@JsonIgnore
+	@JoinTable(
+	    name = "course_premises",
+	    joinColumns = @JoinColumn(name = "course_id"),
+	    inverseJoinColumns = @JoinColumn(name = "premises_id")
+	)
+	private List<Premises> premisesList ;
+
+	@ManyToOne
+	@JoinColumn(name = "course_type_id")
+	private CourseType courseType;
+
+	@ManyToMany
+	@JoinTable(name = "course_staff",
+			joinColumns = @JoinColumn(name = "course_id"),
+			inverseJoinColumns = @JoinColumn(name = "staff_id")
+	)
 	private List<Staff> staff;
-	
-	
+
+	@OneToMany(mappedBy = "course")
+	private List<Student> students;
 
 }

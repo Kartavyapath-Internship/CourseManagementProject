@@ -1,7 +1,10 @@
 package com.app.entity;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,5 +29,8 @@ public class MenuItems extends BaseEntity {
 	
 	@Column(name = "path",nullable = false,length = 100)
 	private String path;
+	
+	@ManyToMany(mappedBy = "menuitems")
+	private List<Role> roles;
 
 }
