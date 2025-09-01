@@ -1,7 +1,6 @@
 package com.app.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.app.dao.CourseDao;
 import com.app.dao.GroupDao;
-import com.app.dto.GroupDto;
+import com.app.dto.GroupReqDto;
+import com.app.dto.GroupRespDto;
 import com.app.entity.Course;
 import com.app.entity.Group;
 import com.app.exceptions.ResourseNotFoundException;
@@ -30,7 +30,7 @@ public class GroupServiceImpl implements GroupService {
 	private CourseDao courseRepository;
 
 	@Override
-	public Group addCourseGroup(GroupDto courseGroupDto) {
+	public GroupRespDto addCourseGroup(GroupReqDto courseGroupDto) {
 
 		Course course = courseRepository.findById(courseGroupDto.getCourseId()).orElseThrow(() ->
 
@@ -47,12 +47,13 @@ public class GroupServiceImpl implements GroupService {
 		log.info("Service Layer Course GroupName {} GroupdId {} CourseName {} ", courseGroup.getGroupName(),
 				courseGroup.getId(), courseGroup.getCourse().getName());
 
-		return courseGroupRepository.save(courseGroup);
+		Group group = courseGroupRepository.save(courseGroup);
 
+		return modelMapper.map(group, GroupRespDto.class);
 	}
 
 	@Override
-	public Group updateCourseGroup(GroupDto courseGroupDto, Integer id) {
+	public GroupRespDto updateCourseGroup(GroupReqDto courseGroupDto, Integer id) {
 
 		Group courseGroup = courseGroupRepository.findById(id)
 				.orElseThrow(() -> new ResourseNotFoundException("Course group is not found with given id : " + id));
@@ -73,7 +74,9 @@ public class GroupServiceImpl implements GroupService {
 		log.info("Service Layer update Course GroupName {} groupId {} courseName {}", courseGroup.getGroupName(),
 				courseGroup.getId(), courseGroup.getCourse().getName());
 
-		return courseGroupRepository.save(courseGroup);
+		Group group = courseGroupRepository.save(courseGroup);
+
+		return modelMapper.map(group, GroupRespDto.class);
 
 	}
 
@@ -89,20 +92,22 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public Group getCourseGroupById(Integer id) {
+	public GroupRespDto getCourseGroupById(Integer id) {
 
 		Group courseGroup = courseGroupRepository.findById(id)
 				.orElseThrow(() -> new ResourseNotFoundException("Course group is not found with given id : " + id));
 
 		log.info("Service Layer getCourseGroup with id {} ", id);
-
-		return courseGroup;
+		
+		return modelMapper.map(courseGroup, GroupRespDto.class);
 	}
 
 	@Override
-	public List<Group> getAllCourseGroup() {
+	public List<GroupRespDto> getAllCourseGroup() {
 
-		return courseGroupRepository.findAll();
+		List<Group> list = courseGroupRepository.findAll();
+		
+		return list.stream().map(group -> modelMapper.map(group, GroupRespDto.class)).toList();
 
 	}
 

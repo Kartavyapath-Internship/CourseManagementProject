@@ -2,18 +2,18 @@ package com.app.service;
 
 import java.util.List;
 
-import com.app.dto.GroupDto;
-import com.app.entity.Group;
+import com.app.dto.GroupReqDto;
+import com.app.dto.GroupRespDto;
 
 public interface GroupService {
 
 	//add
 	
-	public Group addCourseGroup(GroupDto courseGroupDto);
+	public GroupRespDto addCourseGroup(GroupReqDto courseGroupDto);
 	
 	// update
 	
-	public Group updateCourseGroup(GroupDto courseGroupDto,Integer id);
+	public GroupRespDto updateCourseGroup(GroupReqDto courseGroupDto,Integer id);
 	
 	// delete
 	
@@ -21,9 +21,9 @@ public interface GroupService {
 	
 	// get by id
 	
-	public Group getCourseGroupById(Integer id);
+	public GroupRespDto getCourseGroupById(Integer id);
 	
 	// get all Course group
 	
-	public List<Group> getAllCourseGroup();
+	public List<GroupRespDto> getAllCourseGroup();
 }

@@ -9,11 +9,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PremisesDto {
+public class GroupRespDto {
+	
+	private int id ;
+	
+	private String groupName;
 
-	private String instituteName;
+	private String description;
 	
-	private String address;
-	
-	private String description; 
+	private String courseName ;
 }

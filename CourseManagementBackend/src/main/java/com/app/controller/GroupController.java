@@ -3,9 +3,7 @@ package com.app.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.auditing.ReactiveIsNewAwareAuditingHandler;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.app.dto.GroupDto;
-import com.app.entity.Group;
+import com.app.dto.GroupReqDto;
+import com.app.dto.GroupRespDto;
 import com.app.responsemessage.ApiResponse;
 import com.app.service.GroupService;
 
@@ -34,42 +32,42 @@ public class GroupController {
 	// add
 
 	@PostMapping
-	public ResponseEntity<Group> addCouseGroup(@RequestBody GroupDto courseGroupDto) {
+	public ResponseEntity<GroupRespDto> addCouseGroup(@RequestBody GroupReqDto courseGroupDto) {
 		
 		log.info("Group name is {} and Course id {} ",courseGroupDto.getGroupName(),courseGroupDto.getCourseId());
 
-		return new ResponseEntity<Group>(courseGroupService.addCourseGroup(courseGroupDto), HttpStatus.CREATED);
+		return new ResponseEntity<GroupRespDto>(courseGroupService.addCourseGroup(courseGroupDto), HttpStatus.CREATED);
 
 	}
 
 	// get all
 
 	@GetMapping
-	public ResponseEntity<List<Group>> getAllCourseGroups() {
+	public ResponseEntity<List<GroupRespDto>> getAllCourseGroups() {
 
 		log.info("Fetching all CourseGroups");
 
-		return new ResponseEntity<List<Group>>(courseGroupService.getAllCourseGroup(), HttpStatus.OK);
+		return new ResponseEntity<List<GroupRespDto>>(courseGroupService.getAllCourseGroup(), HttpStatus.OK);
 	}
 
 	// Get CourseGroup by ID
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Group> getCourseGroupById(@PathVariable Integer id) {
+	public ResponseEntity<GroupRespDto> getCourseGroupById(@PathVariable Integer id) {
 
 		log.info("Fetching CourseGroup by id: {}", id);
 
-		return new ResponseEntity(courseGroupService.getCourseGroupById(id), HttpStatus.OK);
+		return new ResponseEntity<GroupRespDto>(courseGroupService.getCourseGroupById(id), HttpStatus.OK);
 	}
 
 	// Update CourseGroup
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Group> updateCourseGroup(@RequestBody GroupDto courseGroupDto ,@PathVariable Integer id ) {
+	public ResponseEntity<GroupRespDto> updateCourseGroup(@RequestBody GroupReqDto courseGroupDto ,@PathVariable Integer id ) {
 
 		log.info("Controller Updating CourseGroup with GroupName {} and id with {}", courseGroupDto.getGroupName(),courseGroupDto.getCourseId());
 
-		return new ResponseEntity<Group>(courseGroupService.updateCourseGroup(courseGroupDto, id), HttpStatus.OK);
+		return new ResponseEntity<GroupRespDto>(courseGroupService.updateCourseGroup(courseGroupDto, id), HttpStatus.OK);
 	}
 
 	// Delete CourseGroup
