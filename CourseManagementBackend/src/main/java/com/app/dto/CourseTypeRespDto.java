@@ -18,5 +18,5 @@ public class CourseTypeRespDto {
 	private String title;
 
 	private String description;
-
+	
 }

@@ -4,17 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
-@AllArgsConstructor
 @NoArgsConstructor
-public class CourseTypeReqDto {
-
-	private String title;
+@AllArgsConstructor
+public class GroupRespDto {
+	
+	private int id ;
+	
+	private String groupName;
 
 	private String description;
 	
+	private String courseName ;
 }

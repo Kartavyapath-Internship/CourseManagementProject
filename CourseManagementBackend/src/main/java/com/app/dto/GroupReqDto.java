@@ -8,13 +8,16 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class CourseTypeReqDto {
+@ToString
+public class GroupReqDto {
 
-	private String title;
+	private String groupName;
+
+	private Integer courseId;
 
 	private String description;
-	
+		
 }
+
