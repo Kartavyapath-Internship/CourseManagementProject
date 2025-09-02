@@ -18,5 +18,4 @@ public class GroupReqDto {
 	private Integer courseId;
 
 	private String description;
-		
 }

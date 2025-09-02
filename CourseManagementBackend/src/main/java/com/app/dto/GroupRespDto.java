@@ -5,17 +5,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class GroupRespDto {
-	
-	private int id ;
-	
+
+	private int id;
+
 	private String groupName;
 
 	private String description;
-	
-	private String courseName ;
+
+	private String courseName;
+
 }
