@@ -1,10 +1,8 @@
 package com.app.dto;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,9 +16,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @Builder
-public class SessionDto {
-
-	private Integer id;
+public class SessionReqDto {
 
 	private String title;
 
@@ -38,8 +34,6 @@ public class SessionDto {
 
 	private String description;
 
-	private Integer CourseId;
-	
-	private String courseName;
+	private Integer courseModuleId;
 
 }

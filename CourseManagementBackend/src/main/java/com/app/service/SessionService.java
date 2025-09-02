@@ -2,25 +2,26 @@ package com.app.service;
 
 import java.util.List;
 
-import com.app.dto.SessionDto;
+import com.app.dto.SessionReqDto;
+import com.app.dto.SessionRespDto;
 
 public interface SessionService {
 	
 	//add
 	
-	public SessionDto createSession(SessionDto sessionDto);
+	public SessionRespDto createSession(SessionReqDto sessionDto);
 	
 	// update 
 	
-	public SessionDto updateSession(SessionDto sessionDto,Integer id);
+	public SessionRespDto updateSession(SessionReqDto sessionDto,Integer id);
 	
 	// getById
 	
-	public SessionDto getSessionById(Integer id);
+	public SessionRespDto getSessionById(Integer id);
 	
 	// get All
 	
-	public List<SessionDto> getAllSession();
+	public List<SessionRespDto> getAllSession();
 	
 	
 	// delete By Id

@@ -2,18 +2,15 @@ package com.app.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.app.dao.CourseDao;
+import com.app.dao.CourseModuleDao;
 import com.app.dao.SessionsDao;
-import com.app.dto.SessionDto;
-import com.app.entity.Course;
+import com.app.dto.SessionReqDto;
+import com.app.dto.SessionRespDto;
+import com.app.entity.CourseModule;
 import com.app.entity.Sessions;
 import com.app.exceptions.ResourseNotFoundException;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -21,43 +18,73 @@ import lombok.extern.slf4j.Slf4j;
 public class SessionServiceImpl implements SessionService {
 
 	@Autowired
-	private CourseDao courseRepository;
-
-	@Autowired
 	private SessionsDao sessionRepository;
 
 	@Autowired
-	private ModelMapper modelMapper;
+	private CourseModuleDao courseModuleRepository;
 
 	@Override
-	public SessionDto createSession(SessionDto sessionDto) {
+	public SessionRespDto createSession(SessionReqDto sessionDto) {
 
-		Course course = courseRepository.findById(sessionDto.getCourseId()).orElseThrow(
-				() -> new ResourseNotFoundException("Course is not found with given id: " + sessionDto.getCourseId()));
-
-		Sessions session = modelMapper.map(sessionDto, Sessions.class);
-
-		session.setCourse(course);
+		Sessions session = convertToEntity(sessionDto);
 
 		Sessions savedSession = sessionRepository.save(session);
 
 		log.info(" in service layer  session Dto  title is  {}", savedSession.getTitle());
 
-		SessionDto sessionResponseDto = modelMapper.map(savedSession, SessionDto.class);
-
-		sessionResponseDto.setCourseId(course.getId());
-
-		sessionResponseDto.setCourseName(course.getName());
-
-		return sessionResponseDto;
+		return convertToDto(savedSession);
 
 	}
 
-	@Override
-	public SessionDto updateSession(SessionDto sessionDto, Integer id) {
+	private Sessions convertToEntity(SessionReqDto dto) {
 
-		Course course = courseRepository.findById(sessionDto.getCourseId()).orElseThrow(
-				() -> new ResourseNotFoundException("Course is not found with given id: " + sessionDto.getCourseId()));
+		Sessions session = new Sessions();
+
+		session.setTitle(dto.getTitle());
+		session.setCodeShareToken(dto.getCodeShareToken());
+		session.setSessionDate(dto.getSessionDate());
+		session.setStartTime(dto.getStartTime());
+		session.setEndTime(dto.getEndTime());
+		session.setZoomMeetingId(dto.getZoomMeetingId());
+		session.setZoomMeetingPassword(dto.getZoomMeetingPassword());
+		session.setDescription(dto.getDescription());
+
+		CourseModule courseM = courseModuleRepository.findById(dto.getCourseModuleId())
+				.orElseThrow(() -> new ResourseNotFoundException(
+						"CourseModule is not found with given id: " + dto.getCourseModuleId()));
+
+		session.setCourseModule(courseM);
+
+		return session;
+	}
+
+	private SessionRespDto convertToDto(Sessions session) {
+
+		SessionRespDto dto = new SessionRespDto();
+
+		dto.setId(session.getId());
+		dto.setTitle(session.getTitle());
+		dto.setCodeShareToken(session.getCodeShareToken());
+		dto.setSessionDate(session.getSessionDate());
+		dto.setStartTime(session.getStartTime());
+		dto.setEndTime(session.getEndTime());
+		dto.setZoomMeetingId(session.getZoomMeetingId());
+		dto.setZoomMeetingPassword(session.getZoomMeetingPassword());
+		dto.setDescription(session.getDescription());
+
+		if (session.getCourseModule() != null) {
+			dto.setCourseModuleName(session.getCourseModule().getTitle());
+		}
+
+		return dto;
+	}
+
+	@Override
+	public SessionRespDto updateSession(SessionReqDto sessionDto, Integer id) {
+
+		CourseModule courseM = courseModuleRepository.findById(sessionDto.getCourseModuleId())
+				.orElseThrow(() -> new ResourseNotFoundException(
+						"CourseModule is not found with given id: " + sessionDto.getCourseModuleId()));
 
 		Sessions session = sessionRepository.findById(id)
 				.orElseThrow(() -> new ResourseNotFoundException("Session is not found with given id: " + id));
@@ -70,40 +97,29 @@ public class SessionServiceImpl implements SessionService {
 		session.setZoomMeetingId(sessionDto.getZoomMeetingId());
 		session.setZoomMeetingPassword(sessionDto.getZoomMeetingPassword());
 		session.setDescription(sessionDto.getDescription());
-		session.setCourse(course);
+		session.setCourseModule(courseM);
 
 		Sessions savedRepository = sessionRepository.save(session);
 
-		SessionDto responseDto = modelMapper.map(savedRepository, SessionDto.class);
-
-		responseDto.setCourseId(course.getId());
-		responseDto.setCourseName(course.getName());
-
-		return responseDto;
+		return convertToDto(savedRepository);
 	}
 
 	@Override
-	public SessionDto getSessionById(Integer id) {
+	public SessionRespDto getSessionById(Integer id) {
 
 		Sessions session = sessionRepository.findById(id)
 				.orElseThrow(() -> new ResourseNotFoundException("Session is not found with given id: " + id));
 
-		SessionDto sesssionDto = modelMapper.map(session, SessionDto.class);
-		sesssionDto.setCourseName(session.getCourse().getName());
-		sesssionDto.setCourseId(session.getCourse().getId());
-		;
+		return convertToDto(session);
 
-		return sesssionDto;
 	}
 
 	@Override
-	public List<SessionDto> getAllSession() {
+	public List<SessionRespDto> getAllSession() {
 		List<Sessions> sessions = sessionRepository.findAll();
-		List<SessionDto> sessionsAllDto = sessions.stream().map(all -> {
-			SessionDto dto = modelMapper.map(all, SessionDto.class);
-			dto.setCourseId(all.getCourse().getId());
-			dto.setCourseName(all.getCourse().getName());
-			return dto;
+
+		List<SessionRespDto> sessionsAllDto = sessions.stream().map(all -> {
+			return convertToDto(all);
 		}).collect(Collectors.toList());
 
 		return sessionsAllDto;

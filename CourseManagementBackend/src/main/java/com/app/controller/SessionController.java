@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.app.dto.SessionDto;
+import com.app.dto.SessionReqDto;
+import com.app.dto.SessionRespDto;
 import com.app.responsemessage.ApiResponse;
 import com.app.service.SessionService;
 
@@ -29,37 +30,28 @@ public class SessionController {
 	private SessionService sessionService;
 
 	@PostMapping
-	public ResponseEntity<SessionDto> createSession(@RequestBody SessionDto sessionDto) {
+	public ResponseEntity<SessionRespDto> createSession(@RequestBody SessionReqDto sessionDto) {
 
-		log.info(" in controller layer course id  {} and session request body  id {}", sessionDto.getCourseId(),
+		log.info(" in controller layer course id  {} and session request body  id {}", sessionDto.getCourseModuleId(),
 				sessionDto);
 
-		return new ResponseEntity<SessionDto>(sessionService.createSession(sessionDto), HttpStatus.CREATED);
+		return new ResponseEntity<SessionRespDto>(sessionService.createSession(sessionDto), HttpStatus.CREATED);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<SessionDto> updateSession(@RequestBody SessionDto sessionDto, @PathVariable Integer id) {
-
-//		log.info(" in controller layer course id  {} and session request body  id {}", sessionDto.getCourseId(),
-//				sessionDto);
+	public ResponseEntity<SessionRespDto> updateSession(@RequestBody SessionReqDto sessionDto, @PathVariable Integer id) {
 
 		return ResponseEntity.ok(sessionService.updateSession(sessionDto, id));
 	}
 
 	@GetMapping
-	public ResponseEntity<List<SessionDto>> getAllSession() {
+	public ResponseEntity<List<SessionRespDto>> getAllSession() {
 
-//		log.info(" in controller layer course id  {} and session request body  id {}", sessionDto.getCourseId(),
-//				sessionDto);
-
-		return new ResponseEntity<List<SessionDto>>(sessionService.getAllSession(), HttpStatus.OK);
+		return new ResponseEntity<List<SessionRespDto>>(sessionService.getAllSession(), HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<SessionDto> getSessionById(@PathVariable Integer id) {
-
-//		log.info(" in controller layer course id  {} and session request body  id {}", sessionDto.getCourseId(),
-//				sessionDto);
+	public ResponseEntity<SessionRespDto> getSessionById(@PathVariable Integer id) {
 
 		return ResponseEntity.ok(sessionService.getSessionById(id));
 	}
@@ -67,8 +59,6 @@ public class SessionController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<ApiResponse> deleteSessionById(@PathVariable Integer id) {
 
-//		log.info(" in controller layer course id  {} and session request body  id {}", sessionDto.getCourseId(),
-//				sessionDto);
 		ApiResponse apiResponse = ApiResponse.builder().message("Session deleted by id: " + id).status(HttpStatus.OK)
 				.build();
 		
