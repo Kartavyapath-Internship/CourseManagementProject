@@ -6,6 +6,7 @@
 
 # Allow the project folder
 !/CourseManagementBackend/
+!/FrontEnd/
 
 # Inside MyProject, allow only pom.xml and src
 /CourseManagementBackend/*
