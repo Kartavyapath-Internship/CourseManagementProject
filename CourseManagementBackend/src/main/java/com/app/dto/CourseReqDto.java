@@ -1,6 +1,8 @@
 package com.app.dto;
 
-import java.time.LocalDateTime;
+
+import java.time.LocalDate;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,15 +13,19 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddBatchCycleDto {
-
+public class CourseReqDto {
+	
 	private String name;
 	
 	private String description;
 	
-    private LocalDateTime startDate;
+	private LocalDate startDate;
 	
-	private LocalDateTime endDate;
+	private LocalDate endDate;
 	
-	private Boolean isActive;
+	private int batchCycleId;
+	
+	private int courseTypeId;
+	
+	private List<Integer> premisesId;
 }

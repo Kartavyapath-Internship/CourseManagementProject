@@ -4,7 +4,6 @@ import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -26,11 +25,9 @@ public class Certificate extends BaseEntity {
 	private String content;
 	
 	@Column(name = "course_name",nullable = false,length=30)
-	private String course;
+	private String courseName;
 	
-	@OneToMany
-	@JoinColumn(name = "image_id")
-	private List<Image> image;
-	
+	@OneToMany(mappedBy = "certificate")
+	private List<Image> images;	
 
 }

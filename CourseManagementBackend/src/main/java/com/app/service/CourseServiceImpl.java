@@ -7,13 +7,10 @@ import com.app.dao.BatchCycleDao;
 import com.app.dao.CourseDao;
 import com.app.dao.CourseTypeDao;
 import com.app.dao.PremisesDao;
-import com.app.dto.CourseDto;
+import com.app.dto.CourseReqDto;
 import com.app.dto.CourseRespDto;
-import com.app.entity.BatchCycle;
 import com.app.entity.Course;
-import com.app.entity.CourseType;
 import com.app.entity.Premises;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,37 +42,39 @@ public class CourseServiceImpl implements CourseService{
         
     }
 
-	public List<CourseDto> getAllCourses() {
+	public List<CourseRespDto> getAllCourses() {
         List<Course> courses = courseDao.findAll();
-        List<CourseDto> responseList = new ArrayList<>();
+        List<CourseRespDto> responseList = new ArrayList<>();
 
         for (Course course : courses) {
-        	CourseDto dto = convertToDto(course);
+        	CourseRespDto dto = convertToDto(course);
             responseList.add(dto);
         }
         return responseList;
     }
 	
-	public CourseDto getCourseById(int id) {
+	public CourseRespDto getCourseById(int id) {
         Course course = courseDao.findById(id)
                 .orElseThrow(() -> new RuntimeException("Course not found with id " + id));
         return convertToDto(course);
     }
 	
-	private CourseDto convertToDto(Course course) {
-	    return new CourseDto(
+	private CourseRespDto convertToDto(Course course) {
+	    return new CourseRespDto(
+	    		course.getId(),
 	            course.getName(),
 	            course.getDescription(),
 	            course.getStartDate().toLocalDate(),
 	            course.getEndDate().toLocalDate(),
 	            course.getBatchCycle() != null ? course.getBatchCycle().getName() : null,
 	            course.getCourseType() != null ? course.getCourseType().getTitle() : null,
-	            course.getPremises() != null ? course.getPremises().getInstituteName() : null
+	            course.getPremisesList() != null ? course.getPremisesList().stream().map(Premises::getInstituteName)
+	            		.toList(): null
 	    );
 	}
 
 	
-	public CourseDto addCourse(CourseRespDto dto) {
+	public CourseRespDto addCourse(CourseReqDto dto) {
         Course course = new Course();
         course.setName(dto.getName());
         course.setDescription(dto.getDescription());
@@ -91,11 +90,10 @@ public class CourseServiceImpl implements CourseService{
                 .orElseThrow(() -> new RuntimeException("CourseType not found")));
         
         
-        Premises premises = premisesDao.findById(dto.getPremisesId())
-                .orElseThrow(() -> new RuntimeException("Premises not found"));
-        course.setPremises(premises);
-        
-          
+        List<Premises> premises = dto.getPremisesId().stream()
+        		.map(id -> premisesDao.findById(id).orElseThrow(() -> new RuntimeException("Premises not found")))
+        		.toList();
+        course.setPremisesList(premises);
         
         Course saved = courseDao.save(course);
         return convertToDto(saved);
@@ -103,7 +101,7 @@ public class CourseServiceImpl implements CourseService{
     }
 	
 	
-	public CourseDto updateCourse(int id, CourseRespDto dto) {
+	public CourseRespDto updateCourse(int id, CourseReqDto dto) {
         Course course = courseDao.findById(id).orElseThrow();
         course.setName(dto.getName());
         course.setStartDate(dto.getStartDate().atStartOfDay());
@@ -115,9 +113,10 @@ public class CourseServiceImpl implements CourseService{
                 .orElseThrow(() -> new RuntimeException("CourseType not found")));
 
         
-        Premises premises = premisesDao.findById(dto.getPremisesId())
-                .orElseThrow(() -> new RuntimeException("Premises not found"));
-        course.setPremises(premises);
+        List<Premises> premises = dto.getPremisesId().stream()
+        		.map(pId -> premisesDao.findById(pId).orElseThrow(() -> new RuntimeException("Premises not found")))
+        		.collect(Collectors.toList());
+        course.setPremisesList(premises);
                 
         Course updated = courseDao.save(course);
         
@@ -125,8 +124,9 @@ public class CourseServiceImpl implements CourseService{
 
     }
 	
-	public void deleteCourse(int id) {
-		 courseDao.deleteById(id);;
-	    }
+	public String deleteCourse(int id) {
+		 courseDao.deleteById(id);
+		 return "Deleted succeessfully";
+	}
 
 }

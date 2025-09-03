@@ -1,15 +1,12 @@
 package com.app.entity;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -52,7 +49,6 @@ public class Sessions extends BaseEntity {
 	private String description;
 
 	@ManyToOne
-	@JoinColumn(name = "course_id")
-	private Course course;
-
+	@JoinColumn(name = "course_module_id", nullable = false)
+	private CourseModule courseModule;
 }
