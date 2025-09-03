@@ -2,17 +2,21 @@ package com.app.service;
 
 import java.util.List;
 
-import com.app.dto.PremisesDto;
-import com.app.entity.Premises;
+import com.app.dto.PremisesReqDto;
+import com.app.dto.PremisesRespDto;
 
 public interface PremisesService {
 	
-	List<Premises> getAllPremises();
+	List<PremisesRespDto> getAllPremises();
 
-	Premises addPremise(PremisesDto addPremise);
+	PremisesRespDto addPremise(PremisesReqDto addPremise);
 
 	String deletePremise(int id);
 	
-	Premises editPremise(PremisesDto addPremise , int id);
+	PremisesRespDto editPremise(PremisesReqDto addPremise , int id);
+	
+	PremisesRespDto getPremiseById(int id);
+	
+	
 
 }

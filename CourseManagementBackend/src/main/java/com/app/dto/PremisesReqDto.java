@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PremisesDto {
+public class PremisesReqDto {
 
 	private String instituteName;
 	
