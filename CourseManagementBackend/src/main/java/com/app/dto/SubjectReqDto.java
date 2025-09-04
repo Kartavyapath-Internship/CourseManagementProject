@@ -11,22 +11,12 @@ import lombok.Setter;
 @Getter
 @Data
 @NoArgsConstructor
-<<<<<<<< HEAD:CourseManagementBackend/src/main/java/com/app/dto/MenuItemReqDto.java
 @AllArgsConstructor
-public class MenuItemReqDto {
-========
 public class SubjectReqDto {
 		
 	private String name;
 	
 	private int CourseModuleId;
->>>>>>>> BE-Feature-Add_Subject:CourseManagementBackend/src/main/java/com/app/dto/SubjectReqDto.java
 
-	private String title;
-	
-	private String description;
-	
-	private String path;
-	
 	
 }
