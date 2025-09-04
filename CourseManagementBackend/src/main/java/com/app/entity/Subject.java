@@ -24,7 +24,6 @@ public class Subject extends BaseEntity {
 	private String name;
 	
 	@ManyToOne
-	@JoinColumn(name = "course_id")
-	private Course course;
-
+    @JoinColumn(name = "course_module_id")
+    private CourseModule courseModule;
 }

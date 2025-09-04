@@ -11,11 +11,10 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SubjectDto {
-	
-	private int id;
+public class SubjectReqDto {
+		
 	private String name;
-	private int courseId;
-	private String courseName;
+	
+	private int CourseModuleId;
 
 }

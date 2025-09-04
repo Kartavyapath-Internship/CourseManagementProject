@@ -1,8 +1,5 @@
 package com.app.dto;
 
-import com.app.entity.BaseEntity;
-
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -16,7 +13,10 @@ import lombok.Setter;
 @Setter
 public class SubjectRespDto{
 	
+	private int id;
+	
 	private String name;
-	private int courseId;
+		
+	private String courseModuleName;
 
 }
