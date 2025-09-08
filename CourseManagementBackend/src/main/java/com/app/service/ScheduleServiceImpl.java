@@ -14,12 +14,14 @@ import com.app.dao.InfrastuctureDao;
 import com.app.dao.ScheduleDao;
 import com.app.dao.StaffDao;
 import com.app.dto.ScheduleReqDto;
+
 import com.app.dto.ScheduleRespDto;
 import com.app.entity.CourseModule;
 import com.app.entity.Group;
 import com.app.entity.Infrastructure;
 import com.app.entity.Schedule;
 import com.app.entity.Staff;
+
 
 @Service
 @Transactional
@@ -76,6 +78,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         return convertToScheduleRespDto(save);
     }
     
+
     private ScheduleRespDto convertToScheduleRespDto(Schedule s)
     {
     	ScheduleRespDto dto = new ScheduleRespDto();
@@ -92,6 +95,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     	
     	return dto ;
     }
+
     
     public List<ScheduleRespDto> getAllSchedules() {
          
@@ -152,5 +156,14 @@ public class ScheduleServiceImpl implements ScheduleService {
     public void deleteSchedule(int id) {
         scheduleDao.deleteById(id);
     }
+
+    
+    public List<ScheduleRespDto> getScheduleReport(LocalDate start, LocalDate end) {
+        
+    	List<Schedule> schedules = scheduleDao.getScheduleReport(start, end);
+
+        return schedules.stream().map(s -> convertToScheduleRespDto(s)).toList();
+    }
+    
     
 }

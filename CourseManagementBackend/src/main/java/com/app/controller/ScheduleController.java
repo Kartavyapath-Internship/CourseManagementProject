@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.app.dto.ScheduleReqDto;
 import com.app.dto.ScheduleRespDto;
 import com.app.service.ScheduleService;
@@ -55,5 +54,15 @@ public class ScheduleController {
         scheduleService.deleteSchedule(id);
         return ResponseEntity.ok("Schedule deleted");
     }
+    
+    @GetMapping("/report")
+    public List<ScheduleRespDto> getScheduleReport(@RequestParam(required = false)
+    											   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+    											   @RequestParam(required = false)
+    											   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end)
+    {
+    	return scheduleService.getScheduleReport(start, end);
+    }
+    
 }
 
