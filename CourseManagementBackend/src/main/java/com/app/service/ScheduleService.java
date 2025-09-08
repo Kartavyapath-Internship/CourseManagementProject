@@ -1,16 +1,21 @@
 package com.app.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
-import com.app.dto.ScheduleDto;
-import com.app.entity.Schedule;
+import com.app.dto.ScheduleReqDto;
+import com.app.dto.ScheduleRespDto;
 
 public interface ScheduleService {
 	
-	public Schedule addSchedule(ScheduleDto dto);
-	public List<Schedule> getAllSchedules();
-	public Schedule getSchedule(int id);
-	public Schedule updateSchedule(int id, ScheduleDto dto);
+	public ScheduleRespDto addSchedule(ScheduleReqDto dto);
+	
+	public List<ScheduleRespDto> getAllSchedules();
+	
+	public ScheduleRespDto getSchedule(int id);
+	
+	public ScheduleRespDto updateSchedule(int id, ScheduleReqDto dto);
+	
 	public void deleteSchedule(int id);
-
+	
 }

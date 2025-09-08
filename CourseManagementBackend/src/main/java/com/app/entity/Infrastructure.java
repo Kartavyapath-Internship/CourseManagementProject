@@ -1,13 +1,16 @@
 package com.app.entity;
 
+import java.util.List;
+
 import com.app.entity.enums.InfrastructureType;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -15,6 +18,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "infrastructure")
@@ -23,20 +27,23 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-
+@ToString
 public class Infrastructure extends BaseEntity {
-	
-	@Column(name = "title",nullable = false,length = 30)
+
+	@Column(name = "title", nullable = false, length = 30)
 	private String title;
-	
-	@Column(name = "description",nullable = false,length = 200)
+
+	@Column(name = "description", nullable = false, length = 200)
 	private String description;
-	
+
 	@Enumerated(EnumType.STRING)
 	private InfrastructureType infrastructureType;
-	
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "premise_id")
+
+	@ManyToOne
+	@JoinColumn(name = "premise_id", nullable = false)
 	private Premises premises;
 	
+	@ManyToMany(mappedBy = "infrastructures", fetch = FetchType.EAGER)
+	private List<Schedule> schedules;
+
 }
