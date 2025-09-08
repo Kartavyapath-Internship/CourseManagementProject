@@ -27,13 +27,13 @@ public class RecordedVideo extends BaseEntity {
 	private String videoTitle;
 	
 	@Column(name = "date",nullable = false)
-	private LocalDateTime Date;
+	private LocalDateTime date;
 	
 	@Column(name = "video_url",nullable = false,length = 100)
 	private String videoUrl;
 	
 	@ManyToOne
-	@JoinColumn(name = "course_id")
-	private Course course;
+	@JoinColumn(name = "course_module_id", nullable = false)
+	private CourseModule courseModule;
 
 }

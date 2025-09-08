@@ -22,12 +22,10 @@ import lombok.Setter;
 public class Section extends BaseEntity {
 	
 	@Column(name = "section_name",nullable = false,length = 30)
-	private String section;
+	private String sectionName;
 	
 	@ManyToOne
 	@JoinColumn(name="subject_id")
 	private Subject subject;
 	
-	
-
 }
