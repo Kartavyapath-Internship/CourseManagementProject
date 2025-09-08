@@ -1,6 +1,7 @@
 package com.app.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -8,7 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,19 +28,16 @@ import lombok.Setter;
 public class Schedule extends BaseEntity {
 	
 	@Column(name = "date",nullable = false)
-	private LocalDateTime date;
+	private LocalDate date;
 	
 	@Column(name = "start_time",nullable = false)
-	private LocalDateTime startTime;
+	private LocalTime startTime;
 	
-	@Column(name = "date_time",nullable = false)
-	private LocalDateTime endTime;
-	
-	@Column(name = "course_type",nullable = false)
-	private String Course;
-	
-	@OneToOne
-	@JoinColumn(name="module")
+	@Column(name = "end_time",nullable = false)
+	private LocalTime endTime;
+			
+	@ManyToOne
+	@JoinColumn(name="course_module_id")
 	private CourseModule courseModule;
 	
 	@ManyToMany
@@ -56,6 +54,16 @@ public class Schedule extends BaseEntity {
         joinColumns = @JoinColumn(name = "schedule_id"),
         inverseJoinColumns = @JoinColumn(name = "group_id")
     )
-    private List<Group> groups;	
+    private List<Group> groups;
+	
+	@ManyToMany
+	@JoinTable(
+	    name = "schedule_staff",
+	    joinColumns = @JoinColumn(name = "schedule_id"),
+	    inverseJoinColumns = @JoinColumn(name = "staff_id")
+	)
+	private List<Staff> staff;
+	
+	private String comment;
 
 }
