@@ -7,16 +7,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
 @Setter
-public class SubjectRespDto{
-	
-	private int id;
-	
-	private String name;
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class SubjectReqDto {
 		
-	private String courseModuleName;
+	private String name;
+	
+	private int courseModuleId;
 
 }
