@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.app.dto.AddBatchCycleDto;
-import com.app.entity.BatchCycle;
+import com.app.dto.BatchCycleReqDto;
+import com.app.dto.BatchCycleRespDto;
 import com.app.service.BatchCycleService;
 
 @RestController
@@ -22,33 +22,33 @@ import com.app.service.BatchCycleService;
 public class BatchCycleController {
 	
 	@Autowired
-	BatchCycleService batchCycleServ ;
+	private BatchCycleService batchCycleServ ;
 
 	@PostMapping("/add")
-	public ResponseEntity<?> addPremise(@RequestBody AddBatchCycleDto addBatchCycleDto)
+	public ResponseEntity<BatchCycleRespDto> addBatchCycle(@RequestBody BatchCycleReqDto batchCycleDto)
 	{
-		BatchCycle batch = batchCycleServ.addBatchCycle(addBatchCycleDto);
+		BatchCycleRespDto batch = batchCycleServ.addBatchCycle(batchCycleDto);
 		return ResponseEntity.ok(batch);
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> deletePremise(@PathVariable int id)
+	public ResponseEntity<String> deleteBatchCycle(@PathVariable int id)
 	{
 		String msg = batchCycleServ.deleteBatchCycle(id);
 		return ResponseEntity.ok(msg);
 	}
 	
 	@PutMapping("/edit/{id}")
-	public ResponseEntity<?> editPremise(@PathVariable int id ,@RequestBody AddBatchCycleDto addBatchCycleDto)
+	public ResponseEntity<BatchCycleRespDto> editBatchCycle(@PathVariable int id ,@RequestBody BatchCycleReqDto batchCycleDto)
 	{
-		BatchCycle batch = batchCycleServ.editBatchCycle(id , addBatchCycleDto);
+		BatchCycleRespDto batch = batchCycleServ.editBatchCycle(id , batchCycleDto);
 		return ResponseEntity.ok(batch);
 	}
 	
 	@GetMapping("/getall")
-	public ResponseEntity<?> getAllBatchCycle()
+	public ResponseEntity<List<BatchCycleRespDto>> getAllBatchCycle()
 	{
-		List<BatchCycle> list = batchCycleServ.getAllBatchCycle();
+		List<BatchCycleRespDto> list = batchCycleServ.getAllBatchCycle();
 		
 		return ResponseEntity.ok(list);
 	}

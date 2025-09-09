@@ -2,17 +2,17 @@ package com.app.service;
 
 import java.util.List;
 
-import com.app.dto.AddBatchCycleDto;
-import com.app.entity.BatchCycle;
+import com.app.dto.BatchCycleReqDto;
+import com.app.dto.BatchCycleRespDto;
 
 public interface BatchCycleService {
 
-	BatchCycle addBatchCycle(AddBatchCycleDto addBatchCycleDto);
+	BatchCycleRespDto addBatchCycle(BatchCycleReqDto bcd);
 
 	String deleteBatchCycle(int id);
 
-	BatchCycle editBatchCycle(int id, AddBatchCycleDto addBatchCycleDto);
+	BatchCycleRespDto editBatchCycle(int id, BatchCycleReqDto addBatchCycleDto);
 
-	List<BatchCycle> getAllBatchCycle();
+	List<BatchCycleRespDto> getAllBatchCycle();
 
 }

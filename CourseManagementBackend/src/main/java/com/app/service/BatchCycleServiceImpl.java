@@ -2,28 +2,25 @@ package com.app.service;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.app.dao.BatchCycleDao;
-import com.app.dto.AddBatchCycleDto;
+import com.app.dto.BatchCycleReqDto;
+import com.app.dto.BatchCycleRespDto;
 import com.app.entity.BatchCycle;
 
 @Service
+@Transactional
 public class BatchCycleServiceImpl implements BatchCycleService {
 
 	@Autowired
-	BatchCycleDao batchRepo ;
-
-	@Override
-	public BatchCycle addBatchCycle(AddBatchCycleDto addBatchCycleDto) {
-		
-		BatchCycle batch = new BatchCycle(addBatchCycleDto.getName(), addBatchCycleDto.getDescription(), addBatchCycleDto.getStartDate(), addBatchCycleDto.getEndDate(), addBatchCycleDto.getIsActive());
-		
-		BatchCycle dbBatch = batchRepo.save(batch);
-		
-		return dbBatch;
-	}
+	private BatchCycleDao batchRepo ;
+	
+	@Autowired
+	private ModelMapper modelMapper ;
 
 	@Override
 	public String deleteBatchCycle(int id) {
@@ -36,7 +33,7 @@ public class BatchCycleServiceImpl implements BatchCycleService {
 	}
 
 	@Override
-	public BatchCycle editBatchCycle(int id ,AddBatchCycleDto addBatchCycleDto) {
+	public BatchCycleRespDto editBatchCycle(int id ,BatchCycleReqDto addBatchCycleDto) {
 		
 		BatchCycle batch = batchRepo.findById(id).orElseThrow(()-> new RuntimeException("Batch not found"));
 		
@@ -47,12 +44,31 @@ public class BatchCycleServiceImpl implements BatchCycleService {
 		batch.setIsActive(addBatchCycleDto.getIsActive());
 
 		BatchCycle dbBatch = batchRepo.save(batch);
+		
+		BatchCycleRespDto respDto = modelMapper.map(dbBatch, BatchCycleRespDto.class);
 
-		return dbBatch;
+		return respDto;
 	}
 
 	@Override
-	public List<BatchCycle> getAllBatchCycle() {
-		return batchRepo.findAll();
+	public BatchCycleRespDto addBatchCycle(BatchCycleReqDto bcd) {
+		
+		BatchCycle batchCycle = modelMapper.map(bcd, BatchCycle.class);
+
+	    BatchCycle savedEntity = batchRepo.save(batchCycle);
+
+	    BatchCycleRespDto respDto = modelMapper.map(savedEntity, BatchCycleRespDto.class);
+
+	    return respDto;
+	}
+
+	@Override
+	public List<BatchCycleRespDto> getAllBatchCycle() {
+		
+		List<BatchCycle> list = batchRepo.findAll();
+		
+		List<BatchCycleRespDto> respDto = list.stream().map(batch -> modelMapper.map(batch, BatchCycleRespDto.class)).toList();
+		
+		return respDto;
 	}
 }
