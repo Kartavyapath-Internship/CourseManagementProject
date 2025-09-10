@@ -9,6 +9,7 @@ import com.app.dao.CourseTypeDao;
 import com.app.dao.PremisesDao;
 import com.app.dto.CourseReqDto;
 import com.app.dto.CourseRespDto;
+import com.app.entity.BatchCycle;
 import com.app.entity.Course;
 import com.app.entity.Premises;
 import java.util.ArrayList;
@@ -60,18 +61,39 @@ public class CourseServiceImpl implements CourseService{
     }
 	
 	private CourseRespDto convertToDto(Course course) {
-	    return new CourseRespDto(
-	    		course.getId(),
-	            course.getName(),
-	            course.getDescription(),
-	            course.getStartDate().toLocalDate(),
-	            course.getEndDate().toLocalDate(),
-	            course.getBatchCycle() != null ? course.getBatchCycle().getName() : null,
-	            course.getCourseType() != null ? course.getCourseType().getTitle() : null,
-	            course.getPremisesList() != null ? course.getPremisesList().stream().map(Premises::getInstituteName)
-	            		.toList(): null
-	    );
-	}
+        CourseRespDto dto = new CourseRespDto();
+        dto.setId(course.getId());
+        dto.setName(course.getName());
+        dto.setDescription(course.getDescription());
+
+        if (course.getCourseType() != null) {
+            dto.setCourseTypeName(course.getCourseType().getTitle());
+        }
+
+        if (course.getBatchCycle() != null) {
+            dto.setBatchCycleTitle(course.getBatchCycle().getName());
+            dto.setStartDate(course.getBatchCycle().getStartDate().toLocalDate());
+            dto.setEndDate(course.getBatchCycle().getEndDate().toLocalDate());
+
+            // derive status
+            BatchCycle bc = course.getBatchCycle();
+            if (Boolean.TRUE.equals(bc.getIsActive())) {
+                dto.setStatus("Active");
+            } else {
+                dto.setStatus("Closed");
+            }
+        }
+
+        if (course.getPremisesList() != null) {
+            dto.setPremisesName(
+                course.getPremisesList().stream()
+                        .map(Premises::getInstituteName)
+                        .collect(Collectors.toList())
+            );
+        }
+
+        return dto;
+    }
 
 	
 	public CourseRespDto addCourse(CourseReqDto dto) {
