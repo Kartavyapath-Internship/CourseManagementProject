@@ -31,5 +31,8 @@ public class CourseRespDto {
 	 private String CourseTypeName;
 	 
 	 private List<String> premisesName;
+	 
+	 private String status;
+
 
 }
