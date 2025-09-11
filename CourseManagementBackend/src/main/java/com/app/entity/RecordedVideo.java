@@ -20,7 +20,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-
 public class RecordedVideo extends BaseEntity {
 
 	@Column(name = "video_title",nullable = false,length = 30)

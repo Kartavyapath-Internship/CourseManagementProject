@@ -23,8 +23,7 @@ import lombok.Setter;
 @Builder
 
 public class Sessions extends BaseEntity {
-
-	@Column(name = "title", nullable = false, length = 50)
+	@Column(name = "title", nullable = false, length = 30)
 	private String title;
 
 	@Column(name = "code_share_token", length = 50)
