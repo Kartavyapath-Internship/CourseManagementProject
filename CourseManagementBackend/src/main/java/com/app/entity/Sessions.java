@@ -23,6 +23,7 @@ import lombok.Setter;
 @Builder
 
 public class Sessions extends BaseEntity {
+
 	@Column(name = "title", nullable = false, length = 30)
 	private String title;
 
