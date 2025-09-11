@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class RecordedVideoDto {
 	private String videoTitle;
-    private String videoUrl;
-    private LocalDateTime date;
-    private Integer courseId;
+	private String videoUrl;
+	private LocalDateTime date;
+	private Integer courseId;
 }

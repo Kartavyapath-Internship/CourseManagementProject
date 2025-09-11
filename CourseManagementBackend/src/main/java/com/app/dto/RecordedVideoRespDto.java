@@ -11,15 +11,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddBatchCycleDto {
-
-	private String name;
-	
-	private String description;
-	
-    private LocalDateTime startDate;
-	
-	private LocalDateTime endDate;
-	
-	private Boolean isActive;
+public class RecordedVideoRespDto {
+    private Integer id;
+    private String videoTitle;
+    private String videoUrl;
+    private LocalDateTime date;
+    private Integer courseId;
 }

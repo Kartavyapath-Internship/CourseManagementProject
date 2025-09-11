@@ -2,8 +2,6 @@ package com.app.entity;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -16,6 +14,7 @@ import lombok.Setter;
 @Setter
 @Entity
 public class CourseModule extends BaseEntity{
+	
 	@Column(name = "title",nullable = false,length = 30)
 	private String title;
 	
@@ -30,11 +29,18 @@ public class CourseModule extends BaseEntity{
 	
 	@OneToOne
 	@JoinColumn(name="module_router")
-	@JsonIgnore
 	private Staff staff;
 	
-	@OneToMany
-	@JoinColumn(name = "subject_id")
-	@JsonIgnore
-	private List<Subject> subject;
+	@OneToMany(mappedBy = "courseModule")
+    private List<Subject> subjects;
+	
+	@OneToMany(mappedBy = "courseModule")
+	private List<Schedule> schedules;
+	
+	@OneToMany(mappedBy = "courseModule")
+	private List<RecordedVideo> recordedVideos;
+
+	@OneToMany(mappedBy = "courseModule")
+	private List<Sessions> sessions;
+
 }
