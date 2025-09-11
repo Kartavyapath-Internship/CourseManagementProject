@@ -1,6 +1,5 @@
 package com.app.dto;
 
-import com.app.entity.Role;
 import com.app.entity.enums.StaffType;
 
 import lombok.AllArgsConstructor;
@@ -18,5 +17,5 @@ public class LoginResponse {
 	    private String email;
 	    private String mobileNo;
 	    private StaffType staffType;
-	    private Role role;
+	  //  private Role role;
 }

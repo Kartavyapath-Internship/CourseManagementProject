@@ -22,8 +22,8 @@ public class LoginServiceImpl implements LoginService{
                 staff.getName(),
                 staff.getEmail(),
                 staff.getMobileNo(),
-                staff.getStaffType(),
-                staff.getRole()
+                staff.getStaffType()
+               // staff.getRole()
         );
     }
 
