@@ -1,4 +1,4 @@
-package com.app.dto;
+package com.app.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentReqDto {
+public class StudentRespDto {
 
+	private int id ;
+	
 	private int registrationNo;
     
 	private String name;
@@ -19,9 +21,10 @@ public class StudentReqDto {
     
 	private String email;
 
-    private int courseId;
+    private String courseName;
     
-    private int batchId;
+    private String batchName;
     
-    private int groupId;
+    private String groupName;
+    
 }
