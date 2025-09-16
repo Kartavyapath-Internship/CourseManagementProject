@@ -16,6 +16,8 @@ public class GroupRespDto {
 	private String groupName;
 
 	private String description;
+	
+	private int courseId;
 
 	private String courseName;
 
