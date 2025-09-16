@@ -25,7 +25,6 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	}
 
-
 	// 403 - Access Denied
 	@ExceptionHandler(AccessDeniedException.class)
 	public ResponseEntity<ApiResponse> handleAccessDenied(AccessDeniedException ex) {

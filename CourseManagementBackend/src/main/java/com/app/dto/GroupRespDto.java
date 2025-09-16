@@ -10,12 +10,15 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GroupRespDto {
-	
-	private int id ;
-	
+
+	private int id;
+
 	private String groupName;
 
 	private String description;
-	
-	private String courseName ;
+
+	private int courseId;
+
+	private String courseName;
+
 }
