@@ -22,4 +22,5 @@ public class ApiResponse {
 	private int statusCode; // Numeric status code (e.g., 404, 400)
 	private String errorCode; // Optional: custom error code like "USER_NOT_FOUND"
 	private LocalDateTime timestamp; // When the error occurred
+
 }

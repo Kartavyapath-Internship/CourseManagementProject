@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import com.app.service.CourseTypeService;
 
 import lombok.extern.slf4j.Slf4j;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/coursetype")
 @Slf4j
@@ -28,7 +30,6 @@ public class CourseTypeController {
 
 	@Autowired
 	private CourseTypeService courseTypeService;
-	
 
 	// create
 
@@ -38,7 +39,8 @@ public class CourseTypeController {
 		log.info("CourseTypeController Layer Description  : {}, Tittle :{}", courseTypeDto.getDescription(),
 				courseTypeDto.getTitle());
 
-		return new ResponseEntity<CourseTypeRespDto>(courseTypeService.createCourseType(courseTypeDto), HttpStatus.CREATED);
+		return new ResponseEntity<CourseTypeRespDto>(courseTypeService.createCourseType(courseTypeDto),
+				HttpStatus.CREATED);
 
 	}
 
@@ -46,7 +48,7 @@ public class CourseTypeController {
 
 	@PutMapping("/{courseTypeId}")
 	public ResponseEntity<CourseTypeRespDto> updateCourseType(@RequestBody CourseTypeReqDto courseTypeDto,
-															@PathVariable(name = "courseTypeId") Integer courseTypeId) {
+			@PathVariable(name = "courseTypeId") Integer courseTypeId) {
 
 		log.info("CourseTypeController Layer {}", courseTypeId);
 
@@ -69,7 +71,8 @@ public class CourseTypeController {
 	// getById
 
 	@GetMapping("/{courseTypeId}")
-	public ResponseEntity<CourseTypeRespDto> getCourseTypeById(@PathVariable(name = "courseTypeId") Integer courseTypeId) {
+	public ResponseEntity<CourseTypeRespDto> getCourseTypeById(
+			@PathVariable(name = "courseTypeId") Integer courseTypeId) {
 
 		log.info("In controller layer coursetype id is {}", courseTypeId);
 
@@ -92,6 +95,5 @@ public class CourseTypeController {
 		return new ResponseEntity<ApiResponse>(deleteMeassage, HttpStatus.OK);
 
 	}
-
 
 }
