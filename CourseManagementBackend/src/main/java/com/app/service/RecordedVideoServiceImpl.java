@@ -48,22 +48,26 @@ public class RecordedVideoServiceImpl implements RecordedVideoService {
 //        dto.setCourseId(module.getId());
 //        return dto;
 //    }
-
+    
     @Override
     public RecordedVideoRespDto addRecordedVideo(RecordedVideoDto dto) {
+        // Fetch CourseModule
         CourseModule module = courseModuleRepo.findById(dto.getCourseId())
                 .orElseThrow(() -> new RuntimeException("CourseModule not found"));
 
+        // Create entity
         RecordedVideo video = new RecordedVideo();
         video.setVideoTitle(dto.getVideoTitle());
         video.setVideoUrl(dto.getVideoUrl());
         video.setDate(dto.getDate());
         video.setCourseModule(module);
 
-        RecordedVideo saved = recordedVideoRepo.save(video);
+        recordedVideoRepo.save(video);
 
-        return mapToRespDto(saved); // 👈 return RespDto
+        // Return Resp DTO
+        return mapToRespDto(video);
     }
+
 
     
 //    @Override
@@ -101,23 +105,27 @@ public class RecordedVideoServiceImpl implements RecordedVideoService {
 //        recordedVideoRepo.save(video);
 //        return dto;
 //    }
-    
+     
     @Override
     public RecordedVideoRespDto updateRecordedVideo(Integer id, RecordedVideoDto dto) {
+        // Fetch existing video
         RecordedVideo video = recordedVideoRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("RecordedVideo not found"));
 
+        // Fetch related CourseModule
         CourseModule module = courseModuleRepo.findById(dto.getCourseId())
                 .orElseThrow(() -> new RuntimeException("CourseModule not found"));
 
+        // Update fields directly
         video.setVideoTitle(dto.getVideoTitle());
         video.setVideoUrl(dto.getVideoUrl());
         video.setDate(dto.getDate());
         video.setCourseModule(module);
 
-        RecordedVideo updated = recordedVideoRepo.save(video);
+        recordedVideoRepo.save(video);
 
-        return mapToRespDto(updated); // 👈 return RespDto
+        // Return Resp DTO
+        return mapToRespDto(video);
     }
 
     @Override
@@ -179,7 +187,4 @@ public class RecordedVideoServiceImpl implements RecordedVideoService {
 
         return respDto;
     }
-
-
-	
 }

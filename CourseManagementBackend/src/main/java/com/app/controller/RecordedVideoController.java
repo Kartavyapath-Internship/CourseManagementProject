@@ -14,15 +14,27 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/recorded-videos")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class RecordedVideoController {
 
     private final RecordedVideoService recordedVideoService;
 
+//    @PostMapping
+//    public ResponseEntity<RecordedVideoDto> addRecordedVideo(@RequestBody RecordedVideoDto dto) {
+//        return ResponseEntity.ok(recordedVideoService.addRecordedVideo(dto));
+//    }
     @PostMapping
     public ResponseEntity<RecordedVideoRespDto> addRecordedVideo(@RequestBody RecordedVideoDto dto) {
         return ResponseEntity.ok(recordedVideoService.addRecordedVideo(dto));
     }
 
+//    @PutMapping("/{id}")
+//    public ResponseEntity<RecordedVideoDto> updateRecordedVideo(
+//            @PathVariable Integer id,
+//            @RequestBody RecordedVideoDto dto) {
+//        return ResponseEntity.ok(recordedVideoService.updateRecordedVideo(id, dto));
+//    }
+    
     @PutMapping("/{id}")
     public ResponseEntity<RecordedVideoRespDto> updateRecordedVideo(
             @PathVariable Integer id,
