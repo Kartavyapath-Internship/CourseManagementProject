@@ -21,7 +21,7 @@ import lombok.Setter;
 
 public class Section extends BaseEntity {
 	
-	@Column(name = "section_name",nullable = false,length = 30)
+	@Column(name = "section_name",nullable = false,length = 100)
 	private String sectionName;
 	
 	@ManyToOne
