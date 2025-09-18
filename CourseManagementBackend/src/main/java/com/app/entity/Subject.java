@@ -20,7 +20,7 @@ import lombok.Setter;
 @Builder
 public class Subject extends BaseEntity {
 	
-	@Column(name = "name",nullable = false,length = 30)
+	@Column(name = "name",nullable = false,length = 100)
 	private String name;
 	
 	@ManyToOne
