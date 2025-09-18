@@ -1,9 +1,12 @@
 package com.app.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.app.dao.CourseModuleDao;
 import com.app.dao.SessionsDao;
 import com.app.dto.SessionReqDto;
@@ -11,6 +14,7 @@ import com.app.dto.SessionRespDto;
 import com.app.entity.CourseModule;
 import com.app.entity.Sessions;
 import com.app.exceptions.ResourseNotFoundException;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -18,10 +22,10 @@ import lombok.extern.slf4j.Slf4j;
 public class SessionServiceImpl implements SessionService {
 
 	@Autowired
-	private SessionsDao sessionRepository;
+	private CourseModuleDao courseModuleDao;
 
 	@Autowired
-	private CourseModuleDao courseModuleRepository;
+	private SessionsDao sessionRepository;
 
 	@Override
 	public SessionRespDto createSession(SessionReqDto sessionDto) {
@@ -49,7 +53,7 @@ public class SessionServiceImpl implements SessionService {
 		session.setZoomMeetingPassword(dto.getZoomMeetingPassword());
 		session.setDescription(dto.getDescription());
 
-		CourseModule courseM = courseModuleRepository.findById(dto.getCourseModuleId())
+		CourseModule courseM = courseModuleDao.findById(dto.getCourseModuleId())
 				.orElseThrow(() -> new ResourseNotFoundException(
 						"CourseModule is not found with given id: " + dto.getCourseModuleId()));
 
@@ -60,6 +64,8 @@ public class SessionServiceImpl implements SessionService {
 
 	private SessionRespDto convertToDto(Sessions session) {
 
+		LocalDate today = LocalDate.now();
+		boolean isActive = session.getSessionDate().isBefore(today);
 		SessionRespDto dto = new SessionRespDto();
 
 		dto.setId(session.getId());
@@ -76,13 +82,15 @@ public class SessionServiceImpl implements SessionService {
 			dto.setCourseModuleName(session.getCourseModule().getTitle());
 		}
 
+		dto.setActive(isActive);
+
 		return dto;
 	}
 
 	@Override
 	public SessionRespDto updateSession(SessionReqDto sessionDto, Integer id) {
 
-		CourseModule courseM = courseModuleRepository.findById(sessionDto.getCourseModuleId())
+		CourseModule courseM = courseModuleDao.findById(sessionDto.getCourseModuleId())
 				.orElseThrow(() -> new ResourseNotFoundException(
 						"CourseModule is not found with given id: " + sessionDto.getCourseModuleId()));
 
@@ -111,11 +119,11 @@ public class SessionServiceImpl implements SessionService {
 				.orElseThrow(() -> new ResourseNotFoundException("Session is not found with given id: " + id));
 
 		return convertToDto(session);
-
 	}
 
 	@Override
 	public List<SessionRespDto> getAllSession() {
+
 		List<Sessions> sessions = sessionRepository.findAll();
 
 		List<SessionRespDto> sessionsAllDto = sessions.stream().map(all -> {
@@ -131,6 +139,19 @@ public class SessionServiceImpl implements SessionService {
 				.orElseThrow(() -> new ResourseNotFoundException("Session is not found with given id: " + id));
 
 		sessionRepository.delete(session);
+	}
+
+	@Override
+	public List<SessionRespDto> getSessionsWithFilters(LocalDate date, Integer moduleId, Boolean active) {
+		List<Sessions> sessions = sessionRepository.findAll();
+
+		return sessions.stream().filter(s -> (date == null || s.getSessionDate().equals(date)))
+				.filter(s -> (moduleId == null || s.getCourseModule().getId().equals(moduleId))).filter(s -> {
+					if (active == null)
+						return true;
+					boolean isActive = !s.getSessionDate().isBefore(LocalDate.now());
+					return active == isActive;
+				}).map(this::convertToDto).collect(Collectors.toList());
 	}
 
 }

@@ -33,4 +33,6 @@ public class SessionRespDto {
 	private String description;
 
 	private String courseModuleName;
+	
+	private Boolean active; 
 }
