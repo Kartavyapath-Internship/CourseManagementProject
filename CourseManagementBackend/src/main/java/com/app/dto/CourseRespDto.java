@@ -1,6 +1,7 @@
 package com.app.dto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -33,6 +34,11 @@ public class CourseRespDto {
 	 private List<String> premisesName;
 	 
 	 private String status;
+	 	 
+	 private String staffName;
+	 
+	 private int studentCount;
 
+	 
 
 }
