@@ -28,4 +28,7 @@ public class CourseReqDto {
 	private int courseTypeId;
 	
 	private List<Integer> premisesId;
+		
+	private int staffId;
+
 }
