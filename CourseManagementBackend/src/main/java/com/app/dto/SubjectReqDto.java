@@ -1,5 +1,6 @@
 package com.app.dto;
-import java.time.LocalDateTime;
+
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -11,11 +12,11 @@ import lombok.Setter;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecordedVideoRespDto {
-    private Integer id;
-    private String videoTitle;
-    private String videoUrl;
-    private LocalDateTime date;
-    private Integer courseId;
+public class SubjectReqDto {
+		
+	private String name;
+	
+	private int CourseModuleId;
 
+	
 }
