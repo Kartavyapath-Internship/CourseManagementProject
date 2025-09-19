@@ -34,7 +34,7 @@ export default function CourseCoordinatorLayout() {
   return (
     <div className="flex flex-col w-screen h-screen">
       <Header
-        title="Course Coordinator Dashboard"
+        title="Coordinator Dashboard"
         toggleSidebar={toggleSidebar}
         isSidebarOpen={isSidebarOpen}
       />

@@ -11,12 +11,6 @@ export default function UserDropdown({ onClose }) {
         className="block w-full text-left px-4 py-2 hover:bg-gray-100"
         onClick={onClose}
       >
-        Settings
-      </button>
-      <button
-        className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-        onClick={onClose}
-      >
         Logout
       </button>
     </div>
