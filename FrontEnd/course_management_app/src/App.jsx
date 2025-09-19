@@ -5,6 +5,7 @@ import PageNotFound from "./Pages/PageNotFound";
 import CourseType from "./Pages/CourseType";
 import Infrastructure from "./Pages/Infrastructure";
 import Sessions from "./Pages/Sessions";
+import CourseGroup from "./Pages/CourseGroup";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
 
       <Route element={<CourseCoordinatorLayout />}>
         <Route path="/sessions" element={<Sessions />} />
+        <Route path="/course-group" element={<CourseGroup />} />
       </Route>
 
       {/* Fallback */}
