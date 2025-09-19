@@ -4,6 +4,7 @@ import CourseCoordinatorLayout from "./Components/CourseCoordinatorLayout";
 import PageNotFound from "./Pages/PageNotFound";
 import CourseType from "./Pages/CourseType";
 import Infrastructure from "./Pages/Infrastructure";
+import Sessions from "./Pages/Sessions";
 
 function App() {
   return (
@@ -19,7 +20,9 @@ function App() {
 
       {/* Coordinator Routes */}
 
-      <Route element={<CourseCoordinatorLayout />}></Route>
+      <Route element={<CourseCoordinatorLayout />}>
+        <Route path="/sessions" element={<Sessions />} />
+      </Route>
 
       {/* Fallback */}
       <Route path="*" element={<PageNotFound />} />
