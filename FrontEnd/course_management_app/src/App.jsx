@@ -3,6 +3,7 @@ import AdminLayout from "./Components/AdminLayout";
 import CourseCoordinatorLayout from "./Components/CourseCoordinatorLayout";
 import PageNotFound from "./Pages/PageNotFound";
 import CourseType from "./Pages/CourseType";
+import Infrastructure from "./Pages/Infrastructure";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
 
       <Route element={<AdminLayout />}>
         <Route path="/course-type" element={<CourseType />} />
+        <Route path="/infrastructure" element={<Infrastructure />} />
       </Route>
 
       {/* Coordinator Routes */}
