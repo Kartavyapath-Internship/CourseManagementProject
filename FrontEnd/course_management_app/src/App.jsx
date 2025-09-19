@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import AdminLayout from "./Components/AdminLayout";
 import CourseCoordinatorLayout from "./Components/CourseCoordinatorLayout";
 import PageNotFound from "./Pages/PageNotFound";
+import CourseType from "./Pages/CourseType";
 
 function App() {
   return (
@@ -10,7 +11,9 @@ function App() {
 
       {/* Admin Layout */}
 
-      <Route element={<AdminLayout />}></Route>
+      <Route element={<AdminLayout />}>
+        <Route path="/course-type" element={<CourseType />} />
+      </Route>
 
       {/* Coordinator Routes */}
 
