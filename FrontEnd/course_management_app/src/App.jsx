@@ -6,6 +6,7 @@ import CourseType from "./Pages/CourseType";
 import Infrastructure from "./Pages/Infrastructure";
 import Sessions from "./Pages/Sessions";
 import CourseGroup from "./Pages/CourseGroup";
+import CoursePage from "./Pages/CoursePage";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Route element={<AdminLayout />}>
         <Route path="/course-type" element={<CourseType />} />
         <Route path="/infrastructure" element={<Infrastructure />} />
+        <Route path="/course" element={<CoursePage />} />
       </Route>
 
       {/* Coordinator Routes */}
