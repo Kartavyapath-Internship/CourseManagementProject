@@ -4,6 +4,7 @@ import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -27,7 +28,7 @@ public class Certificate extends BaseEntity {
 	@Column(name = "course_name",nullable = false,length=30)
 	private String courseName;
 	
-	@OneToMany(mappedBy = "certificate")
+	@OneToMany(mappedBy = "certificate", fetch = FetchType.EAGER)
 	private List<Image> images;	
 
 }

@@ -19,7 +19,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Image extends BaseEntity {
 
-    @Lob // Large Object (for binary data)
+    @Lob
     @Column(name = "data", nullable = false, columnDefinition = "LONGBLOB")
     private byte[] data;
     
