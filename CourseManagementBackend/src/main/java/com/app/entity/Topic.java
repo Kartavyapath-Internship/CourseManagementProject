@@ -23,7 +23,7 @@ import lombok.Setter;
 
 public class Topic extends BaseEntity {
 	
-	@Column(name = "name",nullable = false,length = 30)
+	@Column(name = "name",nullable = false,length = 100)
 	private String name;
 	
 	@ManyToOne
