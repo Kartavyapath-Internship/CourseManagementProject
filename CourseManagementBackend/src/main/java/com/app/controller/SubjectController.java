@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/api/subjects")
-@CrossOrigin
+@CrossOrigin("*")
 public class SubjectController {
 
 	@Autowired

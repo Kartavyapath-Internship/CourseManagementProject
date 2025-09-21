@@ -1,15 +1,35 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './index.css'
+import { Route, Routes } from "react-router-dom";
+import AdminLayout from "./Components/AdminLayout";
+import CourseCoordinatorLayout from "./Components/CourseCoordinatorLayout";
+import PageNotFound from "./Pages/PageNotFound";
+import CourseType from "./Pages/CourseType";
+import Infrastructure from "./Pages/Infrastructure";
+import Sessions from "./Pages/Sessions";
+import CourseGroup from "./Pages/CourseGroup";
 
 function App() {
   return (
-    <div className="text-center text-3xl font-bold text-blue-500">
-      Hello Tailwind v3 + Vite!
-    </div>
+    <Routes>
+      {/* Default Login */}
+
+      {/* Admin Layout */}
+
+      <Route element={<AdminLayout />}>
+        <Route path="/course-type" element={<CourseType />} />
+        <Route path="/infrastructure" element={<Infrastructure />} />
+      </Route>
+
+      {/* Coordinator Routes */}
+
+      <Route element={<CourseCoordinatorLayout />}>
+        <Route path="/sessions" element={<Sessions />} />
+        <Route path="/course-group" element={<CourseGroup />} />
+      </Route>
+
+      {/* Fallback */}
+      <Route path="*" element={<PageNotFound />} />
+    </Routes>
   );
-  
 }
 
-export default App
+export default App;
