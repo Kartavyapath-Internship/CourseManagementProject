@@ -7,6 +7,10 @@ import Infrastructure from "./Pages/Infrastructure";
 import Sessions from "./Pages/Sessions";
 import CourseGroup from "./Pages/CourseGroup";
 import CoursePage from "./Pages/CoursePage";
+import SubjectPage from "./Pages/SubjectPage";
+import SectionPage from "./Pages/SectionPage";
+import TopicPage from "./Pages/TopicPage";
+
 
 function App() {
   return (
@@ -19,6 +23,9 @@ function App() {
         <Route path="/course-type" element={<CourseType />} />
         <Route path="/infrastructure" element={<Infrastructure />} />
         <Route path="/course" element={<CoursePage />} />
+        <Route path="/subject" element={<SubjectPage />} />
+        <Route path="/sections/:subjectId" element={<SectionPage />} />
+        <Route path="/topics/:sectionId" element={<TopicPage />} />
       </Route>
 
       {/* Coordinator Routes */}
