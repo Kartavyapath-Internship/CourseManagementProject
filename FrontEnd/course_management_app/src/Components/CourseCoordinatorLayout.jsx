@@ -28,7 +28,7 @@ export default function CourseCoordinatorLayout() {
     { to: "/course-group", label: "Course Group" },
     { to: "/sessions", label: "Sessions" },
     { to: "/students", label: "Students" },
-    { to: "/reports", label: "Reports" },
+    { to: "/schedule", label: "Reports" },
   ];
 
   return (
