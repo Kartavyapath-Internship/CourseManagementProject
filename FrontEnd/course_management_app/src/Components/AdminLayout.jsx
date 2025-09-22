@@ -33,6 +33,7 @@ export default function AdminLayout() {
     { to: "/roles", label: "Roles" },
     { to: "/staff", label: "Staff" },
     { to: "/students", label: "Students" },
+    { to: "/schedule", label: "Reports" },
   ];
 
   return (

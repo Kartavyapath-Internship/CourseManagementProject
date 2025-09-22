@@ -10,6 +10,7 @@ import CoursePage from "./Pages/CoursePage";
 import SubjectPage from "./Pages/SubjectPage";
 import SectionPage from "./Pages/SectionPage";
 import TopicPage from "./Pages/TopicPage";
+import SchedulePage from "./Pages/SchedulePage";
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path="/subject" element={<SubjectPage />} />
         <Route path="/sections/:subjectId" element={<SectionPage />} />
         <Route path="/topics/:sectionId" element={<TopicPage />} />
+        <Route path="/schedule" element={<SchedulePage />} />
       </Route>
 
       {/* Coordinator Routes */}
@@ -33,6 +35,7 @@ function App() {
       <Route element={<CourseCoordinatorLayout />}>
         <Route path="/sessions" element={<Sessions />} />
         <Route path="/course-group" element={<CourseGroup />} />
+        <Route path="/schedule" element={<SchedulePage />} />
       </Route>
 
       {/* Fallback */}
