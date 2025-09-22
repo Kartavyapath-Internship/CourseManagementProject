@@ -56,47 +56,45 @@ public class CourseModuleServiceImpl implements CourseModuleService {
 	}
 
 
+    
 //    @Override
 //    public CourseModuleRespDto updateCourseModule(Integer id, CourseModuleReqDto updated) {
-//        
-//    	CourseModule existing = courseModuleDao.findById(id)
+//
+//        CourseModule existing = courseModuleDao.findById(id)
 //                .orElseThrow(() -> new RuntimeException("Course Module not found with id " + id));
 //
 //        existing.setTitle(updated.getTitle());
 //        existing.setDescription(updated.getDescription());
 //        existing.setTheoryHours(updated.getTheoryHours());
 //        existing.setPracticalHours(updated.getPracticalHours());
-//        
-//        Staff staff = staffDao.findById(updated.getStaffId()).orElseThrow(() -> new RuntimeException("Staff not found with id "+ updated.getStaffId()));
-//        
-//        existing.setStaff(staff);
+//
+//        // ❌ removed staff update
 //
 //        CourseModule cModule = courseModuleDao.save(existing);
-//        
-//    	CourseModuleRespDto map = modelMapper.map(cModule, CourseModuleRespDto.class);
-//    	    	    	
-//    	return map ;
-//    	
+//
+//        return modelMapper.map(cModule, CourseModuleRespDto.class);
 //    }
-    
-    @Override
-    public CourseModuleRespDto updateCourseModule(Integer id, CourseModuleReqDto updated) {
+     
+	@Override
+	public CourseModuleRespDto updateCourseModule(Integer id, CourseModuleReqDto updated) {
 
-        CourseModule existing = courseModuleDao.findById(id)
-                .orElseThrow(() -> new RuntimeException("Course Module not found with id " + id));
+	    CourseModule existing = courseModuleDao.findById(id)
+	            .orElseThrow(() -> new RuntimeException("Course Module not found with id " + id));
 
-        existing.setTitle(updated.getTitle());
-        existing.setDescription(updated.getDescription());
-        existing.setTheoryHours(updated.getTheoryHours());
-        existing.setPracticalHours(updated.getPracticalHours());
+	    existing.setTitle(updated.getTitle());
+	    existing.setDescription(updated.getDescription());
+	    existing.setTheoryHours(updated.getTheoryHours());
+	    existing.setPracticalHours(updated.getPracticalHours());
 
-        // ❌ removed staff update
+	    // ✅ Staff update
+	    Staff staff = staffDao.findById(updated.getStaffId())
+	            .orElseThrow(() -> new RuntimeException("Staff not found with id " + updated.getStaffId()));
+	    existing.setStaff(staff);
 
-        CourseModule cModule = courseModuleDao.save(existing);
+	    CourseModule cModule = courseModuleDao.save(existing);
 
-        return modelMapper.map(cModule, CourseModuleRespDto.class);
-    }
-
+	    return modelMapper.map(cModule, CourseModuleRespDto.class);
+	}
 
     @Override
     public void deleteCourseModule(Integer id) {
