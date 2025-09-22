@@ -159,6 +159,7 @@ public class CourseServiceImpl implements CourseService{
 	public CourseRespDto updateCourse(int id, CourseReqDto dto) {
         Course course = courseDao.findById(id).orElseThrow();
         course.setName(dto.getName());
+        course.setDescription(dto.getDescription());
         course.setStartDate(dto.getStartDate().atStartOfDay());
         course.setEndDate(dto.getEndDate().atStartOfDay());
         course.setBatchCycle(batchCycleDao.findById(dto.getBatchCycleId())
