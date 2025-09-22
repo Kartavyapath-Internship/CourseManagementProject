@@ -25,3 +25,6 @@ dist-ssr
 # Lock files (ignore npm/pnpm, keep yarn.lock)
 package-lock.json
 pnpm-lock.yaml
+
+# Ignore Vite cache folder
+FrontEnd/course_management_app/.vite/

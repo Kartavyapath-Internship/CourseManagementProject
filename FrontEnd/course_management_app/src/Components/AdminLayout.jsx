@@ -28,10 +28,12 @@ export default function AdminLayout() {
     { to: "/modules", label: "Modules" },
     { to: "/premises", label: "Premises" },
     { to: "/infrastructure", label: "Infrastructure" },
+    { to: "/subject", label: "Subjects" },
     { to: "/menu-items", label: "Menu Items" },
     { to: "/roles", label: "Roles" },
     { to: "/staff", label: "Staff" },
     { to: "/students", label: "Students" },
+    { to: "/schedule", label: "Reports" },
   ];
 
   return (
