@@ -93,27 +93,27 @@ public class SubjectServiceImpl implements SubjectService {
 
 	}
 
-//	public void deleteSubject(int id) {
-//		subjectDao.deleteById(id);
-//	}
-	
-	public void deleteSubject(int subjectId) {
-	    // 1. get all sections for this subject
-	    List<Section> sections = sectionDao.findAllBySubjectId(subjectId);
-
-	    for (Section sec : sections) {
-	        // 2. get all topics for this section
-	        List<Topic> topics = topicDao.findAllBySectionId(sec.getId());
-
-	        // 3. delete topics
-	        topicDao.deleteAll(topics);
-	    }
-
-	    // 4. delete sections
-	    sectionDao.deleteAll(sections);
-
-	    // 5. finally delete the subject
-	    subjectDao.deleteById(subjectId);
+	public void deleteSubject(int id) {
+		subjectDao.deleteById(id);
 	}
+	
+//	public void deleteSubject(int subjectId) {
+//	    // 1. get all sections for this subject
+//	    List<Section> sections = sectionDao.findAllBySubjectId(subjectId);
+//
+//	    for (Section sec : sections) {
+//	        // 2. get all topics for this section
+//	        List<Topic> topics = topicDao.findAllBySectionId(sec.getId());
+//
+//	        // 3. delete topics
+//	        topicDao.deleteAll(topics);
+//	    }
+//
+//	    // 4. delete sections
+//	    sectionDao.deleteAll(sections);
+//
+//	    // 5. finally delete the subject
+//	    subjectDao.deleteById(subjectId);
+//	}
 
 }
