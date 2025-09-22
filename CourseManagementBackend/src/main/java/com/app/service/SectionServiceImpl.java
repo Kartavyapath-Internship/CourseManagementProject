@@ -41,18 +41,20 @@ public class SectionServiceImpl implements SectionService {
 
 	@Override
 	public SectionRespDto addNewSection(SectionReqDto srd) {
-		// TODO Auto-generated method stub
-		Subject subject = subjectDao.findById(srd.getSubjectId())
-				.orElseThrow(() -> new RuntimeException("Subject not found with id " + srd.getSubjectId()));
+	    Subject subject = subjectDao.findById(srd.getSubjectId())
+	            .orElseThrow(() -> new RuntimeException("Subject not found with id " + srd.getSubjectId()));
 
-		Section section = new Section(srd.getSectionName(), subject);
+	    Section section = Section.builder()
+	            .sectionName(srd.getSectionName())
+	            .subject(subject)
+	            .build();
 
-		Section save = sectionDao.save(section);
+	    Section save = sectionDao.save(section);
 
-		SectionRespDto map = modelMapper.map(save, SectionRespDto.class);
-		map.setSubjectName(save.getSubject().getName());
+	    SectionRespDto map = modelMapper.map(save, SectionRespDto.class);
+	    map.setSubjectName(save.getSubject().getName());
 
-		return map;
+	    return map;
 	}
 
 	@Override

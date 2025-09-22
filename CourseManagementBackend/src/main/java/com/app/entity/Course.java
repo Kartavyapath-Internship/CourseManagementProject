@@ -3,6 +3,7 @@ package com.app.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -62,7 +63,7 @@ public class Course extends BaseEntity {
 	)
 	private List<Staff> staff;
 
-	@OneToMany(mappedBy = "course")
+	@OneToMany(mappedBy = "course" , cascade = CascadeType.ALL)
 	private List<Student> students;
 
 }
