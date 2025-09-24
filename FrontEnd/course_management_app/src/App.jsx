@@ -11,6 +11,7 @@ import SubjectPage from "./Pages/SubjectPage";
 import SectionPage from "./Pages/SectionPage";
 import TopicPage from "./Pages/TopicPage";
 import SchedulePage from "./Pages/SchedulePage";
+import RecordedVideo from "./Pages/RecordedVideo";
 
 function App() {
   return (
