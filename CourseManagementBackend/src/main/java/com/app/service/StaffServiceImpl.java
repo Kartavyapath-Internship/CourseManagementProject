@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,16 +28,19 @@ public class StaffServiceImpl implements StaffService {
 	
 	@Autowired
 	private ModelMapper modelMapper ;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public StaffRespDto addStaff(StaffReqDto staffDto) {
 		
-		Role role = roleDao.findById(staffDto.getRoleID()).orElseThrow(()-> new RuntimeException("Role not found by id " + staffDto.getRoleID()));
+Role role = roleDao.findById(staffDto.getRoleID()).orElseThrow(()-> new RuntimeException("Role not found by id " + staffDto.getRoleID()));
 		
 		Staff staff = new Staff();
 
 		staff.setName(staffDto.getName());
-		staff.setPassword(staffDto.getPassword());
+		staff.setPassword(passwordEncoder.encode(staffDto.getPassword()));
 		staff.setMobileNo(staffDto.getMobileNo());
 		staff.setEmail(staffDto.getEmail());
 		staff.setStaffType(StaffType.valueOf(staffDto.getStaffType()));
@@ -53,23 +57,33 @@ public class StaffServiceImpl implements StaffService {
 	@Override
 	public StaffRespDto updateStaff(StaffReqDto staffDto, int staffId) {
 		
-		Staff staff  = staffDao.findById(staffId).orElseThrow(()-> new RuntimeException("staff not found"));
-		
-		Role role = roleDao.findById(staffDto.getRoleID()).orElseThrow(()-> new RuntimeException("Role not found"));
-		
-		staff.setName(staffDto.getName());
-	    staff.setPassword(staffDto.getPassword());
+		Staff staff = staffDao.findById(staffId)
+	            .orElseThrow(() -> new RuntimeException("staff not found"));
+
+	    staff.setName(staffDto.getName());
+	    staff.setPassword(passwordEncoder.encode(staffDto.getPassword()));
 	    staff.setMobileNo(staffDto.getMobileNo());
 	    staff.setEmail(staffDto.getEmail());
-		staff.setStaffType(StaffType.valueOf(staffDto.getStaffType()));
-	    staff.setRole(role);
-		
-		Staff s =  staffDao.save(staff);
-		
-		StaffRespDto map = modelMapper.map(s, StaffRespDto.class);
-		map.setRoleName(s.getRole().getName());
-		
-		return map ;
+
+	    try {
+	        staff.setStaffType(StaffType.valueOf(staffDto.getStaffType()));
+	    } catch (IllegalArgumentException e) {
+	        throw new RuntimeException("Invalid staffType: " + staffDto.getStaffType());
+	    }
+
+	    // ✅ Only update role if `roleID` is present in DTO
+	    if (staffDto.getRoleID() != 0) {
+	        Role role = roleDao.findById(staffDto.getRoleID())
+	                .orElseThrow(() -> new RuntimeException("Role not found"));
+	        staff.setRole(role);
+	    }
+
+	    Staff s = staffDao.save(staff);
+
+	    StaffRespDto map = modelMapper.map(s, StaffRespDto.class);
+	    map.setRoleName(s.getRole().getName());
+
+	    return map;
 	}
 
 	@Override
@@ -102,5 +116,15 @@ public class StaffServiceImpl implements StaffService {
 		return map ;
 	}
 	
+	@Override
+	public StaffRespDto getStaffByEmail(String email) {
+		Staff staff = staffDao.findByEmail(email)
+	            .orElseThrow(() -> new RuntimeException("Staff not found with email: " + email));
+
+	    StaffRespDto map = modelMapper.map(staff, StaffRespDto.class);
+	    map.setRoleName(staff.getRole().getName());
+
+	    return map;
+	}
 	
 }

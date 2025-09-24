@@ -7,6 +7,8 @@ import com.app.entity.Staff;
 
 public interface StaffDao extends JpaRepository<Staff, Integer> {
 	
-	Optional<Staff> findByEmailAndPassword(String email, String password);
+	 Optional<Staff> findByEmailAndPassword(String email, String password);
+		
+	 Optional<Staff> findByEmail(String email);
 	
 }

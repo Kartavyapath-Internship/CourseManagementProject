@@ -5,16 +5,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
+
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginResponse {
-private String token;
-	
+public class ResetPasswordRequest {
+
 	private String email;
+    private String newPassword;
 	
-	private String role;
 	
-	private String name;
+	
 }

@@ -22,7 +22,7 @@ import lombok.Setter;
 @Builder
 public class RecordedVideo extends BaseEntity {
 
-	@Column(name = "video_title",nullable = false,length = 30)
+	@Column(name = "video_title",nullable = false,length = 50)
 	private String videoTitle;
 	
 	@Column(name = "date",nullable = false)
