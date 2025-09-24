@@ -5,7 +5,11 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
@@ -16,7 +20,7 @@ import lombok.Setter;
 @Entity
 public class CourseModule extends BaseEntity {
 
-	@Column(name = "title", nullable = false, length = 30)
+	@Column(name = "title", nullable = false, length = 100)
 	private String title;
 
 	@Column(name = "description", nullable = false, length = 200)
@@ -28,8 +32,8 @@ public class CourseModule extends BaseEntity {
 	@Column(name = "practical_hours", nullable = false, length = 20)
 	private String practicalHours;
 
-	@OneToOne
-	@JoinColumn(name = "module_router")
+	@ManyToOne
+	@JoinColumn(name = "module_router_id")
 	private Staff staff;
 
 	@OneToMany(mappedBy = "courseModule", cascade = CascadeType.ALL)
@@ -43,5 +47,13 @@ public class CourseModule extends BaseEntity {
 
 	@OneToMany(mappedBy = "courseModule", cascade = CascadeType.ALL)
 	private List<Sessions> sessions;
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "course_modules", 
+        joinColumns = @JoinColumn(name = "module_id"),        // FK to CourseModule
+        inverseJoinColumns = @JoinColumn(name = "course_id")  // FK to Course
+    )
+    private List<Course> courses;
 
 }

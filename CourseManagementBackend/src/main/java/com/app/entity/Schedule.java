@@ -41,7 +41,7 @@ public class Schedule extends BaseEntity {
 	@JoinColumn(name="course_module_id")
 	private CourseModule courseModule;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany
 	@JoinTable(
 	    name = "schedule_infrastructure",
 	    joinColumns = @JoinColumn(name = "schedule_id"),
@@ -49,7 +49,7 @@ public class Schedule extends BaseEntity {
 	)
 	private List<Infrastructure> infrastructures;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany
     @JoinTable(
         name = "schedule_group",
         joinColumns = @JoinColumn(name = "schedule_id"),
@@ -57,7 +57,7 @@ public class Schedule extends BaseEntity {
     )
     private List<Group> groups;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany
 	@JoinTable(
 	    name = "schedule_staff",
 	    joinColumns = @JoinColumn(name = "schedule_id"),

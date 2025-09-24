@@ -24,7 +24,7 @@ import lombok.Setter;
 
 public class BatchCycle extends BaseEntity {
 	
-	@Column(name = "name",nullable = false,length = 30)
+	@Column(name = "name",nullable = false,length = 100)
 	private String name;
 	
 	@Column(name = "description",nullable = false,length = 200)

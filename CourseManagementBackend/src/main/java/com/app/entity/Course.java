@@ -29,7 +29,7 @@ import lombok.Setter;
 
 public class Course extends BaseEntity {
 
-	@Column(name = "name", nullable = false, length = 30)
+	@Column(name = "name", nullable = false, length = 100)
 	private String name;
 
 	@Column(name = "description", nullable = false, length = 200)
@@ -48,7 +48,7 @@ public class Course extends BaseEntity {
 	@OneToMany(mappedBy = "course",cascade = CascadeType.ALL)
 	private List<Group> group;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany()
 	@JoinTable(
 	    name = "course_premises",
 	    joinColumns = @JoinColumn(name = "course_id"),
