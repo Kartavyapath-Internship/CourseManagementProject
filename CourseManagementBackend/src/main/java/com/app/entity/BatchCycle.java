@@ -3,6 +3,7 @@ package com.app.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -38,10 +39,10 @@ public class BatchCycle extends BaseEntity {
 	@Column(name = "is_active")
 	private Boolean isActive;
 	
-	@OneToMany(mappedBy = "batchCycle")
+	@OneToMany(mappedBy = "batchCycle",cascade = CascadeType.ALL)
 	private List<Course> courses ;
 	
-	@OneToMany(mappedBy = "batch")
+	@OneToMany(mappedBy = "batch",cascade = CascadeType.ALL)
 	private List<Student> students;
 
 }

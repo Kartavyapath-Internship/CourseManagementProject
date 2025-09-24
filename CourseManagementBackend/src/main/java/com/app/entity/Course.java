@@ -44,8 +44,11 @@ public class Course extends BaseEntity {
 	@ManyToOne
 	@JoinColumn(name = "batch_cycle_id")
 	private BatchCycle batchCycle;
+	
+	@OneToMany(mappedBy = "course",cascade = CascadeType.ALL)
+	private List<Group> group;
 
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(
 	    name = "course_premises",
 	    joinColumns = @JoinColumn(name = "course_id"),
@@ -57,14 +60,14 @@ public class Course extends BaseEntity {
 	@JoinColumn(name = "course_type_id")
 	private CourseType courseType;
 
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "course_staff",
 			joinColumns = @JoinColumn(name = "course_id"),
 			inverseJoinColumns = @JoinColumn(name = "staff_id")
 	)
 	private List<Staff> staff;
 
-	@OneToMany(mappedBy = "course" , cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "course" , cascade = CascadeType.ALL,orphanRemoval = true)
 	private List<Student> students;
 	
 	@ManyToMany(mappedBy = "courses" , fetch = FetchType.EAGER)

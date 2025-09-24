@@ -2,6 +2,7 @@ package com.app.entity;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -29,7 +30,7 @@ public class CourseType extends BaseEntity {
 	@Column(name = "description", nullable = false, length = 200)
 	private String description;
 
-	@OneToMany(mappedBy = "courseType")
+	@OneToMany(mappedBy = "courseType",cascade = CascadeType.ALL)
 	private List<Course> courses;
 	
 }

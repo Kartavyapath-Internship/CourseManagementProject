@@ -2,6 +2,7 @@ package com.app.entity;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
@@ -33,7 +34,7 @@ public class Premises extends BaseEntity {
 	@ManyToMany(mappedBy = "premisesList")
 	private List<Course> courses;
 
-	@OneToMany(mappedBy = "premises")
+	@OneToMany(mappedBy = "premises",cascade = CascadeType.ALL)
 	private List<Infrastructure> infrastructures;
 
 }

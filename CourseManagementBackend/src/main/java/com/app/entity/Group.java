@@ -29,6 +29,7 @@ import lombok.ToString;
 public class Group extends BaseEntity {
 
 	@Column(name = "name", nullable = false, length = 50)
+
 	private String groupName;
 	
 	@Column(name = "description", nullable = false, length = 100)

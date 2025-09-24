@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -40,7 +41,7 @@ public class Schedule extends BaseEntity {
 	@JoinColumn(name="course_module_id")
 	private CourseModule courseModule;
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(
 	    name = "schedule_infrastructure",
 	    joinColumns = @JoinColumn(name = "schedule_id"),
@@ -48,7 +49,7 @@ public class Schedule extends BaseEntity {
 	)
 	private List<Infrastructure> infrastructures;
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
         name = "schedule_group",
         joinColumns = @JoinColumn(name = "schedule_id"),
@@ -56,7 +57,7 @@ public class Schedule extends BaseEntity {
     )
     private List<Group> groups;
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(
 	    name = "schedule_staff",
 	    joinColumns = @JoinColumn(name = "schedule_id"),

@@ -23,6 +23,7 @@ public class CourseTypeServiceImpl implements CourseTypeService {
 	@Autowired
 	private ModelMapper modelMapper;
 
+
 	@Override
 	public CourseTypeRespDto createCourseType(CourseTypeReqDto courseTypeDto) {
 
