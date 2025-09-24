@@ -75,12 +75,16 @@ export default function Login() {
       return toast.error("Password must be at least 6 characters");
     if (newPassword !== confirmPassword)
       return toast.error("Passwords do not match!");
+    console.log("Reset email:", forgotEmail, "New password:", newPassword);
 
     try {
       await axiosInstance.post("/login/forgot-password", {
         email: forgotEmail,
         newPassword,
       });
+
+      console.log("Reset email:", forgotEmail, "New password:", newPassword);
+
       toast.success("Password reset successfully!");
       // Reset modal state
       setForgotOpen(false);
