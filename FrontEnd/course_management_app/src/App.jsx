@@ -13,37 +13,61 @@ import TopicPage from "./Pages/TopicPage";
 import SchedulePage from "./Pages/SchedulePage";
 import RecordedVideo from "./Pages/RecordedVideo";
 import StudentPage from "./Pages/StudentPage";
+import { AuthProvider } from "./Services/AuthContext";
+import Login from "./Pages/Login";
+import ProtectedRoute from "./Pages/ProtectedRoute";
+import { ScheduleWithLayout } from "./Pages/ScheduleWithLayout";
+import Unauthorized from "./Pages/Unauthorized";
 
 function App() {
   return (
-    <Routes>
-      {/* Default Login */}
+    <AuthProvider>
+      <Routes>
+        {/* Default Login */}
 
-      {/* Admin Layout */}
+        <Route path="/" element={<Login/>} />
 
-      <Route element={<AdminLayout />}>
-        <Route path="/course-type" element={<CourseType />} />
-        <Route path="/infrastructure" element={<Infrastructure />} />
-        <Route path="/course" element={<CoursePage />} />
-        <Route path="/subject" element={<SubjectPage />} />
-        <Route path="/sections/:subjectId" element={<SectionPage />} />
-        <Route path="/topics/:sectionId" element={<TopicPage />} />
-        <Route path="/schedule" element={<SchedulePage />} />
-        <Route path="/student" element={<StudentPage />} />
-      </Route>
+        {/* Admin Layout */}
+        <Route
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <AdminLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="/course-type" element={<CourseType />} />
+          <Route path="/infrastructure" element={<Infrastructure />} />
+          <Route path="/course" element={<CoursePage />} />
+          <Route path="/subject" element={<SubjectPage />} />
+          <Route path="/sections/:subjectId" element={<SectionPage />} />
+          <Route path="/topics/:sectionId" element={<TopicPage />} />
+          <Route path="/student" element={<StudentPage />} />
+        </Route>
 
-      {/* Coordinator Routes */}
+        {/* Coordinator Routes */}
 
-      <Route element={<CourseCoordinatorLayout />}>
-        <Route path="/sessions" element={<Sessions />} />
-        <Route path="/course-group" element={<CourseGroup />} />
-        <Route path="/schedule" element={<SchedulePage />} />
-        <Route path="/recorded-video" element={<RecordedVideo />} />
-      </Route>
+        <Route
+          element={
+            <ProtectedRoute allowedRoles={["COORDINATOR"]}>
+              <CourseCoordinatorLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="/sessions" element={<Sessions />} />
+          <Route path="/course-group" element={<CourseGroup />} />
+          <Route path="/recorded-video" element={<RecordedVideo />} />
+        </Route>
 
-      {/* Fallback */}
-      <Route path="*" element={<PageNotFound />} />
-    </Routes>
+        {/* Shared schedule route for both roles */}
+        <Route path="/schedule" element={<ScheduleWithLayout />} />
+
+        {/* Unauthorized */}
+        <Route path="/unauthorized" element={<Unauthorized />} />
+
+        {/* Fallback */}
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
+    </AuthProvider>
   );
 }
 
