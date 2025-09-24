@@ -6,6 +6,7 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
@@ -65,5 +66,8 @@ public class Course extends BaseEntity {
 
 	@OneToMany(mappedBy = "course" , cascade = CascadeType.ALL)
 	private List<Student> students;
+	
+	@ManyToMany(mappedBy = "courses" , fetch = FetchType.EAGER)
+	private List<CourseModule> modules;
 
 }
