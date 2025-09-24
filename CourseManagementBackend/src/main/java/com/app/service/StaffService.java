@@ -17,5 +17,5 @@ public interface StaffService {
 
 	StaffRespDto getStaff(int staffId);
 	
-	
+	StaffRespDto getStaffByEmail(String email);
 }

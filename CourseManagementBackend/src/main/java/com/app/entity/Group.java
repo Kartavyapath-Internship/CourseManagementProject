@@ -25,19 +25,19 @@ import lombok.ToString;
 @Getter
 @Setter
 @Builder
-@ToString 
+@ToString
 public class Group extends BaseEntity {
 
 	@Column(name = "name", nullable = false, length = 50)
-
 	private String groupName;
-	
+
 	@Column(name = "description", nullable = false, length = 100)
 	private String description;
 
 	@ManyToOne
-	@JoinColumn(name = "course_id",nullable = false)
-	@JsonIgnoreProperties({ "description", "startDate", "endDate", "batchCycle", "premisesList", "courseType", "staff" , "students" })
+	@JoinColumn(name = "course_id", nullable = false)
+	@JsonIgnoreProperties({ "description", "startDate", "endDate", "batchCycle", "premisesList", "courseType", "staff",
+			"students" })
 	private Course course;
 
 	@ManyToMany(mappedBy = "groups")
