@@ -12,7 +12,6 @@ import SectionPage from "./Pages/SectionPage";
 import TopicPage from "./Pages/TopicPage";
 import SchedulePage from "./Pages/SchedulePage";
 
-
 function App() {
   return (
     <Routes>
@@ -36,6 +35,7 @@ function App() {
         <Route path="/sessions" element={<Sessions />} />
         <Route path="/course-group" element={<CourseGroup />} />
         <Route path="/schedule" element={<SchedulePage />} />
+        <Route path="/recorded-video" element={<RecordedVideo />} />
       </Route>
 
       {/* Fallback */}
