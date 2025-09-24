@@ -29,6 +29,7 @@ export default function CourseCoordinatorLayout() {
     { to: "/sessions", label: "Sessions" },
     { to: "/students", label: "Students" },
     { to: "/schedule", label: "Reports" },
+    { to: "/recorded-video", label: "RecordedVideo" },
   ];
 
   return (
