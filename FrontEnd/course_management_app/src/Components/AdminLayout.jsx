@@ -31,7 +31,7 @@ export default function AdminLayout({ children }) {
     { to: "/roles", label: "Roles" },
     { to: "/staff", label: "Staff" },
     { to: "/students", label: "Students" },
-    { to: "/schedule", label: "Schedule" },
+    { to: "/schedule", label: "Schedule report" },
   ];
 
   const isProfileOpen = location.state?.modal === true;
