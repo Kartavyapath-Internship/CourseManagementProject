@@ -10,6 +10,7 @@ import com.app.dto.RoleReqDto;
 import com.app.dto.RoleRespDto;
 import com.app.service.RoleService;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/roles")
 public class RoleController {
