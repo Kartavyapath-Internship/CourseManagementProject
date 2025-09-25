@@ -1,10 +1,18 @@
 import { useState } from "react";
-import UserDropdown from "./UserDropdown"; // make sure this exists
+import UserDropdown from "./UserDropdown";
+import { useAuth } from "../Services/AuthContext";
 
-export default function Header({ title, toggleSidebar, isSidebarOpen }) {
+export default function Header({
+  title,
+  toggleSidebar,
+  isSidebarOpen,
+  openProfile,
+}) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
   const closeDropdown = () => setIsDropdownOpen(false);
+
+  const { auth, logout } = useAuth();
 
   return (
     <header className="bg-violet-600 text-white p-4 shadow-md flex justify-between items-center">
@@ -30,10 +38,17 @@ export default function Header({ title, toggleSidebar, isSidebarOpen }) {
             alt="User"
             className="w-10 h-10 rounded-full border-2 border-white"
           />
-          <span className="text-lg hidden md:block">John Smith</span>
+          <span className="text-lg hidden md:block">
+            {auth?.name || "User"}
+          </span>
         </div>
 
-        {isDropdownOpen && <UserDropdown onClose={closeDropdown} />}
+        {isDropdownOpen && (
+          <UserDropdown
+            onClose={closeDropdown}
+            openProfile={openProfile} // pass this callback
+          />
+        )}
       </div>
     </header>
   );
