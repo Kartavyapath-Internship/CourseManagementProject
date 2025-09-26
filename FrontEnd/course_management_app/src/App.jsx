@@ -18,6 +18,9 @@ import Login from "./Pages/Login";
 import ProtectedRoute from "./Pages/ProtectedRoute";
 import { ScheduleWithLayout } from "./Pages/ScheduleWithLayout";
 import Unauthorized from "./Pages/Unauthorized";
+import Premises from "./Pages/Premises";
+import Role from "./Pages/Role";
+import MenuItem from "./Pages/MenuItems";
 
 function App() {
   return (
@@ -42,6 +45,12 @@ function App() {
           <Route path="/sections/:subjectId" element={<SectionPage />} />
           <Route path="/topics/:sectionId" element={<TopicPage />} />
           <Route path="/student" element={<StudentPage />} />
+          <Route path="/roles" element={<Role />} />
+          <Route path="/premises" element={<Premises />} />
+          <Route path="/menu-items" element={<MenuItem />} />
+
+
+
         </Route>
 
         {/* Coordinator Routes */}
