@@ -19,10 +19,10 @@ import {
   generateScheduleReport,
 } from "../Services/ScheduleService";
 
-export default function SchedulePage() {
+export default function SchedulePage({ viewOnly }) {
+  // <-- use viewOnly prop
   const [schedules, setSchedules] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const [showForm, setShowForm] = useState(false);
   const [editData, setEditData] = useState(null);
   const [selectedSchedule, setSelectedSchedule] = useState(null);
@@ -37,7 +37,7 @@ export default function SchedulePage() {
   const [endDate, setEndDate] = useState("");
   const [pdfUrl, setPdfUrl] = useState(null);
 
-  // Fetch all dropdowns and schedules
+  // Fetch schedules and dropdowns
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -45,7 +45,6 @@ export default function SchedulePage() {
           getSchedules(),
           fetchAllDropdowns(),
         ]);
-
         setSchedules(schedulesRes.data);
         setModules(dropdowns.modules);
         setInfrastructures(dropdowns.infrastructures);
@@ -58,7 +57,6 @@ export default function SchedulePage() {
         setLoading(false);
       }
     };
-
     fetchData();
   }, []);
 
@@ -74,23 +72,15 @@ export default function SchedulePage() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this schedule?"))
       return;
-
     try {
       await deleteSchedule(id);
       toast.success("Schedule deleted successfully!");
-
-      // 🔹 Refresh schedules immediately
       fetchSchedules();
-
-      // 🔹 Reset state if something was open
       setEditData(null);
       setSelectedSchedule(null);
       setShowForm(false);
     } catch (err) {
-      console.error(
-        "Error deleting schedule:",
-        err.response?.data || err.message
-      );
+      console.error(err);
       toast.error("Error deleting schedule");
     }
   };
@@ -108,10 +98,7 @@ export default function SchedulePage() {
       setShowForm(false);
       setEditData(null);
     } catch (err) {
-      console.error(
-        "Error saving schedule:",
-        err.response?.data || err.message
-      );
+      console.error(err);
       toast.error("Error saving schedule");
     }
   };
@@ -380,7 +367,7 @@ export default function SchedulePage() {
         const url = URL.createObjectURL(doc.output("blob"));
         setPdfUrl(url);
       } catch (err) {
-        console.error("Error fetching report:", err);
+        console.error(err);
         toast.error("Failed to fetch report");
       }
     };
@@ -400,7 +387,7 @@ export default function SchedulePage() {
         doc.save(`ScheduleReport_${startDate}_to_${endDate}.pdf`);
         toast.success("PDF downloaded!");
       } catch (err) {
-        console.error("Error downloading report:", err);
+        console.error(err);
         toast.error("Failed to download report");
       }
     };
@@ -502,15 +489,17 @@ export default function SchedulePage() {
       <div className="flex justify-between mb-4">
         <h2 className="text-2xl font-semibold">Schedules</h2>
         <div className="flex gap-2">
-          <button
-            onClick={() => {
-              setEditData(null);
-              setShowForm(true);
-            }}
-            className="px-4 py-2 bg-green-600 text-white rounded"
-          >
-            Add Schedule
-          </button>
+          {!viewOnly && (
+            <button
+              onClick={() => {
+                setEditData(null);
+                setShowForm(true);
+              }}
+              className="px-4 py-2 bg-green-600 text-white rounded"
+            >
+              Add Schedule
+            </button>
+          )}
           <ScheduleReportInline />
         </div>
       </div>
@@ -520,7 +509,7 @@ export default function SchedulePage() {
         initialView="dayGridMonth"
         events={calendarEvents}
         height="80vh"
-        hiddenDays={[]} // 👈 ensures all 7 days (0=Sun, 6=Sat) are shown
+        hiddenDays={[]}
         eventClick={(info) => {
           const schedule = schedules.find(
             (s) => s.id === parseInt(info.event.id)
