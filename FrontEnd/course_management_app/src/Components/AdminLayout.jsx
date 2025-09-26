@@ -30,7 +30,7 @@ export default function AdminLayout({ children }) {
     { to: "/menu-items", label: "Menu Items" },
     { to: "/roles", label: "Roles" },
     { to: "/staff", label: "Staff" },
-    { to: "/students", label: "Students" },
+    { to: "/student", label: "Students" },
     { to: "/schedule", label: "Schedule Report" },
   ];
 

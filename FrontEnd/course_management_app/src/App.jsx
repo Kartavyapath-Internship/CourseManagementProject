@@ -28,7 +28,7 @@ function App() {
       <Routes>
         {/* Default Login */}
 
-        <Route path="/" element={<Login/>} />
+        <Route path="/" element={<Login />} />
 
         {/* Admin Layout */}
         <Route
@@ -48,9 +48,6 @@ function App() {
           <Route path="/roles" element={<Role />} />
           <Route path="/premises" element={<Premises />} />
           <Route path="/menu-items" element={<MenuItem />} />
-
-
-
         </Route>
 
         {/* Coordinator Routes */}

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:9090";
+const BASE_URL = "http://localhost:8080";
 
 export const getAllStudents = () => axios.get(`${BASE_URL}/students`);
 export const deleteStudent = (id) => axios.delete(`${BASE_URL}/students/${id}`);
