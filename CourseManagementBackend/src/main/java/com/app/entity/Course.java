@@ -66,6 +66,10 @@ public class Course extends BaseEntity {
 			inverseJoinColumns = @JoinColumn(name = "staff_id")
 	)
 	private List<Staff> staff;
+	
+	@ManyToOne
+	@JoinColumn(name = "coordinator_id") 				
+	private Staff coordinator;
 
 	@OneToMany(mappedBy = "course" , cascade = CascadeType.ALL,orphanRemoval = true)
 	private List<Student> students;

@@ -5,15 +5,22 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.app.dao.BatchCycleDao;
 import com.app.dao.CourseDao;
+import com.app.dao.CourseModuleDao;
 import com.app.dao.CourseTypeDao;
 import com.app.dao.PremisesDao;
+import com.app.dao.RoleDao;
 import com.app.dao.StaffDao;
 import com.app.dto.CourseReqDto;
 import com.app.dto.CourseRespDto;
 import com.app.entity.BatchCycle;
 import com.app.entity.Course;
+import com.app.entity.CourseModule;
 import com.app.entity.Premises;
+import com.app.entity.Role;
 import com.app.entity.Staff;
+import com.app.exceptions.ResourseNotFoundException;
+
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,173 +30,267 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
 @Transactional
-public class CourseServiceImpl implements CourseService{
-	
-	@Autowired
-	private final CourseDao courseDao;
-	
-	@Autowired
-    private final BatchCycleDao batchCycleDao;
-	
-	@Autowired
-    private final CourseTypeDao courseTypeDao;
-	
-	@Autowired
-    private final PremisesDao premisesDao;
-	
-	@Autowired
-	private final StaffDao staffDao;
+@Slf4j
+public class CourseServiceImpl implements CourseService {
 
-	
-	public CourseServiceImpl(CourseDao courseDao, BatchCycleDao batchCycleDao
-    		,CourseTypeDao courseTypeDao,PremisesDao premisesDao,StaffDao staffDao) {
+    @Autowired 
+    private final CourseDao courseDao;
+    
+    
+    @Autowired 
+    private final BatchCycleDao batchCycleDao;
+    
+    
+    @Autowired 
+    private final CourseTypeDao courseTypeDao;
+    
+    
+    @Autowired 
+    private final PremisesDao premisesDao;
+    
+    
+    @Autowired 
+    private final CourseModuleDao courseModuleDao;
+    
+    
+    @Autowired 
+    private final StaffDao staffDao;
+    
+    
+    @Autowired 
+    private RoleDao roleDao;
+
+    public CourseServiceImpl(CourseDao courseDao, StaffDao staffDao, BatchCycleDao batchCycleDao,
+                             CourseTypeDao courseTypeDao, PremisesDao premisesDao, CourseModuleDao courseModuleDao) {
         this.courseDao = courseDao;
+        this.staffDao = staffDao;
         this.batchCycleDao = batchCycleDao;
         this.courseTypeDao = courseTypeDao;
         this.premisesDao = premisesDao;
-        this.staffDao = staffDao;
-        
+        this.courseModuleDao = courseModuleDao;
     }
 
-	//getall courses
-	public List<CourseRespDto> getAllCourses() {
-        List<Course> courses = courseDao.findAll();
-        List<CourseRespDto> responseList = new ArrayList<>();
-
-        for (Course course : courses) {
-        	CourseRespDto dto = convertToDto(course);
-            responseList.add(dto);
-        }
-        return responseList;
+    // ---------------------------------------------------------
+    // Get All / By ID
+    // ---------------------------------------------------------
+    public List<CourseRespDto> getAllCourses() {
+        return courseDao.findAll().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
-	
-	//getcourse by id
-	public CourseRespDto getCourseById(int id) {
+
+    public CourseRespDto getCourseById(int id) {
         Course course = courseDao.findById(id)
                 .orElseThrow(() -> new RuntimeException("Course not found with id " + id));
         return convertToDto(course);
     }
 
-	private CourseRespDto convertToDto(Course course) {
-        CourseRespDto dto = new CourseRespDto();
-        dto.setId(course.getId());
-        dto.setName(course.getName());
-        dto.setDescription(course.getDescription());
-
-        if (course.getCourseType() != null) {
-            dto.setCourseTypeName(course.getCourseType().getTitle());
-        }
+    private CourseRespDto convertToDto(Course course) {
+        CourseRespDto dto = CourseRespDto.builder()
+                .id(course.getId())
+                .name(course.getName())
+                .description(course.getDescription())
+                .startDate(course.getStartDate().toLocalDate())
+                .endDate(course.getEndDate().toLocalDate())
+                .batchCycleTitle(course.getBatchCycle() != null ? course.getBatchCycle().getName() : null)
+                .CourseTypeName(course.getCourseType() != null ? course.getCourseType().getTitle() : null)
+                .premisesName(course.getPremisesList() != null
+                        ? course.getPremisesList().stream().map(Premises::getInstituteName).toList()
+                        : null)
+                .coordinatorId(course.getCoordinator() != null ? course.getCoordinator().getId() : null)
+                .coordinatorName(course.getCoordinator() != null ? course.getCoordinator().getName() : "No Coordinator Assigned")
+                .modules(course.getModules() != null
+                        ? course.getModules().stream().map(CourseModule::getTitle).toList()
+                        : new ArrayList<>())
+                .build();
 
         if (course.getBatchCycle() != null) {
-            dto.setBatchCycleTitle(course.getBatchCycle().getName());
-            dto.setStartDate(course.getBatchCycle().getStartDate().toLocalDate());
-            dto.setEndDate(course.getBatchCycle().getEndDate().toLocalDate());
-
-            // derive status
-            BatchCycle bc = course.getBatchCycle();
-            if (Boolean.TRUE.equals(bc.getIsActive())) {
-                dto.setStatus("Active");
-            } else {
-                dto.setStatus("Closed");
-            }
+            dto.setStatus(Boolean.TRUE.equals(course.getBatchCycle().getIsActive()) ? "Active" : "Closed");
         }
-
-        if (course.getPremisesList() != null) {
-            dto.setPremisesName(
-                course.getPremisesList().stream()
-                        .map(Premises::getInstituteName)
-                        .collect(Collectors.toList())
-            );
-        }
-
-        
-        if (course.getStaff() != null && !course.getStaff().isEmpty()) {
-            dto.setStaffName(course.getStaff().get(0).getName()); // single staff
-        } else {
-            dto.setStaffName("No Coordinator Assigned");
-        }
-
-
-        if (course.getStudents() != null) {
-            dto.setStudentCount(course.getStudents().size());
-        } else {
-            dto.setStudentCount(0);
-        }
-
+        dto.setStaffName(course.getCoordinator() != null ? course.getCoordinator().getName() : "No Coordinator Assigned");
+        dto.setStudentCount(course.getStudents() != null ? course.getStudents().size() : 0);
 
         return dto;
     }
 
-	
-	//add new course
-	public CourseRespDto addCourse(CourseReqDto dto) {
+    // ---------------------------------------------------------
+    // Add Course
+    // ---------------------------------------------------------
+    public CourseRespDto addCourse(CourseReqDto dto) {
         Course course = new Course();
         course.setName(dto.getName());
         course.setDescription(dto.getDescription());
         course.setStartDate(dto.getStartDate().atStartOfDay());
         course.setEndDate(dto.getEndDate().atStartOfDay());
-        
+
         course.setBatchCycle(batchCycleDao.findById(dto.getBatchCycleId())
-                        .orElseThrow(() -> new RuntimeException("BatchCycle not found with id: " + dto.getBatchCycleId()))
-        );
-        
+                .orElseThrow(() -> new RuntimeException("BatchCycle not found with id: " + dto.getBatchCycleId())));
+
         course.setCourseType(courseTypeDao.findById(dto.getCourseTypeId())
                 .orElseThrow(() -> new RuntimeException("CourseType not found")));
-        
 
         List<Premises> premises = dto.getPremisesId().stream()
-        		.map(id -> premisesDao.findById(id).orElseThrow(() -> new RuntimeException("Premises not found")))
-        		.collect(Collectors.toList());
+                .map(id -> premisesDao.findById(id).orElseThrow(() -> new RuntimeException("Premises not found")))
+                .toList();
         course.setPremisesList(premises);
-        
 
-        Staff staff = staffDao.findById(dto.getStaffId())
-                .orElseThrow(() -> new RuntimeException("Staff not found"));
-        course.setStaff(new ArrayList<>(List.of(staff)));
-	
-        
+        if (dto.getCoordinatorId() != null) {
+            Staff coordinator = staffDao.findById(dto.getCoordinatorId())
+                    .orElseThrow(() -> new RuntimeException("Coordinator not found"));
+
+            Role coordinatorRole = roleDao.findByName("COORDINATOR")
+                    .orElseThrow(() -> new RuntimeException("Coordinator Role not found"));
+            coordinator.setRole(coordinatorRole);
+
+            coordinator = staffDao.save(coordinator); // ✅ save to persist role change
+            course.setCoordinator(coordinator);
+        }
+
         Course saved = courseDao.save(course);
-
         return convertToDto(saved);
-
     }
-	
-	
-	//update existing course
-	public CourseRespDto updateCourse(int id, CourseReqDto dto) {
-        Course course = courseDao.findById(id).orElseThrow();
+
+    // ---------------------------------------------------------
+    // Update Course
+    // ---------------------------------------------------------
+    public CourseRespDto updateCourse(int id, CourseReqDto dto) {
+        Course course = courseDao.findById(id)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+
         course.setName(dto.getName());
         course.setDescription(dto.getDescription());
         course.setStartDate(dto.getStartDate().atStartOfDay());
         course.setEndDate(dto.getEndDate().atStartOfDay());
+
         course.setBatchCycle(batchCycleDao.findById(dto.getBatchCycleId())
                 .orElseThrow(() -> new RuntimeException("BatchCycle not found")));
-
         course.setCourseType(courseTypeDao.findById(dto.getCourseTypeId())
                 .orElseThrow(() -> new RuntimeException("CourseType not found")));
 
-        
         List<Premises> premises = dto.getPremisesId().stream()
-        		.map(pId -> premisesDao.findById(pId).orElseThrow(() -> new RuntimeException("Premises not found")))
-        		.collect(Collectors.toList());
+                .map(pId -> premisesDao.findById(pId)
+                        .orElseThrow(() -> new RuntimeException("Premises not found")))
+                .collect(Collectors.toList());
         course.setPremisesList(premises);
-        
-        
-        Staff staff = staffDao.findById(dto.getStaffId())
-                .orElseThrow(() -> new RuntimeException("Staff not found"));
-        course.setStaff(new ArrayList<>(List.of(staff)));
 
-       
+        if (dto.getStaffIds() != null) {
+            List<Staff> staffList = dto.getStaffIds().stream()
+                    .map(sid -> staffDao.findById(sid)
+                            .orElseThrow(() -> new RuntimeException("Staff not found")))
+                    .collect(Collectors.toList());
+            course.setStaff(staffList);
+        }
+
+        Staff previousCoordinator = course.getCoordinator();
+
+        if (dto.getCoordinatorId() != null) {
+            Staff newCoordinator = staffDao.findById(dto.getCoordinatorId())
+                    .orElseThrow(() -> new RuntimeException("Coordinator not found"));
+            Role coordinatorRole = roleDao.findByName("COORDINATOR")
+                    .orElseThrow(() -> new RuntimeException("Coordinator role not found"));
+            newCoordinator.setRole(coordinatorRole);
+
+            newCoordinator = staffDao.save(newCoordinator); // ✅ persist role change
+            course.setCoordinator(newCoordinator);
+        } else {
+            course.setCoordinator(null);
+        }
+
+        // revert previous coordinator if no longer coordinator anywhere
+        if (previousCoordinator != null &&
+                (dto.getCoordinatorId() == null || !previousCoordinator.getId().equals(dto.getCoordinatorId()))) {
+            boolean isCoordinatorElsewhere = courseDao.existsByCoordinatorId(previousCoordinator.getId());
+            if (!isCoordinatorElsewhere) {
+                Role defaultRole = roleDao.findByName("STAFF")
+                        .orElseThrow(() -> new RuntimeException("Default staff role not found"));
+                previousCoordinator.setRole(defaultRole);
+                staffDao.save(previousCoordinator);
+            }
+        }
+
         Course updated = courseDao.save(course);
-        
         return convertToDto(updated);
-
     }
-	
-	//delete course
-	public String deleteCourse(int id) {
-		 courseDao.deleteById(id);
-		 return "Deleted succeessfully";
-	}
 
+    // ---------------------------------------------------------
+    // Delete Course
+    // ---------------------------------------------------------
+    public String deleteCourse(int id) {
+        Course course = courseDao.findById(id)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+
+        Staff coordinator = course.getCoordinator();
+
+        courseDao.delete(course);
+
+        if (coordinator != null) {
+            boolean isCoordinatorElsewhere = courseDao.existsByCoordinatorId(coordinator.getId());
+            if (!isCoordinatorElsewhere) {
+                Role defaultRole = roleDao.findByName("STAFF")
+                        .orElseThrow(() -> new RuntimeException("Default staff role not found"));
+                coordinator.setRole(defaultRole);
+                staffDao.save(coordinator);
+            }
+        }
+        return "Deleted successfully";
+    }
+
+    // ---------------------------------------------------------
+    // Unlink Modules
+    // ---------------------------------------------------------
+    public CourseRespDto unlinkModulesFromCourse(int courseId, List<Integer> moduleIds) {
+        Course course = courseDao.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+
+        course.getModules().removeIf(m -> moduleIds.contains(m.getId()));
+
+        Course updated = courseDao.save(course);
+        return convertToDto(updated);
+    }
+
+    // ---------------------------------------------------------
+    // Assign Coordinator
+    // ---------------------------------------------------------
+    public CourseRespDto assignCoordinator(int courseId, int staffId) {
+        Course course = courseDao.findById(courseId)
+                .orElseThrow(() -> new ResourseNotFoundException("Course not found with id " + courseId));
+
+        Staff coordinator = staffDao.findById(staffId)
+                .orElseThrow(() -> new ResourseNotFoundException("Staff not found with id " + staffId));
+
+        Role coordinatorRole = roleDao.findByName("COORDINATOR")
+                .orElseThrow(() -> new ResourseNotFoundException("Coordinator Role not found"));
+
+        coordinator.setRole(coordinatorRole);
+        coordinator = staffDao.save(coordinator); // ✅ persist role change
+
+        course.setCoordinator(coordinator);
+        courseDao.save(course);
+
+        return convertToDto(course);
+    }
+
+    // ---------------------------------------------------------
+    // Remove Coordinator
+    // ---------------------------------------------------------
+    public CourseRespDto removeCoordinator(int courseId) {
+        Course course = courseDao.findById(courseId)
+                .orElseThrow(() -> new ResourseNotFoundException("Course not found with id " + courseId));
+
+        Staff previousCoordinator = course.getCoordinator();
+        course.setCoordinator(null);
+
+        if (previousCoordinator != null) {
+            boolean isCoordinatorElsewhere = courseDao.existsByCoordinatorId(previousCoordinator.getId());
+            if (!isCoordinatorElsewhere) {
+                Role defaultRole = roleDao.findByName("STAFF")
+                        .orElseThrow(() -> new RuntimeException("Default staff role not found"));
+                previousCoordinator.setRole(defaultRole);
+                staffDao.save(previousCoordinator);
+            }
+        }
+
+        Course updated = courseDao.save(course);
+        return convertToDto(updated);
+    }
 }

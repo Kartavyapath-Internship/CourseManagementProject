@@ -16,5 +16,11 @@ public interface CourseService {
 	public List<CourseRespDto> getAllCourses();
 	
 	public CourseRespDto getCourseById(int id);
+//
+	// ✅ Assign coordinator
+	public CourseRespDto assignCoordinator(int courseId, int staffId);
+
+	// ✅ Remove coordinator (optional but useful)
+	public CourseRespDto removeCoordinator(int courseId);
 
 }

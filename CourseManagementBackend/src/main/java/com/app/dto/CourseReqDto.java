@@ -28,7 +28,11 @@ public class CourseReqDto {
 	private int courseTypeId;
 	
 	private List<Integer> premisesId;
-		
-	private int staffId;
+			
+	private Integer coordinatorId; // Optional: coordinator
+	
+	private List<Integer> staffIds; // Optional: other st
+
+
 
 }
