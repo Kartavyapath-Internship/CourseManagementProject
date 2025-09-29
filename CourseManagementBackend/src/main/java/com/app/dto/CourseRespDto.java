@@ -38,6 +38,13 @@ public class CourseRespDto {
 	 private String staffName;
 	 
 	 private int studentCount;
+	 
+	 private List<String> modules;
+		
+	 private Integer coordinatorId;
+
+	 private String coordinatorName;      // Optional
+
 
 	 
 
