@@ -21,6 +21,9 @@ import Unauthorized from "./Pages/Unauthorized";
 import Premises from "./Pages/Premises";
 import Role from "./Pages/Role";
 import MenuItem from "./Pages/MenuItems";
+import Certificate from "./Pages/Certificate";
+import BatchCycle from "./Pages/BatchCycle";
+import Staff from "./Pages/Staff";
 
 function App() {
   return (
@@ -38,6 +41,7 @@ function App() {
             </ProtectedRoute>
           }
         >
+          <Route path="/batch-cycle" element={<BatchCycle />} />
           <Route path="/course-type" element={<CourseType />} />
           <Route path="/infrastructure" element={<Infrastructure />} />
           <Route path="/course" element={<CoursePage />} />
@@ -47,6 +51,7 @@ function App() {
           <Route path="/student" element={<StudentPage />} />
           <Route path="/roles" element={<Role />} />
           <Route path="/premises" element={<Premises />} />
+          <Route path="/staff" element={<Staff />} />
           <Route path="/menu-items" element={<MenuItem />} />
         </Route>
 
@@ -60,6 +65,7 @@ function App() {
           }
         >
           <Route path="/sessions" element={<Sessions />} />
+          <Route path="/certificate" element={<Certificate />} />
           <Route path="/course-group" element={<CourseGroup />} />
           <Route path="/recorded-video" element={<RecordedVideo />} />
         </Route>

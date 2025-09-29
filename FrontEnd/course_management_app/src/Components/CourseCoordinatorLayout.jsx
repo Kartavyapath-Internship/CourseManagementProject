@@ -26,6 +26,7 @@ export default function CourseCoordinatorLayout({ children }) {
     { to: "/sessions", label: "Sessions" },
     { to: "/schedule", label: "Schedule Report" },
     { to: "/recorded-video", label: "RecordedVideo" },
+    { to: "/certificate", label: "Certificate" },
   ];
 
   const isProfileOpen = location.state?.modal === true;
