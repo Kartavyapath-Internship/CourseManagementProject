@@ -13,8 +13,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SessionRespDto {
-	
-	private int id ;
+
+	private int id;
 
 	private String title;
 
@@ -33,6 +33,8 @@ public class SessionRespDto {
 	private String description;
 
 	private String courseModuleName;
-	
-	private Boolean active; 
+
+	private Integer courseModuleId; // new
+
+	private Boolean active;
 }

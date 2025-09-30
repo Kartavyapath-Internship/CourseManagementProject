@@ -9,6 +9,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
@@ -49,7 +50,7 @@ public class Staff extends BaseEntity {
 	@JsonBackReference
 	private Role role;
 
-	@ManyToMany(mappedBy = "staff")
+	@ManyToMany(mappedBy = "staff",fetch = FetchType.EAGER)
 	private List<Course> courses;
 
 	@ManyToMany(mappedBy = "staff")
@@ -57,5 +58,8 @@ public class Staff extends BaseEntity {
 	
 	@OneToMany(mappedBy = "staff")
 	private List<CourseModule> courseModules;
+	
+	@OneToMany(mappedBy = "coordinator")
+	private List<Course> coordinatedCourses;
 
 }

@@ -14,5 +14,7 @@ public interface BatchCycleService {
 	BatchCycleRespDto editBatchCycle(int id, BatchCycleReqDto addBatchCycleDto);
 
 	List<BatchCycleRespDto> getAllBatchCycle();
+	
+	List<BatchCycleRespDto> getBatchCyclesForCoordinator(String coordinatorEmail);
 
 }

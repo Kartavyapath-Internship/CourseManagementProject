@@ -22,13 +22,13 @@ import lombok.Setter;
 @Builder
 public class RecordedVideo extends BaseEntity {
 
-	@Column(name = "video_title",nullable = false,length = 50)
+	@Column(name = "video_title",nullable = false,length = 100)
 	private String videoTitle;
 	
 	@Column(name = "date",nullable = false)
 	private LocalDateTime date;
 	
-	@Column(name = "video_url",nullable = false,length = 100)
+	@Column(name = "video_url",nullable = false,length = 200)
 	private String videoUrl;
 	
 	@ManyToOne

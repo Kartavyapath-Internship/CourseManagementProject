@@ -9,12 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PremisesRespDto {
 
+	private int id;
 
-	private int id ;
-	
 	private String instituteName;
-	
+
 	private String address;
-	
-	private String description; 
+
+	private String description;
 }

@@ -22,5 +22,7 @@ public interface CourseService {
 
 	// ✅ Remove coordinator (optional but useful)
 	public CourseRespDto removeCoordinator(int courseId);
+	
+	public List<CourseRespDto> getCoursesByCoordinatorEmail(String email);
 
 }

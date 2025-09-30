@@ -65,9 +65,9 @@ public class SessionServiceImpl implements SessionService {
 	private SessionRespDto convertToDto(Sessions session) {
 
 		LocalDate today = LocalDate.now();
-		boolean isActive = session.getSessionDate().isBefore(today);
-		SessionRespDto dto = new SessionRespDto();
+		boolean isActive = !session.getSessionDate().isBefore(today); // session active if today or future
 
+		SessionRespDto dto = new SessionRespDto();
 		dto.setId(session.getId());
 		dto.setTitle(session.getTitle());
 		dto.setCodeShareToken(session.getCodeShareToken());
@@ -77,12 +77,12 @@ public class SessionServiceImpl implements SessionService {
 		dto.setZoomMeetingId(session.getZoomMeetingId());
 		dto.setZoomMeetingPassword(session.getZoomMeetingPassword());
 		dto.setDescription(session.getDescription());
+		dto.setActive(isActive);
 
 		if (session.getCourseModule() != null) {
 			dto.setCourseModuleName(session.getCourseModule().getTitle());
+			dto.setCourseModuleId(session.getCourseModule().getId()); // ✅ set moduleId for security filter
 		}
-
-		dto.setActive(isActive);
 
 		return dto;
 	}
@@ -127,7 +127,9 @@ public class SessionServiceImpl implements SessionService {
 		List<Sessions> sessions = sessionRepository.findAll();
 
 		List<SessionRespDto> sessionsAllDto = sessions.stream().map(all -> {
+
 			return convertToDto(all);
+
 		}).collect(Collectors.toList());
 
 		return sessionsAllDto;

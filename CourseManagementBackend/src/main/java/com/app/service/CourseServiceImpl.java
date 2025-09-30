@@ -293,4 +293,13 @@ public class CourseServiceImpl implements CourseService {
         Course updated = courseDao.save(course);
         return convertToDto(updated);
     }
+
+	@Override
+	public List<CourseRespDto> getCoursesByCoordinatorEmail(String email) {
+		List<Course> courses = courseDao.findByCoordinatorEmail(email);
+		System.out.println("Courses for coordinator " + email + ": " + courses.size());
+        return courses.stream()
+                      .map(this::convertToDto)
+                      .toList();
+	}
 }

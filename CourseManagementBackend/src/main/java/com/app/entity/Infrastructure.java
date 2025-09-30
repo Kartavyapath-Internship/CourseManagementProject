@@ -30,7 +30,7 @@ import lombok.ToString;
 @ToString
 public class Infrastructure extends BaseEntity {
 
-	@Column(name = "title", nullable = false, length = 30)
+	@Column(name = "title", nullable = false, length = 100)
 	private String title;
 
 	@Column(name = "description", nullable = false, length = 200)

@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity()
-//@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
 	
@@ -33,53 +33,83 @@ public class SecurityConfig {
     //  Security Filter Chain
  
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http  
-        
-        .csrf(csrf -> csrf.disable())
-        // Enable CORS for frontend calls
-        .cors(Customizer.withDefaults())
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		http.csrf(csrf -> csrf.disable()).cors(cors -> {
+		}) // Enable CORS for frontend
 
-        // Authorization rules
-        .authorizeHttpRequests(auth -> auth
-            // Schedules
-            .requestMatchers(HttpMethod.GET, "/api/schedules/**").hasAnyRole("ADMIN", "COORDINATOR") 
-            .requestMatchers(HttpMethod.POST, "/api/schedules/**").hasRole("COORDINATOR")           
-            .requestMatchers(HttpMethod.PUT, "/api/schedules/**").hasRole("COORDINATOR")            
-            .requestMatchers(HttpMethod.DELETE, "/api/schedules/**").hasRole("COORDINATOR")         
+				.authorizeHttpRequests(auth -> auth
 
-            // Other endpoints (example)
-            .requestMatchers("/infrastructure/**").hasRole("ADMIN") 
-            .requestMatchers("/coursetype/**").hasRole("ADMIN")
-            .requestMatchers("/infrastructure/**").hasRole("ADMIN")
-            .requestMatchers("/menuitems/**").hasRole("ADMIN")
-            .requestMatchers("/premises/**").hasRole("ADMIN")
-            .requestMatchers("/roles/**").hasRole("ADMIN")
-            .requestMatchers("/section/**").hasRole("ADMIN")
-            .requestMatchers("/staff/**").hasRole("ADMIN")
-            .requestMatchers("/api/subjects/**").hasRole("ADMIN")
-            .requestMatchers("/topic/**").hasRole("ADMIN")
-            .requestMatchers("/batchcycle/**").hasRole("ADMIN")
-            .requestMatchers("/coursegroup/**").hasRole("COORDINATOR")
-            .requestMatchers("/session/**").hasRole("COORDINATOR")
-            .requestMatchers("/api/course-modules/**").hasRole("COORDINATOR")
-            .requestMatchers("/students/**").hasRole("COORDINATOR")
-            .requestMatchers("/login/**").permitAll()                       // Login
-            .anyRequest().authenticated()
-         )
+						// ----- Premises -----
+						.requestMatchers(HttpMethod.GET, "/premises/**").hasAnyRole("ADMIN", "COORDINATOR")
+						.requestMatchers("/premises/**").hasRole("ADMIN")
 
-        // Use our UserDetailsService
-       // .userDetailsService(userDetailsService)
+						// ----- Infrastructure -----
+						.requestMatchers(HttpMethod.GET, "/infrastructure/**").hasAnyRole("ADMIN", "COORDINATOR")
+						.requestMatchers("/infrastructure/**").hasRole("ADMIN")
 
-        // Add JWT filter before username/password auth filter
-        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+						// ----- Course Type -----
+						.requestMatchers(HttpMethod.GET, "/coursetype/**").hasAnyRole("ADMIN", "COORDINATOR")
+						.requestMatchers("/coursetype/**").hasRole("ADMIN")
 
-       //  Disable default login forms
-        .formLogin(form -> form.disable())
-        .httpBasic(basic -> basic.disable());
+						// ----- Batch Cycle -----
+						.requestMatchers(HttpMethod.GET, "/batchcycle/**").hasAnyRole("ADMIN", "COORDINATOR")
+						.requestMatchers("/batchcycle/**").hasRole("ADMIN")
 
-    return http.build();
-    }
+						// ----- Course -----
+						.requestMatchers(HttpMethod.GET, "/api/courses/**").hasAnyRole("ADMIN", "COORDINATOR")
+						.requestMatchers("/api/courses/**").hasRole("ADMIN")
+
+						// ----- Subject -----
+						.requestMatchers(HttpMethod.GET, "/api/subjects/**").hasAnyRole("ADMIN", "COORDINATOR")
+						.requestMatchers("/api/subjects/**").hasRole("ADMIN")
+
+						// ----- Menu Items -----
+						.requestMatchers(HttpMethod.GET, "/menuitems/**").hasAnyRole("ADMIN", "COORDINATOR")
+						.requestMatchers("/menuitems/**").hasRole("ADMIN")
+
+						// ----- Roles -----
+						.requestMatchers("/roles/**").hasRole("ADMIN")
+
+						// ----- Staff -----
+						.requestMatchers(HttpMethod.GET, "/staff/**").hasAnyRole("ADMIN", "COORDINATOR")
+						.requestMatchers("/staff/**").hasRole("ADMIN")
+
+						// ----- Schedules -----
+						.requestMatchers(HttpMethod.GET, "/api/schedules/**").hasAnyRole("ADMIN", "COORDINATOR")
+						.requestMatchers("/api/schedules/**").hasRole("COORDINATOR")
+
+						// ----- Course Group (only coordinator can manage) -----
+						.requestMatchers(HttpMethod.GET, "/coursegroup/**").hasAnyRole("ADMIN", "COORDINATOR")
+						.requestMatchers("/coursegroup/**").hasRole("COORDINATOR")
+
+						// ----- Sessions (only coordinator can manage) -----
+						.requestMatchers(HttpMethod.GET,"/session/**").hasAnyRole("ADMIN", "COORDINATOR")
+						.requestMatchers("/session/**").hasRole("COORDINATOR")
+
+//						// ----- Students (only coordinator can manage) -----
+						.requestMatchers(HttpMethod.GET,"/students/**").hasAnyRole("ADMIN", "COORDINATOR")
+						.requestMatchers("/students/**").hasRole("COORDINATOR")
+						
+						// ------- Recorded Video (Only  coordinator can manage )-----------
+						
+						.requestMatchers(HttpMethod.GET,"/api/recorded-videos/**").hasAnyRole("ADMIN", "COORDINATOR")
+						.requestMatchers("/api/recorded-videos/**").hasRole("COORDINATOR")
+						
+						// ----- Course Modules (only coordinator can manage) -----
+						// .requestMatchers("/api/course-modules/**").hasRole("COORDINATOR")
+
+						// ----- Authentication -----
+						.requestMatchers("/login/**").permitAll()
+
+						// Any other request requires authentication
+						.anyRequest().authenticated())
+
+				.userDetailsService(userDetailsService)
+				.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+				.formLogin(form -> form.disable()).httpBasic(basic -> basic.disable());
+
+		return http.build();
+	}
 
 //    @Bean
 //    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -95,6 +125,18 @@ public class SecurityConfig {
 //        return http.build();
 //    }
     
+//   @Bean
+//	public CorsConfigurationSource corsConfigurationSource() {
+//		CorsConfiguration configuration = new CorsConfiguration();
+//		configuration.setAllowedOrigins(List.of("http://localhost:5174")); // frontend URL
+//		configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+//		configuration.setAllowedHeaders(List.of("*"));
+//		configuration.setAllowCredentials(true);
+//
+//		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//		source.registerCorsConfiguration("/**", configuration);
+//		return source;
+//	}
  
     // Authentication Manager (used in AuthService for login)
     

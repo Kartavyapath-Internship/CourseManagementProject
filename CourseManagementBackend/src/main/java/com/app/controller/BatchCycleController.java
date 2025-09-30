@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,11 +50,20 @@ public class BatchCycleController {
 	}
 	
 	@GetMapping("/getall")
-	public ResponseEntity<List<BatchCycleRespDto>> getAllBatchCycle()
+	@PreAuthorize("hasRole('ADMIN') or hasRole('COORDINATOR')")
+	public ResponseEntity<List<BatchCycleRespDto>> getAllBatchCycle(Authentication authentication)
 	{
-		List<BatchCycleRespDto> list = batchCycleServ.getAllBatchCycle();
-		
-		return ResponseEntity.ok(list);
+		String email = authentication.getName();
+	    List<BatchCycleRespDto> list;
+
+	    if (authentication.getAuthorities().stream()
+	                      .anyMatch(a -> a.getAuthority().equals("ROLE_COORDINATOR"))) {
+	        list = batchCycleServ.getBatchCyclesForCoordinator(email);
+	    } else {
+	        list = batchCycleServ.getAllBatchCycle();
+	    }
+
+	    return ResponseEntity.ok(list);
 	}
 	
 }

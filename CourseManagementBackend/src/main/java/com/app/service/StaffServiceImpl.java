@@ -19,24 +19,25 @@ import com.app.entity.enums.StaffType;
 @Service
 @Transactional
 public class StaffServiceImpl implements StaffService {
-	
+
 	@Autowired
-	private StaffDao staffDao ;
-	
+	private StaffDao staffDao;
+
 	@Autowired
-	private RoleDao roleDao ;
-	
+	private RoleDao roleDao;
+
 	@Autowired
-	private ModelMapper modelMapper ;
-	
+	private ModelMapper modelMapper;
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public StaffRespDto addStaff(StaffReqDto staffDto) {
-		
-Role role = roleDao.findById(staffDto.getRoleID()).orElseThrow(()-> new RuntimeException("Role not found by id " + staffDto.getRoleID()));
-		
+
+		Role role = roleDao.findById(staffDto.getRoleID())
+				.orElseThrow(() -> new RuntimeException("Role not found by id " + staffDto.getRoleID()));
+
 		Staff staff = new Staff();
 
 		staff.setName(staffDto.getName());
@@ -45,54 +46,60 @@ Role role = roleDao.findById(staffDto.getRoleID()).orElseThrow(()-> new RuntimeE
 		staff.setEmail(staffDto.getEmail());
 		staff.setStaffType(StaffType.valueOf(staffDto.getStaffType()));
 		staff.setRole(role);
-		
+
 		Staff s = staffDao.save(staff);
-		
+
 		StaffRespDto map = modelMapper.map(s, StaffRespDto.class);
 		map.setRoleName(s.getRole().getName());
-		
-		return map ;
+
+		return map;
 	}
 
 	@Override
 	public StaffRespDto updateStaff(StaffReqDto staffDto, int staffId) {
-		
-		Staff staff = staffDao.findById(staffId)
-	            .orElseThrow(() -> new RuntimeException("staff not found"));
 
-	    staff.setName(staffDto.getName());
-	    staff.setPassword(passwordEncoder.encode(staffDto.getPassword()));
-	    staff.setMobileNo(staffDto.getMobileNo());
-	    staff.setEmail(staffDto.getEmail());
+		Staff staff = staffDao.findById(staffId).orElseThrow(() -> new RuntimeException("staff not found"));
 
-	    try {
-	        staff.setStaffType(StaffType.valueOf(staffDto.getStaffType()));
-	    } catch (IllegalArgumentException e) {
-	        throw new RuntimeException("Invalid staffType: " + staffDto.getStaffType());
-	    }
+		staff.setName(staffDto.getName());
+		staff.setPassword(passwordEncoder.encode(staffDto.getPassword()));
+		staff.setMobileNo(staffDto.getMobileNo());
+		staff.setEmail(staffDto.getEmail());
 
-	    // ✅ Only update role if `roleID` is present in DTO
-	    if (staffDto.getRoleID() != 0) {
-	        Role role = roleDao.findById(staffDto.getRoleID())
-	                .orElseThrow(() -> new RuntimeException("Role not found"));
-	        staff.setRole(role);
-	    }
+		try {
+			staff.setStaffType(StaffType.valueOf(staffDto.getStaffType()));
+		} catch (IllegalArgumentException e) {
+			throw new RuntimeException("Invalid staffType: " + staffDto.getStaffType());
+		}
 
-	    Staff s = staffDao.save(staff);
+		// ✅ Only update role if `roleID` is present in DTO
+		if (staffDto.getRoleID() != 0) {
+			Role role = roleDao.findById(staffDto.getRoleID())
+					.orElseThrow(() -> new RuntimeException("Role not found"));
+			staff.setRole(role);
+		}
 
-	    StaffRespDto map = modelMapper.map(s, StaffRespDto.class);
-	    map.setRoleName(s.getRole().getName());
+		Staff s = staffDao.save(staff);
 
-	    return map;
+		StaffRespDto map = modelMapper.map(s, StaffRespDto.class);
+		map.setRoleName(s.getRole().getName());
+
+		return map;
 	}
 
 	@Override
 	public String deleteStaff(int staffId) {
-		
-		Staff staff  = staffDao.findById(staffId).orElseThrow(()-> new RuntimeException("staff not found"));
+
+		Staff staff = staffDao.findById(staffId).orElseThrow(() -> new RuntimeException("staff not found"));
+
+		// Check if staff is coordinator for any course
+		if (staff.getCoordinatedCourses() != null && !staff.getCoordinatedCourses().isEmpty()) {
+			throw new IllegalStateException(
+					"Cannot delete staff: they are assigned as coordinator for one or more courses. "
+							+ "Please reassign or remove them first.");
+		}
 
 		staffDao.delete(staff);
-		
+
 		return "Staff deleted successfully";
 	}
 
@@ -101,30 +108,30 @@ Role role = roleDao.findById(staffDto.getRoleID()).orElseThrow(()-> new RuntimeE
 		return staffDao.findAll().stream().map(staff -> {
 			StaffRespDto map = modelMapper.map(staff, StaffRespDto.class);
 			map.setRoleName(staff.getRole().getName());
-			return map ;
+			return map;
 		}).toList();
 	}
 
 	@Override
 	public StaffRespDto getStaff(int staffId) {
-		
-		Staff staff  = staffDao.findById(staffId).orElseThrow(()-> new RuntimeException("staff not found"));
-		
+
+		Staff staff = staffDao.findById(staffId).orElseThrow(() -> new RuntimeException("staff not found"));
+
 		StaffRespDto map = modelMapper.map(staff, StaffRespDto.class);
 		map.setRoleName(staff.getRole().getName());
-		
-		return map ;
+
+		return map;
 	}
-	
+
 	@Override
 	public StaffRespDto getStaffByEmail(String email) {
 		Staff staff = staffDao.findByEmail(email)
-	            .orElseThrow(() -> new RuntimeException("Staff not found with email: " + email));
+				.orElseThrow(() -> new RuntimeException("Staff not found with email: " + email));
 
-	    StaffRespDto map = modelMapper.map(staff, StaffRespDto.class);
-	    map.setRoleName(staff.getRole().getName());
+		StaffRespDto map = modelMapper.map(staff, StaffRespDto.class);
+		map.setRoleName(staff.getRole().getName());
 
-	    return map;
+		return map;
 	}
-	
+
 }

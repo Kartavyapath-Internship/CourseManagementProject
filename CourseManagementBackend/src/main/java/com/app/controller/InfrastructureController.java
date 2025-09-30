@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +33,9 @@ public class InfrastructureController {
 	private InfrastructureService infrastructureService;
 
 	@PostMapping
-	public ResponseEntity<InfrastructureRespDto> addInfrastructure(@RequestBody InfrastructureReqDto infrastructureDto) {
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<InfrastructureRespDto> addInfrastructure(
+			@RequestBody InfrastructureReqDto infrastructureDto) {
 
 		return new ResponseEntity<InfrastructureRespDto>(infrastructureService.createInfrastructure(infrastructureDto),
 
@@ -41,33 +44,41 @@ public class InfrastructureController {
 	}
 
 	@GetMapping
+	@PreAuthorize("hasRole('ADMIN') or hasRole('COORDINATOR')")
 	public ResponseEntity<List<InfrastructureRespDto>> getAllInfrastructure() {
 
-		return new ResponseEntity<List<InfrastructureRespDto>>(infrastructureService.getAllInfrastructure(), HttpStatus.OK);
+		return new ResponseEntity<List<InfrastructureRespDto>>(infrastructureService.getAllInfrastructure(),
+				HttpStatus.OK);
 
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<InfrastructureRespDto> updateInfrastructure(@RequestBody InfrastructureReqDto infrastructureDto,
-			@PathVariable Integer id) {
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<InfrastructureRespDto> updateInfrastructure(
+			@RequestBody InfrastructureReqDto infrastructureDto, @PathVariable Integer id) {
+
 		log.info(" update  Controller layer having {} {} ", infrastructureDto, id);
 
-		return new ResponseEntity<InfrastructureRespDto>(infrastructureService.updateInfrastructure(infrastructureDto, id),
+		return new ResponseEntity<InfrastructureRespDto>(
+				infrastructureService.updateInfrastructure(infrastructureDto, id),
 
 				HttpStatus.OK);
 
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<InfrastructureRespDto> getInfrastructureById(@PathVariable Integer id) {
 
 		log.info(" get  Controller layer having {} ", id);
 
-		return new ResponseEntity<InfrastructureRespDto>(infrastructureService.getInfrastructureById(id), HttpStatus.OK);
+		return new ResponseEntity<InfrastructureRespDto>(infrastructureService.getInfrastructureById(id),
+				HttpStatus.OK);
 
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<ApiResponse> deleteInfrastructureById(@PathVariable Integer id) {
 
 		infrastructureService.deleteInfrastructureById(id);

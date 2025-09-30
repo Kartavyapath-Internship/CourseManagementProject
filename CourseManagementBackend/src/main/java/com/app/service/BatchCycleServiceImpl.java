@@ -71,4 +71,16 @@ public class BatchCycleServiceImpl implements BatchCycleService {
 		
 		return respDto;
 	}
+
+	@Override
+	public List<BatchCycleRespDto> getBatchCyclesForCoordinator(String coordinatorEmail) {
+		
+		// Fetch only batch cycles linked to courses coordinated by this coordinator
+		
+	    List<BatchCycle> list = batchRepo.findAllByCoursesCoordinatorEmail(coordinatorEmail);
+
+	    return list.stream()
+	               .map(batch -> modelMapper.map(batch, BatchCycleRespDto.class))
+	               .toList();
+	}
 }

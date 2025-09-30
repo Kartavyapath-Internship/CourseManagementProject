@@ -24,7 +24,7 @@ public class Certificate extends BaseEntity {
 	@Column(name = "content",nullable = false,length = 250)
 	private String content;
 	
-	@Column(name = "course_name",nullable = false,length=30)
+	@Column(name = "course_name",nullable = false,length=100)
 	private String courseName;
 	
 	@OneToMany(mappedBy = "certificate")

@@ -14,23 +14,25 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ScheduleRespDto {
-	
-	private int id ;
-	
+
+	private int id;
+
 	private LocalDate date;
-	
+
 	private LocalTime startTime;
-	
+
 	private LocalTime endTime;
-	
+
+	private Integer courseModuleId;
+
 	private String moduleName;
-	
+
 	private List<String> infrastructureName;
-	
+
 	private List<String> groupName;
-	
+
 	private List<String> staffName;
-	
-	private String comment;	
-	
+
+	private String comment;
+
 }

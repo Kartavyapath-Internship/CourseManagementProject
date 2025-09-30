@@ -5,9 +5,13 @@ import com.app.dto.CourseRespDto;
 import com.app.responsemessage.ApiResponse;
 import com.app.service.CourseService;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -16,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/courses")
 @CrossOrigin("*")
+@Slf4j
 public class CourseController {
 
 	@Autowired
@@ -31,8 +36,30 @@ public class CourseController {
 	}
 
 	@GetMapping
-	public List<CourseRespDto> getAllCourses() {
-		return courseService.getAllCourses();
+	@PreAuthorize("hasRole('ADMIN') or hasRole('COORDINATOR')")
+	public ResponseEntity<List<CourseRespDto>> getAllCourses(Authentication authentication) {
+		String email = authentication.getName(); 
+		
+		log.info("Email ia {}",email);
+		
+	    List<CourseRespDto> courses;
+
+	    // ✅ Coordinator -> only get their assigned courses
+	    if (authentication.getAuthorities().stream()
+	            .anyMatch(a -> a.getAuthority().equals("ROLE_COORDINATOR"))) {
+	    	
+	    	
+	    	
+	        courses = courseService.getCoursesByCoordinatorEmail(email);
+	        
+	        log.info("cordinator logging in courses ",courses); 
+	    } else {
+	        // ✅ Admin -> see all courses
+	        courses = courseService.getAllCourses();
+	        log.info(" logging in courses ",courses); 
+	    }
+
+	    return ResponseEntity.ok(courses);
 	}
 
 	@GetMapping("/{id}")
