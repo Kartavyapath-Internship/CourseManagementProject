@@ -1,11 +1,8 @@
 import axiosInstance from "./axiosInstance";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 // Helper to handle errors
 const handleError = (err, action) => {
   console.error(`Failed to ${action}:`, err);
-  toast.error(`Failed to ${action}`);
 };
 
 // Get all videos
@@ -23,7 +20,6 @@ export const getVideos = async () => {
 export const addVideo = async (video) => {
   try {
     const res = await axiosInstance.post("/api/recorded-videos", video);
-    toast.success("Video added successfully!");
     return res.data;
   } catch (err) {
     handleError(err, "add video");
@@ -34,7 +30,6 @@ export const addVideo = async (video) => {
 export const updateVideo = async (id, video) => {
   try {
     const res = await axiosInstance.put(`/api/recorded-videos/${id}`, video);
-    toast.success("Video updated successfully!");
     return res.data;
   } catch (err) {
     handleError(err, `update video with id ${id}`);
@@ -45,7 +40,7 @@ export const updateVideo = async (id, video) => {
 export const deleteVideo = async (id) => {
   try {
     const res = await axiosInstance.delete(`/api/recorded-videos/${id}`);
-    toast.success("Video deleted successfully!");
+
     return res.data;
   } catch (err) {
     handleError(err, `delete video with id ${id}`);

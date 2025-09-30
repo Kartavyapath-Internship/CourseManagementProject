@@ -62,6 +62,17 @@ public class GlobalExceptionHandler {
 		log.warn("Method not supported: {}. Supported: {}", ex.getMethod(), supportedMethods);
 		return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
 	}
+	@ExceptionHandler(IllegalStateException.class)
+	public ResponseEntity<ApiResponse> handleIllegalState(IllegalStateException ex) {
+	    ApiResponse response = ApiResponse.builder()
+	            .message(ex.getMessage())
+	            .status(HttpStatus.CONFLICT)
+	            .statusCode(HttpStatus.CONFLICT.value())
+	            .timestamp(LocalDateTime.now())
+	            .build();
+
+	    return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+	}
 
 	// 500 - Internal Server Error (Catch-All)
 	@ExceptionHandler(Exception.class)

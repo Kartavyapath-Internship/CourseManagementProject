@@ -56,6 +56,7 @@ public class RecordedVideoController {
 	@GetMapping
 	@PreAuthorize("hasRole('ADMIN') or hasRole('COORDINATOR')")
 	public ResponseEntity<List<RecordedVideoRespDto>> getAllRecordedVideos(Authentication authentication) {
+		
 		String email = authentication.getName();
 		List<RecordedVideoRespDto> videos = recordedVideoService.getAllRecordedVideos();
 
