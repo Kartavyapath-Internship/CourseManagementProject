@@ -1,28 +1,62 @@
 import React, { useEffect, useState } from "react";
 import { getAllStudents, deleteStudent } from "../Services/StudentService.js";
+import { getAllCourses } from "../Services/CourseService.js";
 import StudentForm from "./StudentForm.jsx";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 function StudentPage() {
   const [students, setStudents] = useState([]);
+  const [filteredStudents, setFilteredStudents] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingStudent, setEditingStudent] = useState(null);
+
+  const [courses, setCourses] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState("");
 
   // ✅ Fetch all students
   const fetchStudents = async () => {
     try {
       const res = await getAllStudents();
-      setStudents(res.data);
+      const data = res.data || res;
+      setStudents(data);
+      setFilteredStudents(data);
     } catch (err) {
       console.error("Error fetching students:", err);
       toast.error("Failed to fetch students");
     }
   };
 
+  // ✅ Fetch all courses
+  const fetchCourses = async () => {
+    try {
+      const res = await getAllCourses();
+      setCourses(res.data || res);
+    } catch (err) {
+      console.error("Error fetching courses:", err);
+      toast.error("Failed to fetch courses");
+    }
+  };
+
   useEffect(() => {
     fetchStudents();
+    fetchCourses();
   }, []);
+
+  // ✅ Auto filter when course changes
+  useEffect(() => {
+    if (!selectedCourse) {
+      setFilteredStudents(students);
+    } else {
+      const filtered = students.filter((s) => s.courseName === selectedCourse);
+      setFilteredStudents(filtered);
+    }
+  }, [selectedCourse, students]);
+
+  // ✅ Reset filter
+  const handleReset = () => {
+    setSelectedCourse("");
+    setFilteredStudents(students);
+  };
 
   // ✅ Delete student
   const handleDelete = async (id) => {
@@ -46,21 +80,31 @@ function StudentPage() {
 
   return (
     <div className="p-6">
-      {/* <h2 className="text-2xl font-bold mb-4">Students</h2> */}
-
-      {/* Add button */}
-      {/* <button
-        className="bg-blue-600 text-white px-4 py-2 rounded"
-        onClick={() => {
-          setEditingStudent(null);
-          setShowForm(true);
-        }}
-      >
-        + Add Student
-      </button> */}
-
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold">Students</h2>
+        {/* ✅ Left side: Course Filter + Reset */}
+        <div className="flex items-center space-x-2">
+          <select
+            value={selectedCourse}
+            onChange={(e) => setSelectedCourse(e.target.value)}
+            className="border px-3 py-2 rounded"
+          >
+            <option value="">All Courses</option>
+            {courses.map((c) => (
+              <option key={c.id} value={c.name}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+
+          <button
+            onClick={handleReset}
+            className="bg-gray-500 text-white px-4 py-2 rounded"
+          >
+            Reset
+          </button>
+        </div>
+
+        {/* ✅ Right side: Add Student */}
         <button
           className="bg-blue-600 text-white px-4 py-2 rounded"
           onClick={() => {
@@ -88,7 +132,7 @@ function StudentPage() {
           </tr>
         </thead>
         <tbody>
-          {students.map((s, index) => (
+          {filteredStudents.map((s, index) => (
             <tr key={s.id}>
               <td className="border px-3 py-2">{index + 1}</td>
               <td className="border px-3 py-2">{s.registrationNo}</td>
@@ -125,9 +169,6 @@ function StudentPage() {
           onSuccess={fetchStudents}
         />
       )}
-
-      {/* ✅ ToastContainer placed here */}
-      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 }

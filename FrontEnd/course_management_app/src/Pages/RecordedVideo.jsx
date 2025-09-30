@@ -6,8 +6,7 @@ import {
   deleteVideo,
   getCourseModules,
 } from "../Services/RecordedVideoService";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 function RecordedVideo() {
   const [videos, setVideos] = useState([]);
@@ -20,7 +19,7 @@ function RecordedVideo() {
     videoTitle: "",
     videoUrl: "",
     date: "",
-    courseId: "",
+    courseModuleId: "", // ✅ renamed
   });
 
   // Fetch videos and modules on mount
@@ -56,26 +55,32 @@ function RecordedVideo() {
   };
 
   const handleSave = async () => {
-    try {
-      if (isEditing) {
-        await updateVideo(editId, formData);
-        toast.success("Video updated successfully!");
-      } else {
-        await addVideo(formData);
-        toast.success("Video added successfully!");
-      }
-      resetForm();
-      fetchVideos(); // refresh list
-    } catch (err) {
-      toast.error("Failed to save video");
+  try {
+    let newVideo;
+    if (isEditing) {
+      newVideo = await updateVideo(editId, formData);
+      setVideos((prev) =>
+        prev.map((v) => (v.id === editId ? newVideo : v))
+      );
+      toast.success("Video updated successfully!");
+    } else {
+      newVideo = await addVideo(formData);
+      setVideos((prev) => [...prev, newVideo]); // ✅ add new video instantly
+      toast.success("Video added successfully!");
     }
-  };
+    resetForm();
+  } catch (err) {
+    toast.error("Failed to save video");
+  }
+};
+
+
 
   const handleDelete = async (id) => {
     try {
       await deleteVideo(id);
       toast.success("Video deleted successfully!");
-      fetchVideos(); // refresh list
+      fetchVideos();
     } catch (err) {
       toast.error("Failed to delete video");
     }
@@ -86,7 +91,7 @@ function RecordedVideo() {
       videoTitle: video.videoTitle,
       videoUrl: video.videoUrl,
       date: video.date,
-      courseId: video.courseId,
+      courseModuleId: video.courseModuleId, // ✅ renamed
     });
     setEditId(video.id);
     setIsEditing(true);
@@ -99,7 +104,7 @@ function RecordedVideo() {
       videoTitle: "",
       videoUrl: "",
       date: "",
-      courseId: "",
+      courseModuleId: "",
     });
     setIsEditing(false);
     setEditId(null);
@@ -107,40 +112,10 @@ function RecordedVideo() {
 
   return (
     <div className="p-6">
-      {/* Toast Container */}
-      <ToastContainer position="top-right" autoClose={3000} />
-
-      {/* <h2 className="text-xl font-bold mb-4">Recorded Videos</h2> */}
-
-      {/* <button
-        onClick={() => {
-          setShowForm(true);
-          setIsEditing(false);
-          setFormData({
-            videoTitle: "",
-            videoUrl: "",
-            date: "",
-            courseId: "",
-          });
-        }}
-        className="bg-blue-600 text-white px-4 py-2 rounded-md"
-      >
-        Upload Video
-      </button> */}
-
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold">Recorded Videos</h2>
         <button
-          onClick={() => {
-            setShowForm(true);
-            setIsEditing(false);
-            setFormData({
-              videoTitle: "",
-              videoUrl: "",
-              date: "",
-              courseId: "",
-            });
-          }}
+          onClick={() => setShowForm(true)}
           className="bg-blue-600 text-white px-4 py-2 rounded-md"
         >
           Upload Video
@@ -182,18 +157,17 @@ function RecordedVideo() {
             />
 
             <select
-              name="courseId"
-              value={formData.courseId}
+              name="courseModuleId"
+              value={formData.courseModuleId}
               onChange={handleChange}
               className="border p-2 mb-4 w-full"
             >
               <option value="">Select Course Module</option>
-              {Array.isArray(courseModules) &&
-                courseModules.map((cm) => (
-                  <option key={cm.id} value={cm.id}>
-                    {cm.title}
-                  </option>
-                ))}
+              {courseModules.map((cm) => (
+                <option key={cm.id} value={cm.id}>
+                  {cm.title}
+                </option>
+              ))}
             </select>
 
             <div className="flex justify-end space-x-2">
@@ -218,50 +192,47 @@ function RecordedVideo() {
       <table className="w-full mt-6 border">
         <thead>
           <tr className="bg-gray-200">
-            <th className="p-2 border">ID</th>
+            <th className="p-2 border">#</th>
             <th className="p-2 border">Title</th>
             <th className="p-2 border">Video URL</th>
             <th className="p-2 border">Date</th>
-            <th className="p-2 border">Course</th>
+            <th className="p-2 border">Course Module</th>
             <th className="p-2 border">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {Array.isArray(videos) &&
-            videos.map((video, index) => (
-              <tr key={video.id} className="text-center">
-                <td className="p-2 border">{index + 1}</td>
-                <td className="p-2 border">{video.videoTitle}</td>
-                <td className="p-2 border">
-                  <a
-                    href={video.videoUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-blue-600"
-                  >
-                    Watch
-                  </a>
-                </td>
-                <td className="p-2 border">{video.date}</td>
-                <td className="p-2 border">
-                  {video.courseName || video.courseId}
-                </td>
-                <td className="p-2 border space-x-2">
-                  <button
-                    onClick={() => handleEdit(video)}
-                    className="bg-yellow-500 text-white px-2 py-1 rounded-md"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(video.id)}
-                    className="bg-red-600 text-white px-2 py-1 rounded-md"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
+          {videos.map((video, index) => (
+            <tr key={video.id} className="text-center">
+              <td className="p-2 border">{index + 1}</td>
+              <td className="p-2 border">{video.videoTitle}</td>
+              <td className="p-2 border">
+                <a
+                  href={video.videoUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-blue-600"
+                >
+                  Watch
+                </a>
+              </td>
+              <td className="p-2 border">{video.date}</td>
+              <td className="p-2 border">{video.courseModuleTitle || video.courseModuleId}</td>
+              <td className="p-2 border space-x-2">
+                <button
+                  onClick={() => handleEdit(video)}
+                  className="bg-yellow-500 text-white px-2 py-1 rounded-md"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(video.id)}
+                  className="bg-red-600 text-white px-2 py-1 rounded-md"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

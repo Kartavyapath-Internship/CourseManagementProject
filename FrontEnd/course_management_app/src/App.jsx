@@ -10,7 +10,6 @@ import CoursePage from "./Pages/CoursePage";
 import SubjectPage from "./Pages/SubjectPage";
 import SectionPage from "./Pages/SectionPage";
 import TopicPage from "./Pages/TopicPage";
-import SchedulePage from "./Pages/SchedulePage";
 import RecordedVideo from "./Pages/RecordedVideo";
 import StudentPage from "./Pages/StudentPage";
 import { AuthProvider } from "./Services/AuthContext";
@@ -48,7 +47,6 @@ function App() {
           <Route path="/subject" element={<SubjectPage />} />
           <Route path="/sections/:subjectId" element={<SectionPage />} />
           <Route path="/topics/:sectionId" element={<TopicPage />} />
-          <Route path="/student" element={<StudentPage />} />
           <Route path="/roles" element={<Role />} />
           <Route path="/premises" element={<Premises />} />
           <Route path="/staff" element={<Staff />} />
@@ -68,6 +66,7 @@ function App() {
           <Route path="/certificate" element={<Certificate />} />
           <Route path="/course-group" element={<CourseGroup />} />
           <Route path="/recorded-video" element={<RecordedVideo />} />
+          <Route path="/student" element={<StudentPage />} />
         </Route>
 
         {/* Shared schedule route for both roles */}

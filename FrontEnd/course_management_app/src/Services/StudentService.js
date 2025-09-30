@@ -1,14 +1,12 @@
-import axios from "axios";
+import axiosInstance from "./axiosInstance.js"; // ← your configured axios
 
-const BASE_URL = "http://localhost:8080";
-
-export const getAllStudents = () => axios.get(`${BASE_URL}/students`);
-export const deleteStudent = (id) => axios.delete(`${BASE_URL}/students/${id}`);
-export const addStudent = (data) => axios.post(`${BASE_URL}/students`, data);
+export const getAllStudents = () => axiosInstance.get("/students");
+export const deleteStudent = (id) => axiosInstance.delete(`/students/${id}`);
+export const addStudent = (data) => axiosInstance.post("/students", data);
 export const updateStudent = (id, data) =>
-  axios.put(`${BASE_URL}/students/${id}`, data);
+  axiosInstance.put(`/students/${id}`, data);
 
 // dropdowns
-export const getCourses = () => axios.get(`${BASE_URL}/api/courses`);
-export const getBatches = () => axios.get(`${BASE_URL}/batchcycle/getall`);
-export const getGroups = () => axios.get(`${BASE_URL}/coursegroup`);
+export const getCourses = () => axiosInstance.get("/api/courses");
+export const getBatches = () => axiosInstance.get("/batchcycle/getall");
+export const getGroups = () => axiosInstance.get("/coursegroup");

@@ -23,14 +23,12 @@ export default function AdminLayout({ children }) {
     { to: "/batch-cycle", label: "Batch Cycles" },
     { to: "/course-type", label: "Course Type" },
     { to: "/course", label: "Course" },
-    { to: "/modules", label: "Modules" },
     { to: "/premises", label: "Premises" },
     { to: "/infrastructure", label: "Infrastructure" },
     { to: "/subject", label: "Subjects" },
     { to: "/menu-items", label: "Menu Items" },
     { to: "/roles", label: "Roles" },
     { to: "/staff", label: "Staff" },
-    { to: "/student", label: "Students" },
     { to: "/schedule", label: "Schedule Report" },
   ];
 
