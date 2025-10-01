@@ -23,6 +23,7 @@ import MenuItem from "./Pages/MenuItems";
 import Certificate from "./Pages/Certificate";
 import BatchCycle from "./Pages/BatchCycle";
 import Staff from "./Pages/Staff";
+import CourseModulePage from "./Pages/CourseModulePage";
 
 function App() {
   return (
@@ -67,6 +68,7 @@ function App() {
           <Route path="/course-group" element={<CourseGroup />} />
           <Route path="/recorded-video" element={<RecordedVideo />} />
           <Route path="/student" element={<StudentPage />} />
+          <Route path="/modules" element={<CourseModulePage />} />
         </Route>
 
         {/* Shared schedule route for both roles */}
