@@ -20,5 +20,7 @@ public class CourseModuleReqDto {
 	private String practicalHours;
 	    
 	private int staffId;
+	
+	private int courseId;
 
 }

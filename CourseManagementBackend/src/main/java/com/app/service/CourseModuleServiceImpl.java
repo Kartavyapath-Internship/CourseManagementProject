@@ -4,12 +4,15 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.app.dao.CourseDao;
 import com.app.dao.CourseModuleDao;
 import com.app.dao.StaffDao;
 import com.app.dto.CourseModuleReqDto;
 import com.app.dto.CourseModuleRespDto;
+import com.app.entity.Course;
 import com.app.entity.CourseModule;
 import com.app.entity.Staff;
 
@@ -20,80 +23,98 @@ public class CourseModuleServiceImpl implements CourseModuleService {
     private CourseModuleDao courseModuleDao;
 	
 	@Autowired
-	private ModelMapper modelMapper ;
-	
+	private CourseDao courseDao;  // inject your Course repository
+
 	@Autowired
 	private StaffDao staffDao ;
+	
+	@Autowired
+	@Qualifier("courseModuleMapper")
+	private ModelMapper modelMapper;
 
-//    @Override
-//    public CourseModuleRespDto addCourseModule(CourseModuleReqDto courseModule) {
-//    	
-//    	Staff staff = staffDao.findById(courseModule.getStaffId()).orElseThrow(() -> new RuntimeException("Staff not found by id "+  courseModule.getStaffId()));
-//    	
-//    	CourseModule courseM = modelMapper.map(courseModule, CourseModule.class) ;
-//    	
-//    	courseM.setStaff(staff);
-//    	
-//    	courseM.setId(null);
-//        
-//    	CourseModule cModule = courseModuleDao.save(courseM);
-//        
-//    	CourseModuleRespDto map = modelMapper.map(cModule, CourseModuleRespDto.class);
-//    	    	    	
-//    	return map ;
-//    }
+
+//	@Override
+//	public CourseModuleRespDto addCourseModule(CourseModuleReqDto courseModule) {
+//	    
+//	    CourseModule courseM = modelMapper.map(courseModule, CourseModule.class);
+//	    courseM.setId(null);
+//
+//	    // ❌ staff not set here
+//
+//	    CourseModule cModule = courseModuleDao.save(courseM);
+//
+//	    return modelMapper.map(cModule, CourseModuleRespDto.class);
+//	}
 	@Override
-	public CourseModuleRespDto addCourseModule(CourseModuleReqDto courseModule) {
-	    
-	    CourseModule courseM = modelMapper.map(courseModule, CourseModule.class);
-	    courseM.setId(null);
+	public CourseModuleRespDto addCourseModule(CourseModuleReqDto courseModuleDto) {
 
-	    // ❌ staff not set here
+	    // 1️⃣ Fetch the staff by ID
+	    Staff staff = staffDao.findById(courseModuleDto.getStaffId())
+	            .orElseThrow(() -> new RuntimeException("Staff not found with id " + courseModuleDto.getStaffId()));
 
-	    CourseModule cModule = courseModuleDao.save(courseM);
+	    // 2️⃣ Map basic properties (title, description, hours)
+	    CourseModule courseModule = modelMapper.map(courseModuleDto, CourseModule.class);
+	    courseModule.setId(null); 
+	    courseModule.setStaff(staff);
 
-	    return modelMapper.map(cModule, CourseModuleRespDto.class);
+	    // 3️⃣ Fetch the course(s) and set
+	    Course course = courseDao.findById(courseModuleDto.getCourseId()) // assuming single course
+	            .orElseThrow(() -> new RuntimeException("Course not found with id " + courseModuleDto.getCourseId()));
+
+	    courseModule.setCourses(List.of(course)); // set the course list
+
+	    // 4️⃣ Save to DB (this will populate the join table)
+	    CourseModule savedModule = courseModuleDao.save(courseModule);
+
+	    // 5️⃣ Map to response DTO
+	    return modelMapper.map(savedModule, CourseModuleRespDto.class);
 	}
 
-
-    
-//    @Override
-//    public CourseModuleRespDto updateCourseModule(Integer id, CourseModuleReqDto updated) {
-//
-//        CourseModule existing = courseModuleDao.findById(id)
-//                .orElseThrow(() -> new RuntimeException("Course Module not found with id " + id));
-//
-//        existing.setTitle(updated.getTitle());
-//        existing.setDescription(updated.getDescription());
-//        existing.setTheoryHours(updated.getTheoryHours());
-//        existing.setPracticalHours(updated.getPracticalHours());
-//
-//        // ❌ removed staff update
-//
-//        CourseModule cModule = courseModuleDao.save(existing);
-//
-//        return modelMapper.map(cModule, CourseModuleRespDto.class);
-//    }
      
+//	@Override
+//	public CourseModuleRespDto updateCourseModule(Integer id, CourseModuleReqDto updated) {
+//
+//	    CourseModule existing = courseModuleDao.findById(id)
+//	            .orElseThrow(() -> new RuntimeException("Course Module not found with id " + id));
+//
+//	    existing.setTitle(updated.getTitle());
+//	    existing.setDescription(updated.getDescription());
+//	    existing.setTheoryHours(updated.getTheoryHours());
+//	    existing.setPracticalHours(updated.getPracticalHours());
+//
+//	    // ✅ Staff update
+//	    Staff staff = staffDao.findById(updated.getStaffId())
+//	            .orElseThrow(() -> new RuntimeException("Staff not found with id " + updated.getStaffId()));
+//	    existing.setStaff(staff);
+//
+//	    CourseModule cModule = courseModuleDao.save(existing);
+//
+//	    return modelMapper.map(cModule, CourseModuleRespDto.class);
+//	}
+	
 	@Override
-	public CourseModuleRespDto updateCourseModule(Integer id, CourseModuleReqDto updated) {
+	public CourseModuleRespDto updateCourseModule(Integer id, CourseModuleReqDto updatedDto) {
 
 	    CourseModule existing = courseModuleDao.findById(id)
 	            .orElseThrow(() -> new RuntimeException("Course Module not found with id " + id));
 
-	    existing.setTitle(updated.getTitle());
-	    existing.setDescription(updated.getDescription());
-	    existing.setTheoryHours(updated.getTheoryHours());
-	    existing.setPracticalHours(updated.getPracticalHours());
+	    existing.setTitle(updatedDto.getTitle());
+	    existing.setDescription(updatedDto.getDescription());
+	    existing.setTheoryHours(updatedDto.getTheoryHours());
+	    existing.setPracticalHours(updatedDto.getPracticalHours());
 
-	    // ✅ Staff update
-	    Staff staff = staffDao.findById(updated.getStaffId())
-	            .orElseThrow(() -> new RuntimeException("Staff not found with id " + updated.getStaffId()));
+	    // Update staff
+	    Staff staff = staffDao.findById(updatedDto.getStaffId())
+	            .orElseThrow(() -> new RuntimeException("Staff not found with id " + updatedDto.getStaffId()));
 	    existing.setStaff(staff);
 
-	    CourseModule cModule = courseModuleDao.save(existing);
+	    // TODO: Update Course if needed
+	    // Course course = courseDao.findById(updatedDto.getCourseId())...
+	    // existing.setCourse(course);
 
-	    return modelMapper.map(cModule, CourseModuleRespDto.class);
+	    CourseModule savedModule = courseModuleDao.save(existing);
+
+	    return modelMapper.map(savedModule, CourseModuleRespDto.class);
 	}
 
     @Override
@@ -109,11 +130,30 @@ public class CourseModuleServiceImpl implements CourseModuleService {
     	return modelMapper.map(cModule, CourseModuleRespDto.class); 
     }
 
+//    @Override
+//    public List<CourseModuleRespDto> getAllCourseModules() {
+//        
+//    	List<CourseModule> list = courseModuleDao.findAll();
+//        
+//        return list.stream().map(cModule -> modelMapper.map(cModule, CourseModuleRespDto.class)).toList();
+//    }
+    
     @Override
     public List<CourseModuleRespDto> getAllCourseModules() {
-        
-    	List<CourseModule> list = courseModuleDao.findAll();
-        
-        return list.stream().map(cModule -> modelMapper.map(cModule, CourseModuleRespDto.class)).toList();
+        List<CourseModule> modules = courseModuleDao.findAll();
+
+        return modules.stream().map(module -> {
+            CourseModuleRespDto dto = modelMapper.map(module, CourseModuleRespDto.class);
+
+            // Populate courseNames from module.getCourses()
+            if (module.getCourses() != null) {
+                List<String> courseNames = module.getCourses().stream()
+                                                 .map(Course::getName)
+                                                 .toList();
+                dto.setCourseNames(courseNames);
+            }
+
+            return dto;
+        }).toList();
     }
 }
