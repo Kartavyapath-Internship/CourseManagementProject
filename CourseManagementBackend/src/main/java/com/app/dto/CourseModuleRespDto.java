@@ -25,6 +25,8 @@ public class CourseModuleRespDto {
 	private String practicalHours;
 	    
 	private String staffName;
+        
+        private List<Integer> courseIds;
 
 	private List<String> courseNames;
 }
