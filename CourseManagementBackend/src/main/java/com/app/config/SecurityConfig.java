@@ -16,7 +16,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.app.service.StaffUserDetailsService;
 
-
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -25,14 +24,13 @@ import lombok.RequiredArgsConstructor;
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-	
 	private final StaffUserDetailsService userDetailsService;
-	
-    private final JwtAuthenticationFilter jwtAuthFilter;
-    
-    //  Security Filter Chain
- 
-    @Bean
+
+	private final JwtAuthenticationFilter jwtAuthFilter;
+
+	// Security Filter Chain
+
+	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable()).cors(cors -> {
 		}) // Enable CORS for frontend
@@ -83,20 +81,21 @@ public class SecurityConfig {
 						.requestMatchers("/coursegroup/**").hasRole("COORDINATOR")
 
 						// ----- Sessions (only coordinator can manage) -----
-						.requestMatchers(HttpMethod.GET,"/session/**").hasAnyRole("ADMIN", "COORDINATOR")
+						.requestMatchers(HttpMethod.GET, "/session/**").hasAnyRole("ADMIN", "COORDINATOR")
 						.requestMatchers("/session/**").hasRole("COORDINATOR")
 
-//						// ----- Students (only coordinator can manage) -----
-						.requestMatchers(HttpMethod.GET,"/students/**").hasAnyRole("ADMIN", "COORDINATOR")
+						// ----- Students (only coordinator can manage) -----
+						.requestMatchers(HttpMethod.GET, "/students/**").hasAnyRole("ADMIN", "COORDINATOR")
 						.requestMatchers("/students/**").hasRole("COORDINATOR")
-						
-						// ------- Recorded Video (Only  coordinator can manage )-----------
-						
-						.requestMatchers(HttpMethod.GET,"/api/recorded-videos/**").hasAnyRole("ADMIN", "COORDINATOR")
+
+						// ------- Recorded Video (Only coordinator can manage )-----------
+
+						.requestMatchers(HttpMethod.GET, "/api/recorded-videos/**").hasAnyRole("ADMIN", "COORDINATOR")
 						.requestMatchers("/api/recorded-videos/**").hasRole("COORDINATOR")
-						
+
 						// ----- Course Modules (only coordinator can manage) -----
-						// .requestMatchers("/api/course-modules/**").hasRole("COORDINATOR")
+						.requestMatchers(HttpMethod.GET, "/api/course-modules/**").hasAnyRole("ADMIN", "COORDINATOR")
+						.requestMatchers("/api/course-modules/**").hasRole("COORDINATOR")
 
 						// ----- Authentication -----
 						.requestMatchers("/login/**").permitAll()
@@ -124,7 +123,7 @@ public class SecurityConfig {
 //        	
 //        return http.build();
 //    }
-    
+
 //   @Bean
 //	public CorsConfigurationSource corsConfigurationSource() {
 //		CorsConfiguration configuration = new CorsConfiguration();
@@ -137,19 +136,19 @@ public class SecurityConfig {
 //		source.registerCorsConfiguration("/**", configuration);
 //		return source;
 //	}
- 
-    // Authentication Manager (used in AuthService for login)
-    
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-        return authConfig.getAuthenticationManager();
-    }
-    
-    // Password encoder (BCrypt)
-   
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-	
+
+	// Authentication Manager (used in AuthService for login)
+
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+		return authConfig.getAuthenticationManager();
+	}
+
+	// Password encoder (BCrypt)
+
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
 }

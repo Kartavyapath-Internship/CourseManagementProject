@@ -53,22 +53,54 @@ public class LoginController {
         return ResponseEntity.ok(response);
     }
     
+//    @PostMapping("/forgot-password")
+//    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest request) {
+//    	log.error("Email Id {} and paswword {}",request.getEmail(),request.getNewPassword() );
+//    	
+//    	Optional<Staff> staff = staffDao.findByEmail(request.getNewPassword());
+//    	
+//    	log.error("Email Id {} and paswword {}",staff.get().getEmail(),staff.get().getPassword() );
+//    	
+//        return staffDao.findByEmail(request.getEmail())
+//                .map(user -> {
+//                    // ✅ Encode and update password
+//                    user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+//                    System.out.println(request.getNewPassword());
+//                    staffDao.save(user);
+//                    return ResponseEntity.ok("Password reset successfully!");
+//                })
+//                .orElseGet(() -> ResponseEntity.status(404).body("User not found with this email."));
+//    }
+    
     @PostMapping("/forgot-password")
     public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest request) {
-    	log.error("Email Id {} and paswword {}",request.getEmail(),request.getNewPassword() );
-    	
-    	Optional<Staff> staff = staffDao.findByEmail(request.getNewPassword());
-    	
-    	log.error("Email Id {} and paswword {}",staff.get().getEmail(),staff.get().getPassword() );
-    	
-        return staffDao.findByEmail(request.getEmail())
-                .map(user -> {
-                    // ✅ Encode and update password
-                    user.setPassword(passwordEncoder.encode(request.getNewPassword()));
-                    System.out.println(request.getNewPassword());
-                    staffDao.save(user);
-                    return ResponseEntity.ok("Password reset successfully!");
-                })
-                .orElseGet(() -> ResponseEntity.status(404).body("User not found with this email."));
+        // 1️ Basic logging
+        log.info("Received password reset request for email: {}", request.getEmail());
+
+        // 2️ Validate request
+        if (request.getEmail() == null || request.getEmail().isEmpty()) {
+            return ResponseEntity.badRequest().body("Email is required");
+        }
+        if (request.getNewPassword() == null || request.getNewPassword().length() < 6) {
+            return ResponseEntity.badRequest().body("New password must be at least 6 characters");
+        }
+
+        // 3️ Find user by email
+        Optional<Staff> staffOpt = staffDao.findByEmail(request.getEmail());
+
+        if (staffOpt.isEmpty()) {
+            log.warn("Password reset failed. Email not found: {}", request.getEmail());
+            return ResponseEntity.status(404).body("User not found with this email");
+        }
+
+        // 4️ Update password
+        Staff staff = staffOpt.get();
+        staff.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        staffDao.save(staff);
+
+        log.info("Password reset successfully for email: {}", staff.getEmail());
+
+        // 5️ Return success response
+        return ResponseEntity.ok("Password reset successfully!");
     }
 }
