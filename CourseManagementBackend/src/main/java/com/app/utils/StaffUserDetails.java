@@ -18,20 +18,17 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class StaffUserDetails implements UserDetails {
-	
-	
+
 	@Autowired
 	private final Staff staff;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		
+
 		// Role must be prefixed with "ROLE_"
-        
+
 		return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + staff.getRole().getName()));
 	}
-	
-
 
 	@Override
 	public String getPassword() {
@@ -44,40 +41,37 @@ public class StaffUserDetails implements UserDetails {
 		// TODO Auto-generated method stub
 		return staff.getEmail();
 	}
-	
+
 	@Override
-    public boolean isAccountNonExpired() {
-        return true; // can add logic later if needed
-    }
+	public boolean isAccountNonExpired() {
+		return true; // can add logic later if needed
+	}
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return true; // can add logic later if needed
-    }
+	@Override
+	public boolean isAccountNonLocked() {
+		return true; // can add logic later if needed
+	}
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true; // can add logic later if needed
-    }
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true; // can add logic later if needed
+	}
 
-    @Override
-    public boolean isEnabled() {
-        return true; // can add active flag in Staff if needed
-    }
+	@Override
+	public boolean isEnabled() {
+		return true; // can add active flag in Staff if needed
+	}
 
-    public String getName() {
-        return staff.getName();
-    }
+	public String getName() {
+		return staff.getName();
+	}
 
-    public String getRole() {
-        return staff.getRole().getName();
-    }
-    
-    public String getEmail() {
-        return staff.getEmail();
-    }
-	
+	public String getRole() {
+		return staff.getRole().getName();
+	}
 
-	
+	public String getEmail() {
+		return staff.getEmail();
+	}
 
 }

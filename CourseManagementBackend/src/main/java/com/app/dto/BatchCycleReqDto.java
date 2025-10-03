@@ -14,12 +14,12 @@ import lombok.Setter;
 public class BatchCycleReqDto {
 
 	private String name;
-	
+
 	private String description;
-	
-    private LocalDateTime startDate;
-	
+
+	private LocalDateTime startDate;
+
 	private LocalDateTime endDate;
-	
+
 	private Boolean isActive;
 }

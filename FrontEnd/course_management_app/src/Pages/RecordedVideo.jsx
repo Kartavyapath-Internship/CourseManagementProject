@@ -55,6 +55,37 @@ function RecordedVideo() {
   };
 
   const handleSave = async () => {
+  const { videoTitle, videoUrl, date, courseModuleId } = formData;
+
+  // 1️⃣ Check required fields
+  if (!videoTitle.trim()) {
+    toast.error("Video title is required");
+    return;
+  }
+  if (!videoUrl.trim()) {
+    toast.error("Video URL is required");
+    return;
+  }
+  if (!date) {
+    toast.error("Date is required");
+    return;
+  }
+  if (!courseModuleId) {
+    toast.error("Please select a course module");
+    return;
+  }
+
+  // 2️⃣ Validate URL format
+  try {
+    new URL(videoUrl);
+  } catch {
+    toast.error("Please enter a valid URL");
+    return;
+  }
+
+  
+
+  // ✅ If validation passes, save video
   try {
     let newVideo;
     if (isEditing) {
@@ -65,7 +96,7 @@ function RecordedVideo() {
       toast.success("Video updated successfully!");
     } else {
       newVideo = await addVideo(formData);
-      setVideos((prev) => [...prev, newVideo]); // ✅ add new video instantly
+      setVideos((prev) => [...prev, newVideo]);
       toast.success("Video added successfully!");
     }
     resetForm();
@@ -73,7 +104,6 @@ function RecordedVideo() {
     toast.error("Failed to save video");
   }
 };
-
 
 
   const handleDelete = async (id) => {
@@ -137,6 +167,7 @@ function RecordedVideo() {
               value={formData.videoTitle}
               onChange={handleChange}
               className="border p-2 mb-2 w-full"
+              required
             />
 
             <input
@@ -161,6 +192,7 @@ function RecordedVideo() {
               value={formData.courseModuleId}
               onChange={handleChange}
               className="border p-2 mb-4 w-full"
+              required
             >
               <option value="">Select Course Module</option>
               {courseModules.map((cm) => (
@@ -216,7 +248,9 @@ function RecordedVideo() {
                 </a>
               </td>
               <td className="p-2 border">{video.date}</td>
-              <td className="p-2 border">{video.courseModuleTitle || video.courseModuleId}</td>
+              <td className="p-2 border">
+                {video.courseModuleTitle || video.courseModuleId}
+              </td>
               <td className="p-2 border space-x-2">
                 <button
                   onClick={() => handleEdit(video)}

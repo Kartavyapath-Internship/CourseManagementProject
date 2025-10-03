@@ -24,46 +24,42 @@ import com.app.service.BatchCycleService;
 @RequestMapping("/batchcycle")
 @CrossOrigin("*")
 public class BatchCycleController {
-	
+
 	@Autowired
-	private BatchCycleService batchCycleServ ;
+	private BatchCycleService batchCycleServ;
 
 	@PostMapping("/add")
-	public ResponseEntity<BatchCycleRespDto> addBatchCycle(@RequestBody BatchCycleReqDto batchCycleDto)
-	{
+	public ResponseEntity<BatchCycleRespDto> addBatchCycle(@RequestBody BatchCycleReqDto batchCycleDto) {
 		BatchCycleRespDto batch = batchCycleServ.addBatchCycle(batchCycleDto);
 		return ResponseEntity.ok(batch);
 	}
-	
+
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<String> deleteBatchCycle(@PathVariable int id)
-	{
+	public ResponseEntity<String> deleteBatchCycle(@PathVariable int id) {
 		String msg = batchCycleServ.deleteBatchCycle(id);
 		return ResponseEntity.ok(msg);
 	}
-	
+
 	@PutMapping("/edit/{id}")
-	public ResponseEntity<BatchCycleRespDto> editBatchCycle(@PathVariable int id ,@RequestBody BatchCycleReqDto batchCycleDto)
-	{
-		BatchCycleRespDto batch = batchCycleServ.editBatchCycle(id , batchCycleDto);
+	public ResponseEntity<BatchCycleRespDto> editBatchCycle(@PathVariable int id,
+			@RequestBody BatchCycleReqDto batchCycleDto) {
+		BatchCycleRespDto batch = batchCycleServ.editBatchCycle(id, batchCycleDto);
 		return ResponseEntity.ok(batch);
 	}
-	
+
 	@GetMapping("/getall")
 	@PreAuthorize("hasRole('ADMIN') or hasRole('COORDINATOR')")
-	public ResponseEntity<List<BatchCycleRespDto>> getAllBatchCycle(Authentication authentication)
-	{
+	public ResponseEntity<List<BatchCycleRespDto>> getAllBatchCycle(Authentication authentication) {
 		String email = authentication.getName();
-	    List<BatchCycleRespDto> list;
+		List<BatchCycleRespDto> list;
 
-	    if (authentication.getAuthorities().stream()
-	                      .anyMatch(a -> a.getAuthority().equals("ROLE_COORDINATOR"))) {
-	        list = batchCycleServ.getBatchCyclesForCoordinator(email);
-	    } else {
-	        list = batchCycleServ.getAllBatchCycle();
-	    }
+		if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_COORDINATOR"))) {
+			list = batchCycleServ.getBatchCyclesForCoordinator(email);
+		} else {
+			list = batchCycleServ.getAllBatchCycle();
+		}
 
-	    return ResponseEntity.ok(list);
+		return ResponseEntity.ok(list);
 	}
-	
+
 }

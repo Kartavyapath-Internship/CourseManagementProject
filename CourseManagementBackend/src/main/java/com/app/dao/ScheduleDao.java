@@ -1,4 +1,5 @@
 package com.app.dao;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -12,9 +13,8 @@ import com.app.entity.Schedule;
 public interface ScheduleDao extends JpaRepository<Schedule, Integer> {
 
 	@Query("SELECT s FROM Schedule s WHERE s.date BETWEEN :start AND :end")
-    List<Schedule> getScheduleReport(@Param("start") LocalDate start,
-                                     @Param("end") LocalDate end);
-	
+	List<Schedule> getScheduleReport(@Param("start") LocalDate start, @Param("end") LocalDate end);
+
 	// Fetch all schedules for a particular course module
-    List<Schedule> findByCourseModuleId(Integer moduleId);
+	List<Schedule> findByCourseModuleId(Integer moduleId);
 }

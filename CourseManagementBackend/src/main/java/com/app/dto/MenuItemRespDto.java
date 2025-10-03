@@ -1,6 +1,5 @@
 package com.app.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,14 +8,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MenuItemRespDto {
-	
-	private int id;
-	
-	private String title;
-	
-	private String description;
-	
-	private String path;
 
+	private int id;
+
+	private String title;
+
+	private String description;
+
+	private String path;
 
 }

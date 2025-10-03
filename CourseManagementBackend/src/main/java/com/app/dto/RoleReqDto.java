@@ -12,7 +12,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RoleReqDto {
 
-    private String name;          
-    private String description;   
-    private List<Integer> menuItemIds; // IDs of menu items linked to this role
+	private String name;
+
+	private String description;
+
+	private List<Integer> menuItemIds; // IDs of menu items linked to this role
 }

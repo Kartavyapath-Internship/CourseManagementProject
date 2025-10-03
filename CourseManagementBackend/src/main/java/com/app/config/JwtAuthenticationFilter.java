@@ -113,58 +113,57 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtUtils jwtUtils;
-    private final StaffUserDetailsService userDetailsService;
+	private final JwtUtils jwtUtils;
+	private final StaffUserDetailsService userDetailsService;
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
 
-        final String authHeader = request.getHeader("Authorization");
-        String token = null;
-        String email = null;
+		final String authHeader = request.getHeader("Authorization");
+		String token = null;
+		String email = null;
 
-        try {
-            // 1️ Check header
-            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-                filterChain.doFilter(request, response);
-                return;
-            }
+		try {
+			// 1️ Check header
+			if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+				filterChain.doFilter(request, response);
+				return;
+			}
 
-            // 2️ Extract token
-            token = authHeader.substring(7);
-            log.info("Token received: {}", token);
+			// 2️ Extract token
+			token = authHeader.substring(7);
+			log.info("Token received: {}", token);
 
-            // 3️ Extract email (can throw ExpiredJwtException)
-            email = jwtUtils.extractUsername(token);
+			// 3️ Extract email (can throw ExpiredJwtException)
+			email = jwtUtils.extractUsername(token);
 
-            // 4️ If email exists and not authenticated yet
-            if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                var userDetails = userDetailsService.loadUserByUsername(email);
+			// 4️ If email exists and not authenticated yet
+			if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+				var userDetails = userDetailsService.loadUserByUsername(email);
 
-                if (jwtUtils.validateToken(token, userDetails.getUsername())) {
-                    var authToken = new UsernamePasswordAuthenticationToken(
-                            userDetails, null, userDetails.getAuthorities());
+				if (jwtUtils.validateToken(token, userDetails.getUsername())) {
+					var authToken = new UsernamePasswordAuthenticationToken(userDetails, null,
+							userDetails.getAuthorities());
 
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
-                    log.info("Authorities set in context: {}", authToken.getAuthorities());
-                    log.info("userDetails Authories {} ", userDetails.getAuthorities());
-                }
-            }
+					authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+					SecurityContextHolder.getContext().setAuthentication(authToken);
+					log.info("Authorities set in context: {}", authToken.getAuthorities());
+					log.info("userDetails Authories {} ", userDetails.getAuthorities());
+				}
+			}
 
-            // Continue filter chain
-            filterChain.doFilter(request, response);
+			// Continue filter chain
+			filterChain.doFilter(request, response);
 
-        } catch (ExpiredJwtException ex) {
-            log.warn("JWT expired: {}", ex.getMessage());
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
-            response.getWriter().write("JWT_EXPIRED");
-        } catch (Exception ex) {
-            log.error("JWT processing failed: {}", ex.getMessage());
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN); // 403
-            response.getWriter().write("UNAUTHORIZED_ACCESS");
-        }
-    }
+		} catch (ExpiredJwtException ex) {
+			log.warn("JWT expired: {}", ex.getMessage());
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
+			response.getWriter().write("JWT_EXPIRED");
+		} catch (Exception ex) {
+			log.error("JWT processing failed: {}", ex.getMessage());
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN); // 403
+			response.getWriter().write("UNAUTHORIZED_ACCESS");
+		}
+	}
 }
-

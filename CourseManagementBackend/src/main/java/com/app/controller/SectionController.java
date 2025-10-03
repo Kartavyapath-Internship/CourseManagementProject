@@ -22,36 +22,33 @@ import com.app.service.SectionService;
 @RestController
 @RequestMapping("/section")
 public class SectionController {
-	
+
 	@Autowired
-	private SectionService sectionServ ;
+	private SectionService sectionServ;
 
 	@GetMapping("/{subId}")
-	public ResponseEntity<List<SectionRespDto>> getAllSections(@PathVariable int subId)
-	{
-		List<SectionRespDto> list = sectionServ.getAllSection(subId) ;
+	public ResponseEntity<List<SectionRespDto>> getAllSections(@PathVariable int subId) {
+		List<SectionRespDto> list = sectionServ.getAllSection(subId);
 		return ResponseEntity.ok(list);
 	}
-	
+
 	@PostMapping("/add")
-	public ResponseEntity<SectionRespDto> addNewSection(@RequestBody SectionReqDto srd)
-	{
-		SectionRespDto sec =  sectionServ.addNewSection(srd) ; ;
+	public ResponseEntity<SectionRespDto> addNewSection(@RequestBody SectionReqDto srd) {
+		SectionRespDto sec = sectionServ.addNewSection(srd);
+		;
 		return ResponseEntity.ok(sec);
 	}
-	
+
 	@PutMapping("/update/{secId}")
-	public ResponseEntity<SectionRespDto> updateSection(@PathVariable int secId , @RequestBody SectionReqDto srd)
-	{
-		SectionRespDto sec = sectionServ.updateSection(secId,srd) ;
+	public ResponseEntity<SectionRespDto> updateSection(@PathVariable int secId, @RequestBody SectionReqDto srd) {
+		SectionRespDto sec = sectionServ.updateSection(secId, srd);
 		return ResponseEntity.ok(sec);
 	}
-	
+
 	@DeleteMapping("/{secId}")
-	public ResponseEntity<String> deleteSection(@PathVariable int secId)
-	{
+	public ResponseEntity<String> deleteSection(@PathVariable int secId) {
 		String msg = sectionServ.deleteSection(secId);
-		
+
 		return ResponseEntity.ok(msg);
 	}
 }

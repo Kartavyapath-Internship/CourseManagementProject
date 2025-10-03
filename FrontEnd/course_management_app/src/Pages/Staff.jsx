@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
   getAllStaff,
@@ -13,6 +12,7 @@ function Staff() {
   const [roles, setRoles] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // ✅ show/hide toggle
   const [formData, setFormData] = useState({
     id: null,
     name: "",
@@ -25,7 +25,6 @@ function Staff() {
 
   const staffTypes = ["INHOUSE", "VISITING"];
 
-  // Fetch staff and roles on load
   useEffect(() => {
     fetchStaff();
     fetchRoles();
@@ -35,7 +34,7 @@ function Staff() {
     try {
       const res = await getAllStaff();
       setStaffList(Array.isArray(res.data) ? res.data : []);
-    } catch (err) {
+    } catch {
       toast.error("Failed to fetch staff");
     }
   };
@@ -44,12 +43,11 @@ function Staff() {
     try {
       const res = await getAllRoles();
       setRoles(Array.isArray(res.data) ? res.data : []);
-    } catch (err) {
+    } catch {
       toast.error("Failed to fetch roles");
     }
   };
 
-  // Open add modal
   const handleAdd = () => {
     setFormData({
       id: null,
@@ -61,10 +59,10 @@ function Staff() {
       roleID: "",
     });
     setIsEdit(false);
+    setShowPassword(false);
     setIsModalOpen(true);
   };
 
-  // Open edit modal
   const handleEdit = (staff) => {
     const role = roles.find((r) => r.name === staff.roleName);
     setFormData({
@@ -77,36 +75,26 @@ function Staff() {
       roleID: role ? role.id : "",
     });
     setIsEdit(true);
+    setShowPassword(false);
     setIsModalOpen(true);
   };
 
-  // Delete staff
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete?")) return;
     try {
       await deleteStaff(id);
       toast.success("Staff deleted successfully!");
       fetchStaff();
-    } catch (err) {
-      const msg ="Cannot delete staff. Staff is assigned to a course.";
-      toast.error(msg);
+    } catch {
+      toast.error("Cannot delete staff. Staff is assigned to a course.");
     }
-
   };
 
-  // Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { name, password, mobileNo, email, staffType, roleID } = formData;
 
-    if (
-      !name ||
-      (!isEdit && !password) ||
-      !mobileNo ||
-      !email ||
-      !staffType ||
-      !roleID
-    ) {
+    if (!name || (!isEdit && !password) || !mobileNo || !email || !staffType || !roleID) {
       toast.warn("All fields are required!");
       return;
     }
@@ -121,7 +109,7 @@ function Staff() {
       }
       setIsModalOpen(false);
       fetchStaff();
-    } catch (err) {
+    } catch {
       toast.error("Server error. Could not save staff.");
     }
   };
@@ -139,6 +127,7 @@ function Staff() {
             </button>
           </div>
 
+          {/* Staff Table */}
           <table className="w-full border border-gray-300 bg-white shadow-md rounded-lg">
             <thead>
               <tr className="bg-violet-400 text-white">
@@ -154,10 +143,7 @@ function Staff() {
             <tbody>
               {staffList.length > 0 ? (
                 staffList.map((staff, index) => (
-                  <tr
-                    key={staff.id}
-                    className="border-t hover:bg-gray-100 transition"
-                  >
+                  <tr key={staff.id} className="border-t hover:bg-gray-100 transition">
                     <td className="px-4 py-2">{index + 1}</td>
                     <td className="px-4 py-2">{staff.name}</td>
                     <td className="px-4 py-2">{staff.mobileNo}</td>
@@ -194,74 +180,73 @@ function Staff() {
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white w-96 p-6 rounded-lg shadow-lg">
-            <h2 className="text-xl font-bold mb-4">
-              {isEdit ? "Edit Staff" : "Add Staff"}
-            </h2>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white w-96 p-6 rounded-lg shadow-lg relative">
+            <h2 className="text-xl font-bold mb-4">{isEdit ? "Edit Staff" : "Add Staff"}</h2>
             <form onSubmit={handleSubmit}>
+              {/* Name */}
               <div className="mb-4">
                 <label className="block text-gray-700">Name</label>
                 <input
                   type="text"
                   className="w-full border border-gray-300 px-3 py-2 rounded"
                   value={formData.name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   required
                 />
               </div>
 
-              {!isEdit && (
-                <div className="mb-4">
-                  <label className="block text-gray-700">Password</label>
-                  <input
-                    type="password"
-                    className="w-full border border-gray-300 px-3 py-2 rounded"
-                    value={formData.password}
-                    onChange={(e) =>
-                      setFormData({ ...formData, password: e.target.value })
-                    }
-                    required
-                  />
-                </div>
-              )}
+              {/* Password */}
+              <div className="mb-4 relative">
+                <label className="block text-gray-700">Password</label>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className="w-full border border-gray-300 px-3 py-2 rounded"
+                  value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  placeholder={isEdit ? "Leave blank to keep current password" : ""}
+                  required={!isEdit} // required for Add
+                />
+                <button
+                  type="button"
+                  className="absolute right-2 top-9 text-gray-600"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? "Hide" : "Show"}
+                </button>
+              </div>
 
+              {/* Mobile */}
               <div className="mb-4">
                 <label className="block text-gray-700">Mobile No</label>
                 <input
                   type="text"
                   className="w-full border border-gray-300 px-3 py-2 rounded"
                   value={formData.mobileNo}
-                  onChange={(e) =>
-                    setFormData({ ...formData, mobileNo: e.target.value })
-                  }
+                  onChange={(e) => setFormData({ ...formData, mobileNo: e.target.value })}
                   required
                 />
               </div>
 
+              {/* Email */}
               <div className="mb-4">
                 <label className="block text-gray-700">Email</label>
                 <input
                   type="email"
                   className="w-full border border-gray-300 px-3 py-2 rounded"
                   value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   required
                 />
               </div>
 
+              {/* Staff Type */}
               <div className="mb-4">
                 <label className="block text-gray-700">Staff Type</label>
                 <select
                   className="w-full border border-gray-300 px-3 py-2 rounded"
                   value={formData.staffType}
-                  onChange={(e) =>
-                    setFormData({ ...formData, staffType: e.target.value })
-                  }
+                  onChange={(e) => setFormData({ ...formData, staffType: e.target.value })}
                   required
                 >
                   <option value="">Select type</option>
@@ -273,14 +258,13 @@ function Staff() {
                 </select>
               </div>
 
+              {/* Role */}
               <div className="mb-4">
                 <label className="block text-gray-700">Role</label>
                 <select
                   className="w-full border border-gray-300 px-3 py-2 rounded"
                   value={formData.roleID}
-                  onChange={(e) =>
-                    setFormData({ ...formData, roleID: e.target.value })
-                  }
+                  onChange={(e) => setFormData({ ...formData, roleID: e.target.value })}
                   required
                 >
                   <option value="">Select role</option>
@@ -292,6 +276,7 @@ function Staff() {
                 </select>
               </div>
 
+              {/* Buttons */}
               <div className="flex justify-end space-x-3">
                 <button
                   type="button"
@@ -302,7 +287,7 @@ function Staff() {
                 </button>
                 <button
                   type="submit"
-                  className="bg-blue-300 text-black px-4 py-1 rounded hover:bg-blue-400"
+                  className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
                 >
                   {isEdit ? "Update" : "Add"}
                 </button>

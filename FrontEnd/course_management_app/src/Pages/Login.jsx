@@ -51,8 +51,8 @@ export default function Login() {
       login({ token, email, role, name });
       toast.success("Login successful!");
 
-      if (role === "ADMIN") navigate("/course-type");
-      else if (role === "COORDINATOR") navigate("/sessions");
+      if (role === "ADMIN") navigate("/batch-cycle");
+      else if (role === "COORDINATOR") navigate("/modules");
       else navigate("/unauthorized");
     } catch (error) {
       if (error.code === "ERR_NETWORK") {

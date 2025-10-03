@@ -12,8 +12,11 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RoleRespDto {
 
-    private int id;                      
-    private String name;                 
-    private String description;          
-    private List<String> menuTitles;     // Names of assigned menu items
+	private int id;
+
+	private String name;
+
+	private String description;
+
+	private List<String> menuTitles; // Names of assigned menu items
 }

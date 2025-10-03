@@ -201,8 +201,13 @@ public class CourseServiceImpl implements CourseService {
                 (dto.getCoordinatorId() == null || !previousCoordinator.getId().equals(dto.getCoordinatorId()))) {
             boolean isCoordinatorElsewhere = courseDao.existsByCoordinatorId(previousCoordinator.getId());
             if (!isCoordinatorElsewhere) {
-                Role defaultRole = roleDao.findByName("STAFF")
-                        .orElseThrow(() -> new RuntimeException("Default staff role not found"));
+                Role defaultRole = roleDao.findByName("STAFF").orElseGet(() -> {
+        			Role newRole = new Role();
+        			newRole.setName("STAFF");
+        			newRole.setDescription("STAFF Related functionality");
+        			return roleDao.save(newRole);}
+                );
+                        
                 previousCoordinator.setRole(defaultRole);
                 staffDao.save(previousCoordinator);
             }

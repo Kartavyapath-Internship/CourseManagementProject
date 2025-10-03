@@ -1,11 +1,8 @@
 import axiosInstance from "./axiosInstance";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 // Helper to handle errors
 const handleError = (err, action) => {
   console.error(`Failed to ${action}:`, err);
-  toast.error(`Failed to ${action}`);
 };
 
 // Course Module APIs
@@ -22,7 +19,7 @@ export const getModules = async () => {
 export const addModule = async (data) => {
   try {
     const res = await axiosInstance.post("/api/course-modules", data);
-    toast.success("Course module added successfully!");
+
     return res.data;
   } catch (err) {
     handleError(err, "add course module");
@@ -32,7 +29,7 @@ export const addModule = async (data) => {
 export const updateModule = async (id, data) => {
   try {
     const res = await axiosInstance.put(`/api/course-modules/${id}`, data);
-    toast.success("Course module updated successfully!");
+
     return res.data;
   } catch (err) {
     handleError(err, `update course module with id ${id}`);
@@ -42,7 +39,7 @@ export const updateModule = async (id, data) => {
 export const deleteModule = async (id) => {
   try {
     const res = await axiosInstance.delete(`/api/course-modules/${id}`);
-    toast.success("Course module deleted successfully!");
+
     return res.data;
   } catch (err) {
     handleError(err, `delete course module with id ${id}`);

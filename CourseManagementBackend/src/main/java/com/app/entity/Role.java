@@ -5,6 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -35,7 +36,7 @@ public class Role extends BaseEntity {
 	@Column(name = "description",nullable = false,length = 200)
 	private String description;
 	
-	@OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "role", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JsonManagedReference
 	private List<Staff> staffMembers;
 	

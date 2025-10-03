@@ -38,28 +38,25 @@ public class CourseController {
 	@GetMapping
 	@PreAuthorize("hasRole('ADMIN') or hasRole('COORDINATOR')")
 	public ResponseEntity<List<CourseRespDto>> getAllCourses(Authentication authentication) {
-		String email = authentication.getName(); 
-		
-		log.info("Email ia {}",email);
-		
-	    List<CourseRespDto> courses;
+		String email = authentication.getName();
 
-	    // ✅ Coordinator -> only get their assigned courses
-	    if (authentication.getAuthorities().stream()
-	            .anyMatch(a -> a.getAuthority().equals("ROLE_COORDINATOR"))) {
-	    	
-	    	
-	    	
-	        courses = courseService.getCoursesByCoordinatorEmail(email);
-	        
-	        log.info("cordinator logging in courses ",courses); 
-	    } else {
-	        // ✅ Admin -> see all courses
-	        courses = courseService.getAllCourses();
-	        log.info(" logging in courses ",courses); 
-	    }
+		log.info("Email ia {}", email);
 
-	    return ResponseEntity.ok(courses);
+		List<CourseRespDto> courses;
+
+		// ✅ Coordinator -> only get their assigned courses
+		if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_COORDINATOR"))) {
+
+			courses = courseService.getCoursesByCoordinatorEmail(email);
+
+			log.info("cordinator logging in courses ", courses);
+		} else {
+			// ✅ Admin -> see all courses
+			courses = courseService.getAllCourses();
+			log.info(" logging in courses ", courses);
+		}
+
+		return ResponseEntity.ok(courses);
 	}
 
 	@GetMapping("/{id}")

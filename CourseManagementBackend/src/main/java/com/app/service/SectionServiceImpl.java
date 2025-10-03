@@ -29,32 +29,29 @@ public class SectionServiceImpl implements SectionService {
 
 	@Override
 	public List<SectionRespDto> getAllSection(int subId) {
-		
+
 		List<Section> list = sectionDao.findAllBySubjectId(subId);
-		
+
 		return list.stream().map(section -> {
 			SectionRespDto map = modelMapper.map(section, SectionRespDto.class);
 			map.setSubjectName(section.getSubject().getName());
-			return map ;
+			return map;
 		}).toList();
 	}
 
 	@Override
 	public SectionRespDto addNewSection(SectionReqDto srd) {
-	    Subject subject = subjectDao.findById(srd.getSubjectId())
-	            .orElseThrow(() -> new RuntimeException("Subject not found with id " + srd.getSubjectId()));
+		Subject subject = subjectDao.findById(srd.getSubjectId())
+				.orElseThrow(() -> new RuntimeException("Subject not found with id " + srd.getSubjectId()));
 
-	    Section section = Section.builder()
-	            .sectionName(srd.getSectionName())
-	            .subject(subject)
-	            .build();
+		Section section = Section.builder().sectionName(srd.getSectionName()).subject(subject).build();
 
-	    Section save = sectionDao.save(section);
+		Section save = sectionDao.save(section);
 
-	    SectionRespDto map = modelMapper.map(save, SectionRespDto.class);
-	    map.setSubjectName(save.getSubject().getName());
+		SectionRespDto map = modelMapper.map(save, SectionRespDto.class);
+		map.setSubjectName(save.getSubject().getName());
 
-	    return map;
+		return map;
 	}
 
 	@Override

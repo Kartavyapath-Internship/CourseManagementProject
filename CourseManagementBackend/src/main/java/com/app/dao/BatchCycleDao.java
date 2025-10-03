@@ -1,4 +1,5 @@
 package com.app.dao;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -27,12 +28,12 @@ public interface BatchCycleDao extends JpaRepository<BatchCycle, Integer> {
 			  AND c.coordinator.email = :email
 			""")
 	boolean existsByIdAndCoordinatorEmail(@Param("batchCycleId") Integer batchCycleId, @Param("email") String email);
-	
+
 	@Query("""
-	           SELECT DISTINCT bc 
-	           FROM BatchCycle bc 
-	           JOIN bc.courses c 
-	           WHERE c.coordinator.email = :email
-	           """)
-	    List<BatchCycle> findAllByCoursesCoordinatorEmail(@Param("email") String email);
+			SELECT DISTINCT bc
+			FROM BatchCycle bc
+			JOIN bc.courses c
+			WHERE c.coordinator.email = :email
+			""")
+	List<BatchCycle> findAllByCoursesCoordinatorEmail(@Param("email") String email);
 }

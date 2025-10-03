@@ -23,33 +23,33 @@ import com.app.service.StudentService;
 @CrossOrigin(origins = "*")
 public class StudentController {
 	@Autowired
-    private StudentService studentService;
+	private StudentService studentService;
 
-    @PostMapping
-    public ResponseEntity<StudentRespDto> createStudent(@RequestBody StudentReqDto student) {
-        return ResponseEntity.ok(studentService.addStudent(student));
-    }
+	@PostMapping
+	public ResponseEntity<StudentRespDto> createStudent(@RequestBody StudentReqDto student) {
+		return ResponseEntity.ok(studentService.addStudent(student));
+	}
 
-    @GetMapping
-    public ResponseEntity<List<StudentRespDto>> getAllStudents() {
-        return ResponseEntity.ok(studentService.getAllStudents());
-    }
+	@GetMapping
+	public ResponseEntity<List<StudentRespDto>> getAllStudents() {
+		return ResponseEntity.ok(studentService.getAllStudents());
+	}
 
-    @GetMapping("/{id}")
-    public ResponseEntity<StudentRespDto> getStudentById(@PathVariable Integer id) {
-    	StudentRespDto student = studentService.getStudentById(id);
-        return ResponseEntity.ok(student);
-    }
+	@GetMapping("/{id}")
+	public ResponseEntity<StudentRespDto> getStudentById(@PathVariable Integer id) {
+		StudentRespDto student = studentService.getStudentById(id);
+		return ResponseEntity.ok(student);
+	}
 
-    @PutMapping("/{id}")
-    public ResponseEntity<StudentRespDto> updateStudent(@PathVariable Integer id, @RequestBody StudentReqDto student) {
-    	StudentRespDto updatedStudent = studentService.updateStudent(id, student);
-        return updatedStudent != null ? ResponseEntity.ok(updatedStudent) : ResponseEntity.notFound().build();
-    }
+	@PutMapping("/{id}")
+	public ResponseEntity<StudentRespDto> updateStudent(@PathVariable Integer id, @RequestBody StudentReqDto student) {
+		StudentRespDto updatedStudent = studentService.updateStudent(id, student);
+		return updatedStudent != null ? ResponseEntity.ok(updatedStudent) : ResponseEntity.notFound().build();
+	}
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteStudent(@PathVariable Integer id) {
-        studentService.deleteStudent(id);
-        return ResponseEntity.ok("Student deleted successfully!");
-    }
+	@DeleteMapping("/{id}")
+	public ResponseEntity<String> deleteStudent(@PathVariable Integer id) {
+		studentService.deleteStudent(id);
+		return ResponseEntity.ok("Student deleted successfully!");
+	}
 }

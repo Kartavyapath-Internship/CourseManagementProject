@@ -24,10 +24,14 @@ import Certificate from "./Pages/Certificate";
 import BatchCycle from "./Pages/BatchCycle";
 import Staff from "./Pages/Staff";
 import CourseModulePage from "./Pages/CourseModulePage";
+import AxiosInterceptor from "./Services/AxiosInterceptor";
 
 function App() {
   return (
     <AuthProvider>
+      {/* Mount Axios Interceptor globally */}
+      <AxiosInterceptor />
+
       <Routes>
         {/* Default Login */}
 

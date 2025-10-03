@@ -13,61 +13,60 @@ import com.app.dto.PremisesReqDto;
 import com.app.dto.PremisesRespDto;
 import com.app.entity.Premises;
 
-
 @Service
 @Transactional
 public class PremisesServiceImpl implements PremisesService {
 
 	@Autowired
-	private PremisesDao premiseRepo ;
-	
+	private PremisesDao premiseRepo;
+
 	@Autowired
-	private ModelMapper modelMapper ;
-	
+	private ModelMapper modelMapper;
+
 	@Override
 	public PremisesRespDto addPremise(PremisesReqDto addPremise) {
-		
+
 		Premises premise = new Premises();
-		
+
 		premise.setInstituteName(addPremise.getInstituteName());
 		premise.setAddress(addPremise.getAddress());
 		premise.setDescription(addPremise.getDescription());
-		
+
 		Premises save = premiseRepo.save(premise);
-		
+
 		return modelMapper.map(save, PremisesRespDto.class);
 	}
 
 	@Override
 	public String deletePremise(int id) {
-		
-		Premises premise = premiseRepo.findById(id).orElseThrow(()-> new RuntimeException("premise not found"));
-		
+
+		Premises premise = premiseRepo.findById(id).orElseThrow(() -> new RuntimeException("premise not found"));
+
 		premiseRepo.delete(premise);
-		
+
 		return "Premises deleted";
 	}
-	
+
 	@Override
-	public PremisesRespDto editPremise(PremisesReqDto addPremise , int id) {
-		
-		Premises premise = premiseRepo.findById(id).orElseThrow(()-> new RuntimeException("premise not found"));
-		
+	public PremisesRespDto editPremise(PremisesReqDto addPremise, int id) {
+
+		Premises premise = premiseRepo.findById(id).orElseThrow(() -> new RuntimeException("premise not found"));
+
 		premise.setInstituteName(addPremise.getInstituteName());
-	    premise.setAddress(addPremise.getAddress());
-	    premise.setDescription(addPremise.getDescription());
-		
+		premise.setAddress(addPremise.getAddress());
+		premise.setDescription(addPremise.getDescription());
+
 		Premises save = premiseRepo.save(premise);
-		
+
 		return modelMapper.map(save, PremisesRespDto.class);
-		
+
 	}
 
 	@Override
 	public List<PremisesRespDto> getAllPremises() {
-		
+
 		List<Premises> all = premiseRepo.findAll();
-		
+
 		return all.stream().map(p -> modelMapper.map(p, PremisesRespDto.class)).toList();
 	}
 
@@ -75,7 +74,7 @@ public class PremisesServiceImpl implements PremisesService {
 	public PremisesRespDto getPremiseById(int id) {
 		// TODO Auto-generated method stub
 		Premises pre = premiseRepo.findById(id).orElseThrow(() -> new RuntimeException("premise not found"));
-		
+
 		return modelMapper.map(pre, PremisesRespDto.class);
 	}
 

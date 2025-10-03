@@ -24,10 +24,10 @@ public class SubjectServiceImpl implements SubjectService {
 
 	@Autowired
 	private SubjectDao subjectDao;
-	
+
 	@Autowired
 	private SectionDao sectionDao;
-	
+
 	@Autowired
 	private TopicDao topicDao;
 
@@ -96,7 +96,7 @@ public class SubjectServiceImpl implements SubjectService {
 	public void deleteSubject(int id) {
 		subjectDao.deleteById(id);
 	}
-	
+
 //	public void deleteSubject(int subjectId) {
 //	    // 1. get all sections for this subject
 //	    List<Section> sections = sectionDao.findAllBySubjectId(subjectId);

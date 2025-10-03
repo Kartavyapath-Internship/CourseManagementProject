@@ -22,13 +22,13 @@ export default function AdminLayout({ children }) {
   const menuItems = [
     { to: "/batch-cycle", label: "Batch Cycles" },
     { to: "/course-type", label: "Course Type" },
-    { to: "/course", label: "Course" },
     { to: "/premises", label: "Premises" },
     { to: "/infrastructure", label: "Infrastructure" },
+    { to: "/staff", label: "Staff" },
+    { to: "/course", label: "Course" },
     { to: "/subject", label: "Subjects" },
     { to: "/menu-items", label: "Menu Items" },
     { to: "/roles", label: "Roles" },
-    { to: "/staff", label: "Staff" },
     { to: "/schedule", label: "Schedule Report" },
   ];
 

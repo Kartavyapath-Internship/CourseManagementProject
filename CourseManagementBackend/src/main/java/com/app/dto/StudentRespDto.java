@@ -9,22 +9,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class StudentRespDto {
 
-	private int id ;
-	
+	private int id;
+
 	private int registrationNo;
-    
+
 	private String name;
-    
+
 	private String password;
-    
+
 	private String mobileNo;
-    
+
 	private String email;
 
-    private String courseName;
-    
-    private String batchName;
-    
-    private String groupName;
-    
+	private String courseName;
+
+	private String batchName;
+
+	private String groupName;
+
 }

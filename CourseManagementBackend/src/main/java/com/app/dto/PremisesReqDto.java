@@ -12,8 +12,8 @@ import lombok.Setter;
 public class PremisesReqDto {
 
 	private String instituteName;
-	
+
 	private String address;
-	
-	private String description; 
+
+	private String description;
 }

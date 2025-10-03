@@ -22,30 +22,29 @@ public class StudentServiceImpl implements StudentService {
 
 	@Autowired
 	private StudentDao studentDao;
-	
+
 	@Autowired
-	private CourseDao courseDao ;
-	
+	private CourseDao courseDao;
+
 	@Autowired
-	private GroupDao groupDao ;
-	
+	private GroupDao groupDao;
+
 	@Autowired
-	private BatchCycleDao batchDao ;
-	
+	private BatchCycleDao batchDao;
+
 	@Override
 	public StudentRespDto addStudent(StudentReqDto studentDto) {
-		
+
 		Student student = convertToStudent(studentDto);
-		
+
 		Student save = studentDao.save(student);
-		
+
 		return convertToStudentRespDto(save);
 	}
-	
-	private StudentRespDto convertToStudentRespDto(Student s)
-	{
+
+	private StudentRespDto convertToStudentRespDto(Student s) {
+
 		StudentRespDto dto = new StudentRespDto();
-		
 		dto.setId(s.getId());
 		dto.setRegistrationNo(s.getRegistrationNo());
 		dto.setName(s.getName());
@@ -55,63 +54,64 @@ public class StudentServiceImpl implements StudentService {
 		dto.setCourseName(s.getCourse().getName());
 		dto.setBatchName(s.getBatch().getName());
 		dto.setGroupName(s.getGroup().getGroupName());
-		
-		return dto ;
+
+		return dto;
 	}
 
 	private Student convertToStudent(StudentReqDto dto) {
-		
-		Course course = courseDao.findById(dto.getCourseId()).orElseThrow(() -> new RuntimeException("Course not found by id "+ dto.getCourseId()));
-		
-		Group group = groupDao.findById(dto.getGroupId()).orElseThrow(()-> new RuntimeException("Group not found by id "+ dto.getGroupId()));
-		
-		BatchCycle batchCycle = batchDao.findById(dto.getBatchId()).orElseThrow(()-> new RuntimeException("Batch Cycle not found by id "+ dto.getBatchId()));
 
-		
-	    Student student = new Student();
-	    
-	    student.setRegistrationNo(dto.getRegistrationNo());
-	    student.setName(dto.getName());
-	    student.setPassword(dto.getPassword());
-	    student.setMobileNo(dto.getMobileNo());
-	    student.setEmail(dto.getEmail());
-	    
-	    student.setCourse(course);
-	    student.setBatch(batchCycle);
-	    student.setGroup(group);
-	    
-	    return student;
+		Course course = courseDao.findById(dto.getCourseId())
+				.orElseThrow(() -> new RuntimeException("Course not found by id " + dto.getCourseId()));
+
+		Group group = groupDao.findById(dto.getGroupId())
+				.orElseThrow(() -> new RuntimeException("Group not found by id " + dto.getGroupId()));
+
+		BatchCycle batchCycle = batchDao.findById(dto.getBatchId())
+				.orElseThrow(() -> new RuntimeException("Batch Cycle not found by id " + dto.getBatchId()));
+
+		Student student = new Student();
+
+		student.setRegistrationNo(dto.getRegistrationNo());
+		student.setName(dto.getName());
+		student.setPassword(dto.getPassword());
+		student.setMobileNo(dto.getMobileNo());
+		student.setEmail(dto.getEmail());
+
+		student.setCourse(course);
+		student.setBatch(batchCycle);
+		student.setGroup(group);
+
+		return student;
 	}
 
-	
 	@Override
 	public StudentRespDto updateStudent(Integer id, StudentReqDto dto) {
-				
+
 		Student existingStudent = studentDao.findById(id)
-			    .orElseThrow(() -> new RuntimeException("Student not found by id " + id));
+				.orElseThrow(() -> new RuntimeException("Student not found by id " + id));
 
-			Course course = courseDao.findById(dto.getCourseId())
-			    .orElseThrow(() -> new RuntimeException("Course not found by id " + dto.getCourseId()));
+		Course course = courseDao.findById(dto.getCourseId())
+				.orElseThrow(() -> new RuntimeException("Course not found by id " + dto.getCourseId()));
 
-			Group group = groupDao.findById(dto.getGroupId())
-			    .orElseThrow(() -> new RuntimeException("Group not found by id " + dto.getGroupId()));
+		Group group = groupDao.findById(dto.getGroupId())
+				.orElseThrow(() -> new RuntimeException("Group not found by id " + dto.getGroupId()));
 
-			BatchCycle batchCycle = batchDao.findById(dto.getBatchId())
-			    .orElseThrow(() -> new RuntimeException("Batch Cycle not found by id " + dto.getBatchId()));
+		BatchCycle batchCycle = batchDao.findById(dto.getBatchId())
+				.orElseThrow(() -> new RuntimeException("Batch Cycle not found by id " + dto.getBatchId()));
 
-			existingStudent.setRegistrationNo(dto.getRegistrationNo());
-			existingStudent.setName(dto.getName());
-			existingStudent.setPassword(dto.getPassword());
-			existingStudent.setMobileNo(dto.getMobileNo());
-			existingStudent.setEmail(dto.getEmail());
+		existingStudent.setRegistrationNo(dto.getRegistrationNo());
+		existingStudent.setName(dto.getName());
+		existingStudent.setPassword(dto.getPassword());
+		existingStudent.setMobileNo(dto.getMobileNo());
+		existingStudent.setEmail(dto.getEmail());
 
-			existingStudent.setCourse(course);
-			existingStudent.setBatch(batchCycle);
-			existingStudent.setGroup(group);
+		existingStudent.setCourse(course);
+		existingStudent.setBatch(batchCycle);
+		existingStudent.setGroup(group);
 
-			Student save = studentDao.save(existingStudent);
-			
-			return convertToStudentRespDto(save);
+		Student save = studentDao.save(existingStudent);
+
+		return convertToStudentRespDto(save);
 	}
 
 	@Override
@@ -121,14 +121,15 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public StudentRespDto getStudentById(Integer id) {
-		return convertToStudentRespDto(studentDao.findById(id).orElseThrow(() -> new RuntimeException("Student not found by id " + id)));
+		return convertToStudentRespDto(
+				studentDao.findById(id).orElseThrow(() -> new RuntimeException("Student not found by id " + id)));
 	}
 
 	@Override
 	public List<StudentRespDto> getAllStudents() {
-		
+
 		List<Student> list = studentDao.findAll();
-		
-		return list.stream().map(s -> convertToStudentRespDto(s)).toList() ;
+
+		return list.stream().map(s -> convertToStudentRespDto(s)).toList();
 	}
 }

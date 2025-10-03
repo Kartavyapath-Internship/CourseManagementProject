@@ -24,41 +24,36 @@ import com.app.service.PremisesService;
 public class PremisesController {
 
 	@Autowired
-	PremisesService premiseServ ;
-	
+	PremisesService premiseServ;
+
 	@GetMapping("/getall")
-	public ResponseEntity<List<PremisesRespDto>> getAllPremises()
-	{
+	public ResponseEntity<List<PremisesRespDto>> getAllPremises() {
 		List<PremisesRespDto> list = premiseServ.getAllPremises();
 		return ResponseEntity.ok(list);
 	}
-	
+
 	@GetMapping("/getById/{id}")
-	public ResponseEntity<PremisesRespDto> getById(@PathVariable int id)
-	{
+	public ResponseEntity<PremisesRespDto> getById(@PathVariable int id) {
 		PremisesRespDto pre = premiseServ.getPremiseById(id);
 		return ResponseEntity.ok(pre);
 	}
-	
-	
+
 	@PostMapping("/add")
-	public ResponseEntity<PremisesRespDto> addPremise(@RequestBody PremisesReqDto addPremiseDto)
-	{
+	public ResponseEntity<PremisesRespDto> addPremise(@RequestBody PremisesReqDto addPremiseDto) {
 		PremisesRespDto pre = premiseServ.addPremise(addPremiseDto);
 		return ResponseEntity.ok(pre);
 	}
-	
+
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<String> deletePremise(@PathVariable int id)
-	{
+	public ResponseEntity<String> deletePremise(@PathVariable int id) {
 		String msg = premiseServ.deletePremise(id);
 		return ResponseEntity.ok(msg);
 	}
-	
+
 	@PutMapping("/edit/{id}")
-	public ResponseEntity<PremisesRespDto> editPremise(@RequestBody PremisesReqDto addPremiseDto , @PathVariable int id )
-	{
-		PremisesRespDto pre = premiseServ.editPremise(addPremiseDto , id);
+	public ResponseEntity<PremisesRespDto> editPremise(@RequestBody PremisesReqDto addPremiseDto,
+			@PathVariable int id) {
+		PremisesRespDto pre = premiseServ.editPremise(addPremiseDto, id);
 		return ResponseEntity.ok(pre);
 	}
 }

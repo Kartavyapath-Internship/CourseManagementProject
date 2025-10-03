@@ -17,18 +17,19 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class StaffUserDetailsService implements UserDetailsService{
+public class StaffUserDetailsService implements UserDetailsService {
 
 	@Autowired
 	private final StaffDao staffDao;
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		
-		   Staff staff = staffDao.findByEmail(email).orElseThrow(()->new ResourseNotFoundException("User not found with email : "+email));
-		   
-		   System.out.println(staff);
-		
+
+		Staff staff = staffDao.findByEmail(email)
+				.orElseThrow(() -> new ResourseNotFoundException("User not found with email : " + email));
+
+		System.out.println(staff);
+
 		return new StaffUserDetails(staff);
 	}
 

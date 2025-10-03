@@ -16,36 +16,33 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CourseRespDto {
-	
-	 private int id ;
-	
-	 private String name;
-	 
-	 private String description;
-	 
-	 private LocalDate startDate;
-	 
-	 private LocalDate endDate;
-	 
-	 private String batchCycleTitle;      
-	 
-	 private String CourseTypeName;
-	 
-	 private List<String> premisesName;
-	 
-	 private String status;
-	 	 
-	 private String staffName;
-	 
-	 private int studentCount;
-	 
-	 private List<String> modules;
-		
-	 private Integer coordinatorId;
 
-	 private String coordinatorName;      // Optional
+	private int id;
 
+	private String name;
 
-	 
+	private String description;
+
+	private LocalDate startDate;
+
+	private LocalDate endDate;
+
+	private String batchCycleTitle;
+
+	private String CourseTypeName;
+
+	private List<String> premisesName;
+
+	private String status;
+
+	private String staffName;
+
+	private int studentCount;
+
+	private List<String> modules;
+
+	private Integer coordinatorId;
+
+	private String coordinatorName; // Optional
 
 }

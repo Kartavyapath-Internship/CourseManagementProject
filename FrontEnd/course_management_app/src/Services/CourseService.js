@@ -81,7 +81,7 @@ export const fetchAllDropdowns = async () => {
       courseTypes: typeRes.data.map((c) => ({ id: c.id, title: c.title })),
       premises: premRes.data.map((p) => ({ id: p.id, name: p.instituteName })),
       staff: staffRes.data
-      .filter((s) => s.roleName === "COORDINATOR" || s.roleName === "STAFF")
+      .filter((s) => s)
       .map((s) => ({ id: s.id, name: s.name })),
     };
   } catch (error) {

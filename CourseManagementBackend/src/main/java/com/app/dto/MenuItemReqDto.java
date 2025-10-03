@@ -1,6 +1,5 @@
 package com.app.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -13,9 +12,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MenuItemReqDto {
+
 	private String title;
-	
+
 	private String description;
-	
-	private String path;	
+
+	private String path;
 }

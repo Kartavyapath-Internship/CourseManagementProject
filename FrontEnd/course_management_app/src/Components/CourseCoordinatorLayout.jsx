@@ -20,7 +20,6 @@ export default function CourseCoordinatorLayout({ children }) {
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   const menuItems = [
-    { to: "/assigned-courses", label: "Assigned Courses" },
     { to: "/modules", label: "Modules" },
     { to: "/course-group", label: "Course Group" },
     { to: "/sessions", label: "Sessions" },
