@@ -70,6 +70,7 @@ public class SecurityConfig {
 
 						// ----- Staff -----
 						.requestMatchers(HttpMethod.GET, "/staff/**").hasAnyRole("ADMIN", "COORDINATOR")
+						.requestMatchers(HttpMethod.PUT,"/staff/**").hasAnyRole("ADMIN", "COORDINATOR")
 						.requestMatchers("/staff/**").hasRole("ADMIN")
 
 						// ----- Schedules -----
