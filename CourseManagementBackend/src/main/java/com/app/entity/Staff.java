@@ -29,36 +29,36 @@ import lombok.Setter;
 @Setter
 @Builder
 public class Staff extends BaseEntity {
-	
-	@Column(name = "name",nullable = false,length = 30)
+
+	@Column(name = "name", nullable = false, length = 30)
 	private String name;
-	
-	@Column(name = "password",nullable = false,length = 100)
+
+	@Column(name = "password", nullable = false, length = 100)
 	private String password;
-	
-	@Column(name = "mobile_no",nullable = false,length = 13,unique = true)
+
+	@Column(name = "mobile_no", nullable = false, length = 13, unique = true)
 	private String mobileNo;
-	
-	@Column(name = "email",nullable = false,length = 30,unique = true)
+
+	@Column(name = "email", nullable = false, length = 30, unique = true)
 	private String email;
-	
+
 	@Enumerated(EnumType.STRING)
 	private StaffType staffType;
-	
+
 	@ManyToOne
-	@JoinColumn(name = "role_id")
+	@JoinColumn(name = "role_id", nullable = true)
 	@JsonBackReference
 	private Role role;
 
-	@ManyToMany(mappedBy = "staff",fetch = FetchType.EAGER)
+	@ManyToMany(mappedBy = "staff", fetch = FetchType.EAGER)
 	private List<Course> courses;
 
 	@ManyToMany(mappedBy = "staff")
 	private List<Schedule> schedules;
-	
+
 	@OneToMany(mappedBy = "staff")
 	private List<CourseModule> courseModules;
-	
+
 	@OneToMany(mappedBy = "coordinator")
 	private List<Course> coordinatedCourses;
 

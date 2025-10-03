@@ -55,5 +55,11 @@ public class StaffController {
 		StaffRespDto staff = staffServ.getStaff(staffId);
 		return ResponseEntity.ok(staff);
 	}
+	
+	@GetMapping("/email/{email}")
+	public ResponseEntity<StaffRespDto> getStaffByEmail(@PathVariable String email) {
+	    StaffRespDto staff = staffServ.getStaffByEmail(email);
+	    return ResponseEntity.ok(staff);
+	}
 
 }
