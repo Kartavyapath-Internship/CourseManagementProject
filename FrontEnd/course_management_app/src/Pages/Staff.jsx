@@ -6,6 +6,7 @@ import {
   deleteStaff,
   getAllRoles,
 } from "../Services/Staff";
+import { useEffect, useState } from "react";
 
 function Staff() {
   const [staffList, setStaffList] = useState([]);
@@ -94,7 +95,14 @@ function Staff() {
     e.preventDefault();
     const { name, password, mobileNo, email, staffType, roleID } = formData;
 
-    if (!name || (!isEdit && !password) || !mobileNo || !email || !staffType || !roleID) {
+    if (
+      !name ||
+      (!isEdit && !password) ||
+      !mobileNo ||
+      !email ||
+      !staffType ||
+      !roleID
+    ) {
       toast.warn("All fields are required!");
       return;
     }
@@ -143,7 +151,10 @@ function Staff() {
             <tbody>
               {staffList.length > 0 ? (
                 staffList.map((staff, index) => (
-                  <tr key={staff.id} className="border-t hover:bg-gray-100 transition">
+                  <tr
+                    key={staff.id}
+                    className="border-t hover:bg-gray-100 transition"
+                  >
                     <td className="px-4 py-2">{index + 1}</td>
                     <td className="px-4 py-2">{staff.name}</td>
                     <td className="px-4 py-2">{staff.mobileNo}</td>
@@ -182,7 +193,9 @@ function Staff() {
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white w-96 p-6 rounded-lg shadow-lg relative">
-            <h2 className="text-xl font-bold mb-4">{isEdit ? "Edit Staff" : "Add Staff"}</h2>
+            <h2 className="text-xl font-bold mb-4">
+              {isEdit ? "Edit Staff" : "Add Staff"}
+            </h2>
             <form onSubmit={handleSubmit}>
               {/* Name */}
               <div className="mb-4">
@@ -191,7 +204,9 @@ function Staff() {
                   type="text"
                   className="w-full border border-gray-300 px-3 py-2 rounded"
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
                   required
                 />
               </div>
@@ -203,8 +218,12 @@ function Staff() {
                   type={showPassword ? "text" : "password"}
                   className="w-full border border-gray-300 px-3 py-2 rounded"
                   value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  placeholder={isEdit ? "Leave blank to keep current password" : ""}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
+                  placeholder={
+                    isEdit ? "Leave blank to keep current password" : ""
+                  }
                   required={!isEdit} // required for Add
                 />
                 <button
@@ -223,7 +242,9 @@ function Staff() {
                   type="text"
                   className="w-full border border-gray-300 px-3 py-2 rounded"
                   value={formData.mobileNo}
-                  onChange={(e) => setFormData({ ...formData, mobileNo: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, mobileNo: e.target.value })
+                  }
                   required
                 />
               </div>
@@ -235,7 +256,9 @@ function Staff() {
                   type="email"
                   className="w-full border border-gray-300 px-3 py-2 rounded"
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
                   required
                 />
               </div>
@@ -246,7 +269,9 @@ function Staff() {
                 <select
                   className="w-full border border-gray-300 px-3 py-2 rounded"
                   value={formData.staffType}
-                  onChange={(e) => setFormData({ ...formData, staffType: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, staffType: e.target.value })
+                  }
                   required
                 >
                   <option value="">Select type</option>
@@ -264,7 +289,9 @@ function Staff() {
                 <select
                   className="w-full border border-gray-300 px-3 py-2 rounded"
                   value={formData.roleID}
-                  onChange={(e) => setFormData({ ...formData, roleID: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, roleID: e.target.value })
+                  }
                   required
                 >
                   <option value="">Select role</option>
